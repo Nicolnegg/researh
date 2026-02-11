@@ -6,7 +6,7 @@ starting from {}
 """
 # ----------------------------------------
 StandardBinsecConfig = CoreBinsecConfig + """
-# SSE directives (one per line, e.g. "reach 0x401000", "cut at 0x401234")
+# SSE directives ("reach 0x401000", "cut at 0x401234")
 {}
 """
 StandardBinsecMemory = """
@@ -14,7 +14,7 @@ esp := 0xfff80000
 """
 # ----------------------------------------
 RobustBinsecConfig = CoreBinsecConfig + """
-# SSE directives (one per line, e.g. "reach 0x401000", "cut at 0x401234")
+# SSE directives ("reach 0x401000", "cut at 0x401234")
 {}
 """
 RobustBinsecMemory = """
