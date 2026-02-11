@@ -1,0 +1,5 @@
+sp<32> := 0xffffffff;
+t<1> := 1<1>; #thumb mode on
+{% for loc, val in data._memory.items() -%}
+@[{{ data.get_hex8(loc) }},4] := {{ data.get_hex8(val) }};
+{% endfor %}

@@ -1,0 +1,12 @@
+prefix=/nix/store/6k7nznrdf3qy0bi7d26r4dcidyi8gaz2-zeromq-4.3.3
+exec_prefix=/nix/store/6k7nznrdf3qy0bi7d26r4dcidyi8gaz2-zeromq-4.3.3
+libdir=/nix/store/6k7nznrdf3qy0bi7d26r4dcidyi8gaz2-zeromq-4.3.3/lib
+includedir=/nix/store/6k7nznrdf3qy0bi7d26r4dcidyi8gaz2-zeromq-4.3.3/include
+
+Name: libzmq
+Description: 0MQ c++ library
+Version: 4.3.3
+Libs: -L${libdir} -lzmq
+Libs.private: -lstdc++  -lrt
+Requires.private:  libsodium
+Cflags: -I${includedir} 

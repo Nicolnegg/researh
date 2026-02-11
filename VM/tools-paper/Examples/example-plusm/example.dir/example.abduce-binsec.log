@@ -1,0 +1,171 @@
+[source] example.c
+[abduce-binsec:run] ok in 36.480637311935425 seconds
+[36m[info]   :[0m initialization vulnerability example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0x5f', '0x080e3f51': '0xff', '0x080e3f52': '0x1f', '0x080e3f54': '0x59', '0x080e3f56': '0x20', 'default': '0x00'}[0m
+[36m[info]   :[0m no necessary constant detected[0m
+[36m[info]   :[0m evaluating candidate: set()[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0x00', '0x080e3f51': '0x00', '0x080e3f52': '0x00', '0x080e3f53': '0x00', '0x080e3f54': '0x00', '0x080e3f55': '0x00', '0x080e3f56': '0x00', 'default': '0x80'}[0m
+[36m[info]   :[0m restart vars->literal generation[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f54,1] <> ebx<32>)}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0xffffffff', '0x080e3f57': '0x80', 'default': '0x00'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f54,1] <> @[0x080e3f55,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0xff', '0x080e3f51': '0xff', '0x080e3f52': '0xff', '0x080e3f53': '0x7f', '0x080e3f54': '0x81', '0x080e3f55': '0x01', '0x080e3f56': '0x00', 'default': '0x84'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f52,1] <> @[0x080e3f51,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0x90', '0x080e3f51': '0xaf', '0x080e3f52': '0x3f', '0x080e3f53': '0x62', '0x080e3f54': '0x6c', '0x080e3f55': '0xae', 'default': '0x00'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f56,1] <> ebp<32>)}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0xffffffff', 'ebx': '0x00000000', '0x080e3f57': '0x80', 'default': '0x00'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f55,1] = @[0x080e3f57,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0x00', '0x080e3f51': '0x00', '0x080e3f52': '0x00', '0x080e3f53': '0x7c', '0x080e3f54': '0x01', '0x080e3f56': '0x00', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f53,1] = @[0x080e3f57,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0x00', '0x080e3f51': '0x00', '0x080e3f52': '0x5c', '0x080e3f54': '0x00', '0x080e3f55': '0x00', '0x080e3f56': '0x04', 'default': '0x29'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f54,1] = @[0x080e3f57,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f51': '0xff', '0x080e3f52': '0xff', '0x080e3f53': '0x7f', '0x080e3f55': '0x00', '0x080e3f56': '0x00', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f52,1] = @[0x080e3f57,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0xfe', '0x080e3f51': '0xff', '0x080e3f53': '0x3f', '0x080e3f54': '0x05', '0x080e3f55': '0x00', '0x080e3f56': '0x00', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f51,1] = @[0x080e3f57,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0x06', '0x080e3f52': '0xff', '0x080e3f53': '0x3f', '0x080e3f54': '0x0d', '0x080e3f55': '0x00', '0x080e3f56': '0x00', 'default': '0xc0'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f54,1] <> ebx<32>), (0x000000::@[0x080e3f56,1] <> ebp<32>)}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0xffffffff', 'ebx': '0xffffffff', '0x080e3f57': '0x80', 'default': '0x00'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f53,1] = ebx<32>), (0x000000::@[0x080e3f54,1] <> ebx<32>)}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x0000007f', '0x080e3f50': '0x00', '0x080e3f51': '0xf0', '0x080e3f52': '0xff', '0x080e3f53': '0x7f', '0x080e3f54': '0xff', '0x080e3f55': '0x00', '0x080e3f56': '0x00', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f53,1] = @[0x080e3f57,1]), (0x000000::@[0x080e3f54,1] <> ebx<32>)}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0xffffffff', '0x080e3f50': '0x00', '0x080e3f51': '0x00', '0x080e3f52': '0x5c', '0x080e3f54': '0x00', '0x080e3f55': '0x00', '0x080e3f56': '0x04', 'default': '0x29'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f52,1] <> ebx<32>), (@[0x080e3f55,1] = @[0x080e3f57,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0xffffffff', '0x080e3f50': '0x00', '0x080e3f51': '0x00', '0x080e3f52': '0x00', '0x080e3f54': '0x01', '0x080e3f55': '0x80', '0x080e3f56': '0x00', '0x080e3f57': '0x80', 'default': '0x7c'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f54,1] = ebx<32>), (0x000000::@[0x080e3f51,1] <> ebx<32>)}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0x00', '0x080e3f52': '0x00', '0x080e3f53': '0x00', '0x080e3f54': '0x00', '0x080e3f55': '0x00', '0x080e3f56': '0x00', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f54,1] = ebx<32>), (0x000000::@[0x080e3f50,1] <> ebx<32>)}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f51': '0x00', '0x080e3f52': '0x00', '0x080e3f53': '0x00', '0x080e3f54': '0x00', '0x080e3f55': '0x00', '0x080e3f56': '0x00', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f56,1] <> ebx<32>), (0x000000::@[0x080e3f57,1] = ebx<32>)}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000080', '0x080e3f50': '0x78', '0x080e3f51': '0xe7', '0x080e3f52': '0x06', '0x080e3f53': '0x63', '0x080e3f54': '0x36', '0x080e3f55': '0x50', '0x080e3f56': '0x08', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f57,1] = ebp<32>), (0x000000::@[0x080e3f56,1] <> ebx<32>)}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000080', 'ebx': '0xffffffff', '0x080e3f57': '0x80', 'default': '0x00'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f56,1] <> ebx<32>), (0x000000::@[0x080e3f52,1] = ebx<32>)}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x000000f8', '0x080e3f50': '0x00', '0x080e3f51': '0x00', '0x080e3f52': '0xf8', '0x080e3f53': '0x7f', '0x080e3f54': '0x00', '0x080e3f55': '0x00', '0x080e3f56': '0x78', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f56,1] <> ebx<32>), (@[0x080e3f54,1] = @[0x080e3f57,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0xffffffff', '0x080e3f50': '0x80', '0x080e3f51': '0xff', '0x080e3f52': '0xff', '0x080e3f54': '0x80', '0x080e3f55': '0x00', '0x080e3f56': '0x00', '0x080e3f57': '0x80', 'default': '0x7f'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f52,1] = @[0x080e3f57,1]), (0x000000::@[0x080e3f56,1] <> ebx<32>)}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0xffffffff', '0x080e3f50': '0xfe', '0x080e3f51': '0xff', '0x080e3f52': '0x80', '0x080e3f54': '0x05', '0x080e3f55': '0x00', '0x080e3f56': '0x00', '0x080e3f57': '0x80', 'default': '0x3f'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f56,1] <> ebx<32>), (@[0x080e3f51,1] = @[0x080e3f57,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0xffffffff', '0x080e3f50': '0x06', '0x080e3f51': '0xc0', '0x080e3f52': '0xff', '0x080e3f54': '0x0d', '0x080e3f55': '0x00', '0x080e3f56': '0x00', '0x080e3f57': '0xc0', 'default': '0x3f'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f56,1] <> ebx<32>), (@[0x080e3f57,1] = @[0x080e3f56,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0xffffff7f', '0x080e3f50': '0xff', '0x080e3f51': '0xff', '0x080e3f52': '0xbf', '0x080e3f54': '0x2f', '0x080e3f55': '0x00', '0x080e3f56': '0x80', '0x080e3f57': '0x80', 'default': '0x7f'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f54,1] <> @[0x080e3f55,1]), (@[0x080e3f55,1] = @[0x080e3f53,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0x00', '0x080e3f51': '0x00', '0x080e3f52': '0x00', '0x080e3f53': '0x22', '0x080e3f54': '0xbf', '0x080e3f55': '0x22', '0x080e3f56': '0x00', 'default': '0x02'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f53,1] = @[0x080e3f57,1]), (@[0x080e3f54,1] <> @[0x080e3f55,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0x80', '0x080e3f51': '0x7f', '0x080e3f52': '0xff', '0x080e3f54': '0x80', '0x080e3f55': '0x00', '0x080e3f56': '0x00', 'default': '0x6f'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f53,1] = ebp<32>), (@[0x080e3f54,1] <> @[0x080e3f55,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x0000007f', 'ebx': '0x00000000', '0x080e3f50': '0xff', '0x080e3f51': '0xff', '0x080e3f52': '0xff', '0x080e3f53': '0x7f', '0x080e3f54': '0x81', '0x080e3f55': '0x01', '0x080e3f56': '0x00', 'default': '0x84'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f54,1] = ebx<32>), (@[0x080e3f54,1] <> @[0x080e3f55,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000081', '0x080e3f50': '0xff', '0x080e3f51': '0xff', '0x080e3f52': '0xff', '0x080e3f53': '0x7f', '0x080e3f54': '0x81', '0x080e3f55': '0x01', '0x080e3f56': '0x00', 'default': '0x84'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f54,1] = @[0x080e3f53,1]), (@[0x080e3f54,1] <> @[0x080e3f55,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0x00', '0x080e3f51': '0x00', '0x080e3f52': '0x00', '0x080e3f53': '0x23', '0x080e3f54': '0x23', '0x080e3f55': '0xba', '0x080e3f56': '0x00', 'default': '0x03'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f54,1] <> @[0x080e3f55,1]), (@[0x080e3f54,1] = @[0x080e3f51,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0xfe', '0x080e3f51': '0x6e', '0x080e3f52': '0x01', '0x080e3f53': '0x40', '0x080e3f54': '0x6e', '0x080e3f55': '0x82', '0x080e3f56': '0x04', 'default': '0x00'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f54,1] = ebp<32>), (@[0x080e3f54,1] <> @[0x080e3f55,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000081', 'ebx': '0x00000000', '0x080e3f50': '0xff', '0x080e3f51': '0xff', '0x080e3f52': '0xff', '0x080e3f53': '0x7f', '0x080e3f54': '0x81', '0x080e3f55': '0x01', '0x080e3f56': '0x00', 'default': '0x84'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f54,1] = @[0x080e3f56,1]), (@[0x080e3f54,1] <> @[0x080e3f55,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0x00', '0x080e3f51': '0xa6', '0x080e3f52': '0xff', '0x080e3f53': '0x7f', '0x080e3f54': '0x00', '0x080e3f55': '0x88', '0x080e3f56': '0x00', 'default': '0xb0'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f55,1] = @[0x080e3f52,1]), (@[0x080e3f54,1] <> @[0x080e3f55,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0x3f', '0x080e3f52': '0xe3', '0x080e3f53': '0x40', '0x080e3f54': '0xf3', '0x080e3f55': '0xe3', '0x080e3f56': '0xe5', 'default': '0x00'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f55,1] = @[0x080e3f51,1]), (@[0x080e3f54,1] <> @[0x080e3f55,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0x00', '0x080e3f51': '0x84', '0x080e3f52': '0x00', '0x080e3f53': '0x40', '0x080e3f54': '0x04', '0x080e3f55': '0x84', '0x080e3f56': '0x00', 'default': '0x92'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f53,1] = @[0x080e3f52,1]), (@[0x080e3f54,1] <> @[0x080e3f55,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0x3c', '0x080e3f51': '0x00', '0x080e3f52': '0x00', '0x080e3f53': '0x00', '0x080e3f54': '0xdc', '0x080e3f55': '0x93', '0x080e3f56': '0x00', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f54,1] <> @[0x080e3f55,1]), (@[0x080e3f53,1] = @[0x080e3f50,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0x3c', '0x080e3f53': '0x3c', '0x080e3f54': '0xdc', '0x080e3f55': '0x93', 'default': '0x00'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f53,1] = @[0x080e3f57,1]), (@[0x080e3f54,1] <> @[0x080e3f50,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0x02', '0x080e3f51': '0xff', '0x080e3f52': '0xff', '0x080e3f54': '0x00', '0x080e3f55': '0x91', '0x080e3f56': '0x78', 'default': '0x40'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f54,1] = @[0x080e3f57,1]), (@[0x080e3f54,1] <> @[0x080e3f50,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0x00', '0x080e3f51': '0xff', '0x080e3f52': '0xff', '0x080e3f53': '0x7f', '0x080e3f55': '0x00', '0x080e3f56': '0x00', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f53,1] <> @[0x080e3f52,1]), (@[0x080e3f53,1] = @[0x080e3f51,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0x00', '0x080e3f51': '0x00', '0x080e3f53': '0x00', '0x080e3f54': '0x00', '0x080e3f55': '0x00', '0x080e3f56': '0x00', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f53,1] <> @[0x080e3f56,1]), (@[0x080e3f53,1] = @[0x080e3f52,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0x00', '0x080e3f51': '0x00', '0x080e3f52': '0x7f', '0x080e3f53': '0x7f', '0x080e3f54': '0x01', '0x080e3f55': '0x00', '0x080e3f56': '0xff', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f53,1] <> @[0x080e3f56,1]), (@[0x080e3f53,1] = @[0x080e3f51,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0x00', '0x080e3f51': '0x7f', '0x080e3f52': '0xff', '0x080e3f53': '0x7f', '0x080e3f54': '0x00', '0x080e3f55': '0x3c', '0x080e3f56': '0xff', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f52,1] <> @[0x080e3f51,1]), (@[0x080e3f55,1] = @[0x080e3f57,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0xfe', '0x080e3f51': '0xfe', '0x080e3f52': '0x7e', '0x080e3f53': '0x7f', '0x080e3f54': '0xfe', '0x080e3f56': '0x00', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f54,1] = @[0x080e3f57,1]), (@[0x080e3f52,1] <> @[0x080e3f51,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f51': '0x5f', '0x080e3f52': '0xdf', '0x080e3f53': '0x7f', '0x080e3f55': '0x00', '0x080e3f56': '0x00', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f52,1] <> @[0x080e3f56,1]), (0x000000::@[0x080e3f52,1] = ebp<32>)}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x000000f8', 'ebx': '0x00000000', '0x080e3f50': '0x00', '0x080e3f51': '0x00', '0x080e3f52': '0xf8', '0x080e3f53': '0x7f', '0x080e3f54': '0x00', '0x080e3f55': '0x00', '0x080e3f56': '0x78', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f51,1] <> @[0x080e3f50,1]), (@[0x080e3f55,1] = @[0x080e3f57,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0x7d', '0x080e3f51': '0xfd', '0x080e3f52': '0xff', '0x080e3f53': '0x7f', '0x080e3f54': '0xfc', '0x080e3f56': '0x00', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f56,1] <> ebp<32>), (@[0x080e3f55,1] = @[0x080e3f57,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0xffffffff', 'ebx': '0x00000000', '0x080e3f50': '0x00', '0x080e3f51': '0x00', '0x080e3f52': '0x00', '0x080e3f54': '0x01', '0x080e3f55': '0x80', '0x080e3f56': '0x00', '0x080e3f57': '0x80', 'default': '0x7c'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f54,1] = @[0x080e3f57,1]), (0x000000::@[0x080e3f56,1] <> ebp<32>)}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0xffffffff', 'ebx': '0x00000000', '0x080e3f50': '0x80', '0x080e3f51': '0xff', '0x080e3f52': '0xff', '0x080e3f54': '0x80', '0x080e3f55': '0x00', '0x080e3f56': '0x00', '0x080e3f57': '0x80', 'default': '0x7f'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f52,1] = @[0x080e3f57,1]), (0x000000::@[0x080e3f56,1] <> ebp<32>)}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0xffffffff', 'ebx': '0x00000000', '0x080e3f50': '0xfe', '0x080e3f51': '0xff', '0x080e3f52': '0x80', '0x080e3f54': '0x05', '0x080e3f55': '0x00', '0x080e3f56': '0x00', '0x080e3f57': '0x80', 'default': '0x3f'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f57,1] = ebx<32>), (0x000000::@[0x080e3f55,1] = ebx<32>)}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000080', '0x080e3f50': '0x00', '0x080e3f51': '0x00', '0x080e3f52': '0x00', '0x080e3f53': '0x7c', '0x080e3f54': '0x01', '0x080e3f56': '0x00', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f57,1] = ebp<32>), (0x000000::@[0x080e3f55,1] = ebx<32>)}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000080', 'ebx': '0x00000000', '0x080e3f50': '0x00', '0x080e3f51': '0x00', '0x080e3f52': '0x00', '0x080e3f53': '0x00', '0x080e3f54': '0x00', '0x080e3f55': '0x00', '0x080e3f56': '0x00', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f55,1] = ebx<32>), (@[0x080e3f57,1] = @[0x080e3f56,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0xff', '0x080e3f51': '0xff', '0x080e3f52': '0xbf', '0x080e3f53': '0x7f', '0x080e3f54': '0x2f', '0x080e3f55': '0x00', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f53,1] = ebx<32>), (0x000000::@[0x080e3f57,1] = ebx<32>)}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000029', '0x080e3f50': '0x00', '0x080e3f51': '0x00', '0x080e3f52': '0x5c', '0x080e3f54': '0x00', '0x080e3f55': '0x00', '0x080e3f56': '0x04', 'default': '0x29'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f53,1] = ebx<32>), (@[0x080e3f55,1] = @[0x080e3f57,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x0000007c', '0x080e3f50': '0x00', '0x080e3f51': '0x00', '0x080e3f52': '0x00', '0x080e3f53': '0x7c', '0x080e3f54': '0x01', '0x080e3f56': '0x00', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f53,1] = ebx<32>), (@[0x080e3f54,1] = @[0x080e3f57,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x0000007f', '0x080e3f51': '0xff', '0x080e3f52': '0xff', '0x080e3f53': '0x7f', '0x080e3f55': '0x00', '0x080e3f56': '0x00', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f53,1] = ebx<32>), (@[0x080e3f57,1] = @[0x080e3f56,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x0000007f', '0x080e3f50': '0xff', '0x080e3f51': '0xff', '0x080e3f52': '0xbf', '0x080e3f53': '0x7f', '0x080e3f54': '0x2f', '0x080e3f55': '0x00', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f57,1] = ebx<32>), (@[0x080e3f55,1] = @[0x080e3f53,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000084', '0x080e3f50': '0x00', '0x080e3f51': '0x00', '0x080e3f52': '0x00', '0x080e3f53': '0x00', '0x080e3f54': '0xc1', '0x080e3f55': '0x00', '0x080e3f56': '0x01', 'default': '0x84'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f55,1] = @[0x080e3f56,1]), (0x000000::@[0x080e3f57,1] = ebx<32>)}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000080', '0x080e3f50': '0x00', '0x080e3f51': '0x00', '0x080e3f52': '0x00', '0x080e3f53': '0x00', '0x080e3f54': '0x00', '0x080e3f55': '0x00', '0x080e3f56': '0x00', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(0x000000::@[0x080e3f54,1] = ebx<32>), (0x000000::@[0x080e3f57,1] = ebx<32>)}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000080', '0x080e3f51': '0xff', '0x080e3f52': '0xff', '0x080e3f53': '0x7f', '0x080e3f55': '0x00', '0x080e3f56': '0x00', 'default': '0x80'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f55,1] = @[0x080e3f53,1]), (@[0x080e3f55,1] = @[0x080e3f57,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', 'default': '0x00'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f54,1] = @[0x080e3f52,1]), (@[0x080e3f55,1] <> @[0x080e3f56,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f50': '0xff', '0x080e3f51': '0xff', '0x080e3f52': '0xff', '0x080e3f53': '0x7f', '0x080e3f54': '0xff', '0x080e3f55': '0x80', '0x080e3f56': '0x00', 'default': '0xb0'}[0m
+[36m[info]   :[0m evaluating candidate: {(@[0x080e3f54,1] = @[0x080e3f57,1]), (@[0x080e3f55,1] <> @[0x080e3f56,1])}[0m
+[36m[info]   :[0m counter-example: {'ebp': '0x00000000', 'ebx': '0x00000000', '0x080e3f51': '0xff', '0x080e3f52': '0xfd', '0x080e3f53': '0x7f', '0x080e3f56': '0x00', 'default': '0x80'}[0m
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           2[0m
+[32m[result] :[0m     number of counter-examples:   60[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    71[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [0.5246837139129639, 0.5128507614135742, 0.4571647644042969, 0.45653748512268066, 0.4775846004486084, 0.47481727600097656, 0.4715149402618408, 0.4888174533843994, 0.4829542636871338, 0.49085402488708496, 0.5058870315551758, 0.47917819023132324, 0.45490288734436035, 0.48699355125427246, 0.4990851879119873, 0.44222521781921387, 0.4741196632385254, 0.46695995330810547, 0.4640798568725586, 0.4542708396911621, 0.5033128261566162, 0.46405839920043945, 0.4616060256958008, 0.4921889305114746, 0.4708976745605469, 0.459674596786499, 0.44172000885009766, 0.5079431533813477, 0.4853248596191406, 0.46720170974731445, 0.4656331539154053, 0.4742624759674072, 0.46462345123291016, 0.4951133728027344, 0.45562219619750977, 0.47215700149536133, 0.47058963775634766, 0.476764440536499, 0.4764988422393799, 0.479217529296875, 0.46442103385925293, 0.46595263481140137, 0.48642683029174805, 0.47885584831237793, 0.4511876106262207, 0.4700636863708496, 0.4930567741394043, 0.4631519317626953, 0.4279468059539795, 0.441692590713501, 0.4541206359863281, 0.4681406021118164, 0.44878554344177246, 0.46800994873046875, 0.4427468776702881, 0.4546630382537842, 0.4546809196472168, 0.4679849147796631, 0.48876953125, 0.4692847728729248, 0.46967315673828125, 0.46770548820495605, 0.46903061866760254, 0.47265005111694336, 0.4613175392150879, 0.45299816131591797, 0.45116090774536133, 0.47414207458496094, 0.5288002490997314, 0.4772939682006836, 0.4774303436279297][0m
+[32m[result] :[0m     minibinsec:[0m
+[32m[result] :[0m       * minibinsec calls:    36775[0m
+[32m[result] :[0m       * minibinsec timeouts: 0[0m
+[32m[result] :[0m       * minibinsec crashes:  0[0m
+[32m[result] :[0m       * minibinsec times:    [][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     2[0m
+[32m[result] :[0m     number of variables:    10[0m
+[32m[result] :[0m     number of literals:     90[0m
+[32m[result] :[0m     evaluated candidates:   60[0m
+[32m[result] :[0m     considered candidates:  4097[0m
+[32m[result] :[0m     pruned candidates:      4038[0m
+[32m[result] :[0m       * counterex-pruned candidates: 3993[0m
+[32m[result] :[0m       * consistency-pruned candidates: 45[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 1.4961488246917725[0m
+[32m[result] :[0m       * last  counterex: 35.92709922790527[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0.5251083374023438[0m
+[32m[result] :[0m       * last  example: 1.0385825634002686[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m

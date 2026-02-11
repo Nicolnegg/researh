@@ -1,0 +1,76 @@
+#!/usr/bin/env python3
+# ----------------------------------------
+import sys
+import os.path
+# ---------------------------------------
+from pulseutils.pyabdcfg import PyAbduceConfigurator
+from pulseutils.system import  execute_command #(cmd, timeout=None, stdin=None, merge_output=True)
+from pulseutils.capsule import ZipCapsule
+# ---------------------------------------
+def build_opts(args):
+    opts = PyAbduceConfigurator.Options(args.isa, args.entrypoint)
+    for symbol in args.load:
+        opts.assigns.append((symbol, 'file'))
+    for assign in args.assign:
+        sym, val = assign.split(':')[0], assign.split(':')[1]
+        val = int(val, 16 if val.startswith('0x') else 10)
+        opts.assigns.append((sym, val))
+    for reach_hook in args.reach_hook:
+        sym, htp = reach_hook.split(':')[0], ':'.join(reach_hook.split(':')[1:])
+        opts.hooks['reach'].append((sym, htp))
+    for nreach_hook in args.negative_reach_hook:
+        sym, htp = nreach_hook.split(':')[0], ':'.join(nreach_hook.split(':')[1:])
+        opts.hooks['nreach'].append((sym, htp))
+    for cut_hook in args.cut_hook:
+        sym, htp = cut_hook.split(':')[0], ':'.join(cut_hook.split(':')[1:])
+        opts.hooks['cut'].append((sym, htp))
+    opts.constants.extend(args.constant)
+    opts.variables.extend(args.variable)
+    return opts
+# ---------------------------------------
+def main(args):
+    rc, _, asmdata, _ = execute_command([args.objdump, '-D', args.binary])
+    rc, _, symdata, _ = execute_command([args.objdump, '-t', args.binary])
+    opts = build_opts(args)
+    configurator = PyAbduceConfigurator(args.binary, asmdata, symdata, opts)
+    configurator.generate(args.target_config, args.target_memory, args.target_direc, args.target_lit, args.target_env)
+# ----------------------------------------
+# ----------------------------------------
+if __name__ == '__main__':
+    from argparse import ArgumentParser
+
+    ap = ArgumentParser(description='PyAbduce Configuration Generator')
+
+    g1 = ap.add_argument_group('I/O options')
+    g1.add_argument('-b', '--binary', action='store', required=True, metavar='<binary>', help='binary source')
+    g1.add_argument('-c', '--target-config', action='store', default='binsec.cfg', metavar='<target.cfg>', help='binsec config file')
+    g1.add_argument('-m', '--target-memory', action='store', default='binsec.mem', metavar='<target.mem>', help='binsec memory file')
+    g1.add_argument('-d', '--target-direc', action='store', default='directives.txt', metavar='<target.txt>', help='pyabduce directives file')
+    g1.add_argument('-t', '--target-lit', action='store', default='literals.txt', metavar='<target.txt>', help='pyabduce literals file')
+    g1.add_argument('-f', '--target-env', action='store', default='environment.py', metavar='<environment.py>', help='pyabduce environment file')
+
+    g1.add_argument('--objdump', action='store', default='arm-none-eabi-objdump', metavar='<objdump>', help='objdump executable')
+
+    g2 = ap.add_argument_group('Config options')
+    g2.add_argument('-i', '--isa', action='store', default='arm32', metavar='<isa>', help='binary isa')
+    g2.add_argument('-e', '--entrypoint', action='store', default='main', metavar='<entrypoint>', help='binary se entrypoint')
+
+    g2.add_argument('-a', '--assign', action='append', default=[], metavar='<symbol:value>', help='symbol assignment')
+    g2.add_argument('-l', '--load', action='append', default=[], metavar='<symbol>', help='symbol loading assignment')
+    g2.add_argument('-r', '--reach-hook', action='append', default=[], metavar='<symbol:type>', help='symbol reach hook')
+    g2.add_argument('-n', '--negative-reach-hook', action='append', default=[], metavar='<symbol:type>', help='symbol negative reach hook')
+    g2.add_argument('-s', '--cut-hook', action='append', default=[], metavar='<symbol:type>', help='symbol cut hook')
+
+    g2.add_argument('-k', '--constant', action='append', default=[], metavar='<value>', help='constant for pyabduce literal building')
+    g2.add_argument('-v', '--variable', action='append', default=[], metavar='<symbol>', help='symbol for pyabduce literal building')
+
+    args = ap.parse_args()
+
+    try:
+        main(args)
+    except Exception as e:
+        #TODO Log
+        raise e
+        sys.exit(1)
+    sys.exit(0)
+# ----------------------------------------

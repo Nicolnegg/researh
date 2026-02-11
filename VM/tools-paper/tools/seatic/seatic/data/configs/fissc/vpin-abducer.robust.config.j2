@@ -1,0 +1,24 @@
+[kernel]
+isa = arm32
+entrypoint = capsule
+[sse]
+enabled = true
+depth = 10000
+
+robust = true
+robust-merge = yes
+robust-mode = validation
+#load-ro-sections = true
+#load-sections = .text
+
+[arm]
+supported-modes = thumb
+#debug-level=3
+
+[fml]
+solver = z3
+#debug-level=1
+universal-mode = quantifier
+unquantify-memory = true
+optim-all = true
+#taint-control-memory = true

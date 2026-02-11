@@ -1,0 +1,86 @@
+#!/usr/bin/env python3
+# ----------------------------------------
+import sys
+import argparse
+from argparse import ArgumentParser
+# ----------------------------------------
+from fistic import FisticOptions, Articulator
+from fistic import PlacerKeys, FaulterKeys, EvaluatorKeys
+import fistic.faulters
+# ----------------------------------------
+def main(args):
+    Articulator(FisticOptions(args))()
+# ----------------------------------------
+ap = ArgumentParser(description='Fault Injector program')
+
+gg = ap.add_argument_group('I/Os options')
+gg.add_argument('-d', '--debug', action='store_true', help='print debug messages')
+gg.add_argument('--no-color', action='store_false', dest='log_color', help='no colors in log')
+gg.add_argument('--no-progress', action='store_false', dest='log_progress', help='no progress in log')
+gg.add_argument('--faulted-binaries-dir', action='store', metavar='<directory>', default='faulted.bin',
+                help='target directory for writing faulted binaries')
+gg.add_argument('--faulted-binaries-template', action='store', metavar='<template>', default='f{}.bin',
+                help='template format for faulted binaries')
+gg.add_argument('--map', action='store', metavar='<mapping.ini>', type=argparse.FileType('r'),
+                help='structure representation of the binary file; autoloaded w/ objdump if absent')
+gg.add_argument('--mapper', action='store', metavar='<mapper>', choices=('legacy, pulseutils'), default='pulseutils',
+                help='mapping autoloader selection key for mapping generation (either legacy or pulseutils, defaults to pulseutils)')
+gg.add_argument('-b', '--binary', action='store', required=True, metavar='<file.bin>',
+                help='target binary file')
+gg.add_argument('-t', '--text-segment-address', action='store', metavar='0x<addr>', default='8000', type=lambda i: int(i, 16),
+                help='address of text segment, default is 0x8000')
+gg.add_argument('-o', '--output-file', action='store', metavar='<results.yml>', default='fistic-results.yml',
+                help='name of the file to output results configuration to')
+
+ag = ap.add_argument_group('Articulation options')
+ag.add_argument('-p', '--parallel', action='store_true',
+                help='run the evaluations in parallel')
+ag.add_argument('-c', '--communicate', action='store_true',
+                help='perform the evaluation on-demand via out-of-self requests')
+ag.add_argument('--golden-mutant', action='store', default='**golden**', metavar='<mutant-key>',
+                help='namerepr of the golden run mutant, should no conflict with any faulted-binaries-template value')
+
+pg = ap.add_argument_group('Placer options')
+pg.add_argument('--placer', action='store', choices=PlacerKeys, default='function',
+                help=f'fault generation strategy, default: function')
+pg.add_argument('-n', '--fault-count', action='store', type=int, metavar='<int>', default=1,
+                help='number of faults to perform in a single binary')
+pg.add_argument('-f', '--functions', action='store', nargs='+', metavar='<symbol>',
+                help='function symbols to fault when the placer is function')
+pg.add_argument('-a', '--addresses', action='store', nargs='+', type=int, metavar='<addr>',
+                help='addresses to fault when the placer is address')
+pg.add_argument('--dont-fault-data', action='store_true',
+                help='do not fault on inlined data')
+
+fg = ap.add_argument_group('Faulter options')
+fg.add_argument('--fault-model', action='store', required=True, choices=FaulterKeys,
+                help=f'fault model to emulate')
+fg.add_argument('--skip-count', action='store', type=int, metavar='<int>', default=1,
+                help='for <skip> fault model: number of consecutive instructions to skip')
+fg.add_argument('--replace-by', action='store', choices=fistic.faulters.InstructionPayloads, default='NOP',
+                help=f'for <replace> fault model: instruction to replace by')
+#fg.add_argument('--payload-width', action='store', type=int, metavar='<int>', default=1,
+#                help='for <payload> fault model: width of the payload to inject')
+fg.add_argument('--random-payloads-seed', action='store', type=int, metavar='<seed>',
+                help='for <random-payload> fault model: seed of the prng')
+
+eg = ap.add_argument_group('Evaluation options')
+eg.add_argument('-e', '--evaluator', action='store', required=True, choices=EvaluatorKeys,
+                help=f'evaluator to run on the faulted binaries')
+eg.add_argument('--qemu-oracle', action='store', choices=('stdout', 'stderr', 'rv'), default='stderr',
+                help='select what qemu should use as a binary execution representative')
+eg.add_argument('--evaluation-timeout', action='store', type=float, metavar='<float>',
+                help='set timeout for single faulted binary evaluation')
+
+# TODO: Add command-line arguments for payloads and masks for using associated faulters
+# ----------------------------------------
+if __name__ == '__main__':
+    args = ap.parse_args()
+
+    try:
+        main(args)
+    except Exception as e:
+        raise e
+        sys.exit(1)
+    sys.exit(0)
+# ----------------------------------------

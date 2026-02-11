@@ -1,0 +1,40 @@
+# Herramientas/repositorios externos
+binsec/
+squashfs-root/
+
+# Compilados y binarios
+*.bin
+*.o
+*.so
+*.a
+*.elf
+tools-paper.tgz
+
+# Caches y logs
+.binsec-config/
+*.log
+*.bak
+__pycache__/
+*.pyc
+.vscode/
+.DS_Store
+
+# Directorios de build
+example.dir/
+*.dir/
+build/
+
+# Archivos temporales
+*.swp
+*.swo
+*~
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Python
+.pytest_cache/
+*.egg-info/
+dist/

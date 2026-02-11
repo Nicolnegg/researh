@@ -1,0 +1,385 @@
+#!/usr/bin/env python3
+# ----------------------------------------
+import os
+import sys
+import zipfile
+# ----------------------------------------
+DIGIT_DIRECT = {
+    {% for offset in (0, 1, 2, 3) %}
+    '@[{{ data.get_hex8loc('g_cardPin', offset) }},1]': {{ offset }},
+    '@[{{ data.get_hex8loc('g_userPin', offset) }},1]': {{ offset+4 }},
+    {% endfor %}
+}
+OPERATORS = {
+    '=': lambda l, r : l == r,
+    '<>': lambda l, r : l != r,
+    'True' : lambda l, r : True,
+    'False': lambda l, r : False,
+}
+STUB_OPERATORS = {
+    '=': '==',
+    '<>': '!=',
+    'True': 'True',
+    'False': 'False',
+}
+# ----------------------------------------
+def unparen(data):
+    sdata = data.strip()
+    while sdata.startswith('(') and sdata.endswith(')'):
+        sdata = sdata[1:-1]
+    return sdata
+# ----------------------------------------
+class CoreMatcher:
+
+    def _stub(self):
+        raise NotImplementedError(self)
+
+    def _opub(self):
+        raise NotImplementedError(self)
+
+    def compile(self):
+        fundata =  'global _compiled_matcher\n'
+        fundata += 'def _compiled_matcher(l):\n'
+        fundata += '  of0, of1, of2, of3, of4, of5, of6, of7 = l[0], l[1], l[2], l[3], l[4], l[5], l[6], l[7]\n'
+        fundata += '  return ({}, {})'.format(self._stub(), self._opub())
+        fundata += '\n\n'
+        exec(fundata, globals(), locals())
+        return _compiled_matcher
+# ----------------------------------------
+class ConjunctiveMatcher(CoreMatcher):
+
+    def __init__(self, ctnt):
+        self.ctnt = ctnt
+
+    def _stub(self):
+        return ' and '.join(['({})'.format(ctn._stub()) for ctn in self.ctnt])
+
+    def _opub(self):
+        return ' and '.join(['({})'.format(ctn._opub()) for ctn in self.ctnt])
+# ----------------------------------------
+class DisjunctiveMatcher(CoreMatcher):
+
+    def __init__(self, ctnt):
+        self.ctnt = ctnt
+
+    def _stub(self):
+        return ' or '.join(['({})'.format(ctn._stub()) for ctn in self.ctnt])
+
+    def _opub(self):
+        return ' or '.join(['({})'.format(ctn._opub()) for ctn in self.ctnt])
+# ----------------------------------------
+GLOBAL_INT = 0
+def nextint():
+    global GLOBAL_INT
+    GLOBAL_INT += 1
+    return GLOBAL_INT
+# ----------------------------------------
+class OperatorMatcher(CoreMatcher):
+
+    def __init__(self, op, le, re):
+        self.op = op
+        self.le = le
+        self.re = re
+
+    def _recover_stub(self, elem):
+        if '::' in elem:
+            # TODO: handle general case
+            elem = elem.split('::')[1]
+        if elem in DIGIT_DIRECT:
+            return 'of{}'.format([DIGIT_DIRECT[elem]]).replace('[', '').replace(']', '')
+        if elem.startswith('0x'):
+            return "'{}'".format(str(int(elem, 16)))
+        return '{}'.format(nextint())
+
+    def _stub(self):
+        lv = self._recover_stub(self.le)
+        rv = self._recover_stub(self.re)
+        return '{} {} {}'.format(lv, STUB_OPERATORS[self.op], rv)
+
+    def _opub(self):
+        lv = self._recover_stub(self.le)
+        lv = lv if lv[0] == 'o' else None
+        rv = self._recover_stub(self.re)
+        rv = rv if rv[0] == 'o' else None
+        if lv is None or rv is None:
+            return 'True'
+        return '{} {} {}'.format(lv, STUB_OPERATORS[self.op], rv)
+# ----------------------------------------
+class ConstantWrap(CoreMatcher):
+
+    def __init__(self, const):
+        self.const = const
+
+    def __call__(self, line):
+        return self.const
+
+    def _stub(self):
+        return str(self.const)
+
+    def _opub(self):
+        return str(not self.const)
+# ----------------------------------------
+class TrueWrap(ConstantWrap):
+
+    def _opub(self):
+        return str(self.const)
+# ----------------------------------------
+COMPRESSED_LOG = 'compressed.vp.log'
+# ----------------------------------------
+def generate_hook(constraint):
+    matcher = []
+    if constraint in ('True', 'False'):
+        return TrueWrap(constraint).compile()
+    dlist = []
+    for delem in constraint.split('/'):
+        clist = []
+        for celem in delem.split(';'):
+            celem = unparen(celem)
+            if '&' in celem:
+                # TODO: handle non register conjunctions
+                clist.append(ConstantWrap(False))
+            else:
+                op = '=' if '=' in celem else '<>'
+                parts = celem.split(op)
+                clist.append(OperatorMatcher(op, parts[0].strip(), parts[1].strip()))
+        dlist.append(ConjunctiveMatcher(tuple(clist)))
+    if len(dlist) == 1:
+        return dlist[0].compile()
+    return DisjunctiveMatcher(tuple(dlist)).compile()
+# ----------------------------------------
+def cleanup(line):
+    return line.strip().replace('\0', '')
+# ----------------------------------------
+def asbool(c):
+    if c == 'F':
+        return True
+    if c == 'O':
+        return False
+    raise ValueError(c)
+# ----------------------------------------
+def skip(line):
+    return len(line) != 9 or line[0:4] == line[4:8]
+# ----------------------------------------
+def nodata_skip(line):
+    return len(line) != 9
+# ----------------------------------------
+def constraint_match(hook, line):
+    return hook(line)
+# ----------------------------------------
+def match(hook, line):
+    cmatch = constraint_match(hook, line)
+    bline = asbool(line[-1])
+    return (cmatch[0] == bline, cmatch[1] == bline)
+# ----------------------------------------
+def checkdata(logfile=None):
+    data = 0
+    source = sys.stdin if logfile is None else open(logfile)
+    for line in source:
+        cline = cleanup(line)
+        if not skip(cline):
+            data += 1
+    if logfile is not None:
+        source.close()
+    if data == 0:
+        sys.exit(1)
+# ----------------------------------------
+def simulate(hook, logfile=None, compressed=False):
+    mcpt = 0
+    ncpt = 0
+    vuln = 0
+    cvul = 0
+    ovul = 0
+    mpos = 0
+    mneg = 0
+    source = sys.stdin if logfile is None else DecompressionReader(logfile) if compressed else open(logfile)
+    for line in source:
+        cline = cleanup(line)
+        if not skip(cline):
+            if cline[-1] == 'F':
+                vuln += 1
+            cmatch = constraint_match(hook, cline)
+            if cmatch[0]:
+                cvul += 1
+            if cmatch[1]:
+                ovul += 1
+            fmatch = match(hook, cline)
+            if fmatch[0]:
+                mcpt += 1
+            else:
+                ncpt += 1
+                if cline[-1] == 'F':
+                    mpos += 1
+                else:
+                    mneg += 1
+    if logfile is not None:
+        source.close()
+    sys.stdout.write('match:{};nomatch:{};vulns:{};symbvulns:{};symbvulnps:{};missedpos:{};missedneg:{}\n'.format(mcpt, ncpt, vuln, cvul, ovul, mpos, mneg))
+# ----------------------------------------
+def estimate(hook, logfile=None, compressed=False):
+    vuln = 0
+    if logfile is None:
+        raise TypeError('online data unsuitable for estimation')
+    elif not compressed:
+        raise TypeError('uncompressed logfile unsuitable for estimation')
+    source = DecompressionReader(logfile)
+    vuln = source.vcount
+    sys.stdout.write('match:-1;nomatch:-1;vulns:{};symbvulns:-1;symbvulnps:-1;missedpos:-1;missedneg:-1\n'.format(vuln))
+# ----------------------------------------
+def evaluate(hook, constraint):
+    ncpt = 0
+    cvul = 0
+    ovul = 0
+    if constraint == 'True':
+        ncpt = 99990000
+        cvul = 99990000
+        ovul = 99990000
+    elif constraint == 'False':
+        ncpt = 99990000
+        cvul = 0
+        ovul = 0
+    else:
+        for pinset in range(100000000):
+            pindata = '{:08}U'.format(pinset)
+            if not skip(pindata):
+                ncpt += 1
+                cmatch = constraint_match(hook, pindata)
+                if cmatch[0]:
+                    cvul += 1
+                if cmatch[1]:
+                    ovul += 1
+    sys.stdout.write('tested:{};symbvulns:{};symbvulnps:{}\n'.format(ncpt, cvul, ovul))
+# ----------------------------------------
+def compress(logfile, outfile):
+    outdir = os.path.dirname(outfile)
+    if outdir != '' and not os.path.isdir(outdir):
+        try:
+            os.makedirs(outdir)
+        except FileExistsError:
+            pass # directory parallely created by another thread
+    with zipfile.ZipFile(outfile, mode='w', compression=zipfile.ZIP_DEFLATED) as output:
+        with output.open(COMPRESSED_LOG, mode='w') as compfile:
+            tcpt, fcpt = 0, 0
+            try:
+                with open(logfile) as logdata:
+                    for line in logdata:
+                        cline = cleanup(line)
+                        if nodata_skip(cline):
+                            continue
+                        if cline[-1] == 'O':
+                            tcpt += 1
+                        if cline[-1] == 'F':
+                            fcpt += 1
+                if tcpt == 0:
+                    compfile.write('O\n'.encode())
+                elif fcpt == 0:
+                    compfile.write('F\n'.encode())
+                else:
+                    storehook = 'O' if tcpt < fcpt else 'F'
+                    compfile.write('{}\n'.format(storehook).encode())
+                    with open(logfile) as logdata:
+                        for line in logdata:
+                            cline = cleanup(line)
+                            if nodata_skip(cline):
+                                continue
+                            if cline[-1] == storehook:
+                                compfile.write('{}\n'.format(cline[:-1]).encode())
+                sys.stdout.write('compressed-of:{},{}\n'.format(tcpt, fcpt))
+            except FileNotFoundError as e:
+                sys.stderr.write('log file {} was not found! -> no data stored'.format(logfile))
+# ----------------------------------------
+class DecompressionReader:
+
+    def __init__(self, logfile):
+        self.source = zipfile.ZipFile(logfile)
+        self.data = self.source.open(COMPRESSED_LOG)
+        self.stored = self.data.readline().strip().decode()
+        self.length = 0
+        self.nextstr = self._next_str()
+
+    def _next_str(self):
+        data = self.data.readline().decode()
+        if data != '':
+            res = int(data)
+            if res % 10000 != res // 10000:
+                self.length += 1
+            return res
+        return None
+
+    @property
+    def nstored(self):
+        if self.stored == 'F':
+            return 'O'
+        if self.stored == 'O':
+            return 'F'
+        return 'U'
+
+    @property
+    def vcount(self):
+        while self.nextstr is not None:
+            self.nextstr = self._next_str()
+        if self.stored == 'F':
+            return self.length
+        elif self.stored == 'O':
+            return 99990000 - self.length
+        return 0
+
+    def close(self):
+        pass
+
+    def __del__(self):
+        self.data.close()
+        self.source.close()
+
+    def __iter__(self):
+        for pinset in range(100000000):
+            if pinset != self.nextstr:
+                yield '{:08}{}\n'.format(pinset, self.nstored)
+            else:
+                yield '{:08}{}\n'.format(pinset, self.stored)
+                self.nextstr = self._next_str()
+# ----------------------------------------
+def decompress(logfile, outfile):
+    reader = DecompressionReader(logfile)
+    with open(outfile, 'w') as output:
+        for line in reader:
+            output.write(line)
+# ----------------------------------------
+def main(args):
+    hook = generate_hook(args.constraint)
+    if args.evaluate:
+        evaluate(hook, args.constraint)
+    elif args.simulate:
+        simulate(hook, args.logfile, args.decompress)
+    elif args.estimate:
+        estimate(hook, args.logfile, args.decompress)
+    elif args.compress:
+        compress(args.logfile, args.output)
+    elif args.decompress:
+        decompress(args.logfile, args.output)
+    elif args.has_data:
+        checkdata(args.logfile)
+    else:
+        sys.stderr.write('nothing to do...')
+# ----------------------------------------
+if __name__ == '__main__':
+    from argparse import ArgumentParser
+    ap = ArgumentParser(description='')
+    ap.add_argument('-c', '--constraint', action='store', default='False', metavar='<expr>',
+                    help='expected vulnerability constraint')
+    ap.add_argument('-e', '--evaluate', action='store_true',
+                    help='only count the number of pins verifying the constraint: do not simulate')
+    ap.add_argument('-s', '--simulate', action='store_true',
+                    help='simulate and compare the number of pins verifying the constraint')
+    ap.add_argument('-t', '--estimate', action='store_true',
+                    help='estimate the number of pins verifying the constraint. use for compressed logs recovery')
+    ap.add_argument('--has-data', action='store_true', help='shell-check if vsimulation has generated data')
+    ap.add_argument('--compress', action='store_true', help='compress <logfile> to <outfile>')
+    ap.add_argument('--decompress', action='store_true',
+                    help='decompress <logfile> to <outfile> or decompress <logfile> for simulation analysis')
+    ap.add_argument('-o', '--output', action='store', default='sim.out', metavar='<outfile>',
+                    help='specify the output file for output generating tasks')
+    ap.add_argument('-l', '--load-log', action='store', default=None, metavar='<logfile>', dest='logfile',
+                    help='<logfile> to use as simulation result')
+    args = ap.parse_args()
+    main(args)
+# ----------------------------------------

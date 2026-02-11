@@ -1,0 +1,18 @@
+Metadata-Version: 2.4
+Name: c2binsec
+Version: 0.1
+Summary: compile c verif problems to binsec tasks
+Home-page: 
+Author: Yanis Sellami
+Author-email: yanis.sellami@cea.fr
+License: None
+Requires-Dist: colorama
+Requires-Dist: tqdm
+Requires-Dist: pycparser
+Requires-Dist: pyyaml
+Requires-Dist: pulseutils @ git+ssh://git@git-dscin.intra.cea.fr/pulse-ia/pulseutils.git
+Dynamic: author
+Dynamic: author-email
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: summary

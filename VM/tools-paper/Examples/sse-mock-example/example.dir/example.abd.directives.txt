@@ -1,0 +1,5 @@
++reach 0x80498a5
+-reach 0x8049875
+cut at 0x8049897
+cut at 0x804987c
+cut at 0x80498ac

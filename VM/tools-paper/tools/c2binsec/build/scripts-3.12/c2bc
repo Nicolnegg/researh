@@ -1,0 +1,109 @@
+#!python
+# ----------------------------------------
+import sys
+# ----------------------------------------
+from c2binsec import CompilationTask, BinsecTask, TaskStatus, AbduceTask
+from c2binsec.ruleset import SVCompRuleSet
+from c2binsec.utils import clog_stack
+# ----------------------------------------
+def log_error_string(stack, stream=sys.stderr, col=True):
+    clog_stack(stream, stack, col)
+# ----------------------------------------
+def method_direct(tasks, args):
+    for task in tasks:
+        task()
+        if task.status in (TaskStatus.Failure, TaskStatus.HardFailure):
+            log_error_string(task.debug_stack)
+            with open(args.report, 'a') as ostr:
+                ostr.write('-'*60)
+                ostr.write('\n')
+                log_error_string(task.debug_stack, stream=ostr, col=False)
+            if not args.skip_failure:
+                raise task.debug_stack[-1]
+# ----------------------------------------
+def method_ninja(tasks, args):
+    ruleset = """# autogen build
+rule cc
+    command = c2bc -i $in
+rule ccctrl
+    command = c2bc -i $in --auto-control-variables
+rule brun
+    command = c2bc -i $in --no-compilation --run-binsec --skip-failure
+rule rrun
+    command = c2bc -i $in --no-compilation --run-robust --skip-failure
+rule arun
+    command = c2bc -i $in --no-compilation --run-abduce --skip-failure
+rule report
+    command = c2ba -i $in -o $out
+rule latex
+    command = pdflatex $in
+"""
+    def prefix2command(prefix):
+        return 'brun' if prefix == '' else 'rrun' if prefix.startswith('robust') else 'arun'
+    with open('build.ninja', 'w') as ostr:
+        ostr.write(ruleset)
+        logs = []
+        for task in tasks:
+            if isinstance(task, CompilationTask):
+                ostr.write('build {} {} {}: {} {}\n'.format(task.files.runner, task.files.rrunner, task.files.arunner,
+                                                            'ccctrl' if args.auto_control_variables else 'cc', task.files.input))
+            elif isinstance(task, BinsecTask):
+                ostr.write('build {}: {} {} | {}\n'.format(task.files.blog, prefix2command(task.runner_prefix), task.files.input, task.files.runner))
+                logs.append(task.files.blog)
+        ostr.write('build report.tex: report {}\n'.format(' '.join(logs)))
+        ostr.write('build report.pdf: latex report.tex\n')
+        ostr.write('default report.pdf\n')
+# ----------------------------------------
+if __name__ == '__main__':
+    from argparse import ArgumentParser
+
+    ap = ArgumentParser(description='')
+
+    g1 = ap.add_argument_group('kernel')
+    g1.add_argument('--report', action='store', default='c2bc.report.log', metavar='<report.log>', help='analysis report (mode=append)')
+    g1.add_argument('--recursion-limit', action='store', default=3000, type=int, metavar='<depth>', help='python recursion limit (for parser)')
+    g1.add_argument('--method', action='store', choices=('direct', 'ninja'), default='direct', metavar='<method>', help='compilation method')
+    g1.add_argument('--auto-control-variables', action='store_true', help='try to autodetect controlled variables')
+
+    g2 = ap.add_argument_group('source')
+    g2.add_argument('-i', '--input-files', action='store', nargs='+', metavar='<input-file>', help='independent input c files')
+
+    g3 = ap.add_argument_group('compilation')
+    g3.add_argument('--no-compilation', action='store_false', dest='compilation', help='do not compile runner')
+    g3.add_argument('--skip-existing', action='store_true', help='skip if runner exists')
+    g3.add_argument('--skip-failure', action='store_true', help='skip if generation fails')
+
+    g4 = ap.add_argument_group('runners')
+    g4.add_argument('--run-binsec', action='store_true', help='run binsec with the resulting config')
+    g4.add_argument('--run-robust', action='store_true', help='run binsec robust with the resulting config')
+    g4.add_argument('--run-abduce', action='store_true', help='run pyabduce with the resulting config')
+    g4.add_argument('--binsec-timeout', action='store', metavar='<seconds>', type=int, default=60, help='binsec runners timeout')
+    g4.add_argument('--runner-timeout', action='store', metavar='<seconds>', type=int, default=60, help='core runners timeout')
+    g4.add_argument('--forward-to-runner', action='append', default=[], type=lambda s : f'--{s}', help='forward option to runners')
+
+    g5 = ap.add_argument_group('output')
+    g5.add_argument('-o', '--output-dir', action='store', metavar='<output-dir>', default=None, help='output super directory')
+    
+    args = ap.parse_args()
+    
+    sys.setrecursionlimit(args.recursion_limit)
+
+    try:
+        tasks = []
+        if args.compilation:
+            tasks.extend([ CompilationTask(ifile, args, SVCompRuleSet()) for ifile in args.input_files ])
+        if args.run_binsec:
+            tasks.extend([ BinsecTask(ifile, args) for ifile in args.input_files ])
+        if args.run_robust:
+            tasks.extend([ BinsecTask(ifile, args, runner_prefix='robust-') for ifile in args.input_files ])
+        if args.run_abduce:
+            tasks.extend([ AbduceTask(ifile, args) for ifile in args.input_files ])
+        if args.method == 'direct':
+            method_direct(tasks, args)
+        elif args.method == 'ninja':
+            method_ninja(tasks, args)
+    except Exception as e:
+        raise e
+    
+    sys.exit(0)
+# ----------------------------------------

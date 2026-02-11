@@ -1,0 +1,27 @@
+version: 1
+AppDir:
+        path: ./AppDir
+        app_info:
+                id: gcc
+                name: gcc
+                version: latest
+                icon: white-square
+                exec: usr/bin/gcc
+                exec_args: $@
+        apt:
+                arch: amd64
+                sources:
+                        - sourceline: 'deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ jammy main restricted universe multiverse'
+                          key_url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x871920D1991BC93C'
+                        - sourceline: 'deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ jammy-updates main restricted universe multiverse'
+                        - sourceline: 'deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ jammy-backports main restricted universe multiverse'
+                        - sourceline: 'deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ jammy-security main restricted universe multiverse'
+                include:
+                        - gcc
+                        - g++
+                        - gcc-multilib
+                        - g++-multilib
+                exclude: []
+AppImage:
+        sign-key: None
+        arch: x86_64

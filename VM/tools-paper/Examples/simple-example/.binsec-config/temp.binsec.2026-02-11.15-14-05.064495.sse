@@ -1,0 +1,15 @@
+starting from <c2bc_main>
+# SSE directives (one per line, e.g. "reach 0x401000", "cut at 0x401234")
+
+esp := 0xfff80000
+@[0x080e3f4c,4] := from_file
+@[0x080e3f48,4] := from_file
+@[0x080e3f40,4] := from_file
+@[0x080e3f3c,4] := from_file
+@[0x080e3f50,4] := from_file
+cut at 0x80498a6
+cut at 0x804988b
+cut at 0x804987c
+reach 0x80498b4 then print model
+at 0x80498f5 assume (@[0x080e3f59,1] = 0x03)
+at 0x80498f5 assume (@[0x080e3f58,1] = @[0x080e3f57,1])

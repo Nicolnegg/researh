@@ -1,0 +1,96 @@
+------------------------------------------------------------
+compiling example.c -> example.dir/example.run.bash
+found func def for __VERIFIER_error
+found func decl for __VERIFIER_error
+found func def for __VERIFIER_nondet_int
+found func decl for __VERIFIER_nondet_int
+found func def for x
+falg func reach_error for deletion
+flag external id 2 for deletion
+found func def for fun
+found func decl for fun
+found func def for a
+found func def for b
+replace funcid main with c2bc_main
+found func def for c2bc_main
+found func decl for c2bc_main
+found func def for a
+found func def for b
+delete external id 2
+add stub dependency c2bc_assert_fail (from reach_error)
+add stub dependency c2bc_abort (from main)
+add stub dependency c2bc_assert_fail (from reach_error)
+add stub dependency c2bc_abort (from main)
+add stub dependency c2bc_assert_fail (from reach_error)
+add stub dependency c2bc_abort (from main)
+run gcc -O1 -static -m32 -no-pie -fno-pic -fno-stack-protector -Werror -Wno-pointer-compare -Wno-aggressive-loop-optimizations -Wno-vla-larger-than -Wno-overflow -Wno-incompatible-pointer-types -Wno-int-conversion -Wno-format-security -o example.dir/example.bin example.dir/example.stub.raw.c example.dir/example.uc.raw.c -lm
+run objdump -D example.dir/example.bin
+trying symbol table supplementation
+run objdump -t example.dir/example.bin
+loading svcomp property file example.yml
+[Errno 2] No such file or directory: 'example.yml'
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash --with-inequalities
+executed in 0.4791700839996338 s
+[33m[1m[warning]:[0m[33m could not recover as many vulnerability models as requested (0 only)[0m
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [0.4184844493865967][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 54, in solve[0m
+[31m[1m[error]  :[0m[31m     self.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 48, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     self.engine.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 97, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     emodel = self.get_example()[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 55, in get_example[0m
+[31m[1m[error]  :[0m[31m     return self.examples.get_any()[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/model.py", line 17, in get_any[0m
+[31m[1m[error]  :[0m[31m     return self.models[0][0m
+[31m[1m[error]  :[0m[31m            ~~~~~~~~~~~^^^[0m
+[31m[1m[error]  :[0m[31m IndexError: list index out of range[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level+unreachable in 0.4791700839996338 seconds')
+

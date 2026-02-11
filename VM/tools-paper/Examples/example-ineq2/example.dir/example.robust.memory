@@ -1,0 +1,6 @@
+
+esp := 0xfff80000
+@[0x080e3f48,4] := from_file
+@[0x080e3f44,4] := from_file
+@[0x080e3f40,4] := from_file
+@[0x080e3f3c,4] := from_file

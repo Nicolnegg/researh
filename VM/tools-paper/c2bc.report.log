@@ -1,0 +1,12 @@
+------------------------------------------------------------
+compiling example.c -> example.dir/example.run.bash
+[Errno 2] No such file or directory: 'example.c'
+
+------------------------------------------------------------
+compiling example.c -> example.dir/example.run.bash
+[Errno 2] No such file or directory: 'example.c'
+
+------------------------------------------------------------
+compiling example.c -> example.dir/example.run.bash
+[Errno 2] No such file or directory: 'example.c'
+

@@ -1,0 +1,5 @@
+colorama
+tqdm
+configparser
+cvc5
+pulseutils @ git+ssh://git@git-dscin.intra.cea.fr/pulse-ia/pulseutils.git

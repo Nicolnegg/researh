@@ -1,0 +1,1783 @@
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash
+executed in 0.44822144508361816 s
+[33m[1m[warning]:[0m[33m could not recover as many vulnerability models as requested (0 only)[0m
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [0.38921022415161133][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 54, in solve[0m
+[31m[1m[error]  :[0m[31m     self.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 48, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     self.engine.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 97, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     emodel = self.get_example()[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 55, in get_example[0m
+[31m[1m[error]  :[0m[31m     return self.examples.get_any()[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/model.py", line 17, in get_any[0m
+[31m[1m[error]  :[0m[31m     return self.models[0][0m
+[31m[1m[error]  :[0m[31m            ~~~~~~~~~~~^^^[0m
+[31m[1m[error]  :[0m[31m IndexError: list index out of range[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level+unreachable in 0.44822144508361816 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash
+executed in 0.44843363761901855 s
+[33m[1m[warning]:[0m[33m could not recover as many vulnerability models as requested (0 only)[0m
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [0.38965702056884766][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 54, in solve[0m
+[31m[1m[error]  :[0m[31m     self.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 48, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     self.engine.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 97, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     emodel = self.get_example()[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 55, in get_example[0m
+[31m[1m[error]  :[0m[31m     return self.examples.get_any()[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/model.py", line 17, in get_any[0m
+[31m[1m[error]  :[0m[31m     return self.models[0][0m
+[31m[1m[error]  :[0m[31m            ~~~~~~~~~~~^^^[0m
+[31m[1m[error]  :[0m[31m IndexError: list index out of range[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level+unreachable in 0.44843363761901855 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash
+executed in 0.4502110481262207 s
+[33m[1m[warning]:[0m[33m could not recover as many vulnerability models as requested (0 only)[0m
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [0.3927462100982666][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 54, in solve[0m
+[31m[1m[error]  :[0m[31m     self.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 48, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     self.engine.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 97, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     emodel = self.get_example()[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 55, in get_example[0m
+[31m[1m[error]  :[0m[31m     return self.examples.get_any()[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/model.py", line 17, in get_any[0m
+[31m[1m[error]  :[0m[31m     return self.models[0][0m
+[31m[1m[error]  :[0m[31m            ~~~~~~~~~~~^^^[0m
+[31m[1m[error]  :[0m[31m IndexError: list index out of range[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level+unreachable in 0.4502110481262207 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash
+executed in 0.06721282005310059 s
+[33m[1m[warning]:[0m[33m command failed[0m
+[33m[1m[warning]:[0m[33m could not recover as many vulnerability models as requested (0 only)[0m
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  1[0m
+[32m[result] :[0m       * binsec times:    [][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 54, in solve[0m
+[31m[1m[error]  :[0m[31m     self.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 48, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     self.engine.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 97, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     emodel = self.get_example()[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 55, in get_example[0m
+[31m[1m[error]  :[0m[31m     return self.examples.get_any()[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/model.py", line 17, in get_any[0m
+[31m[1m[error]  :[0m[31m     return self.models[0][0m
+[31m[1m[error]  :[0m[31m            ~~~~~~~~~~~^^^[0m
+[31m[1m[error]  :[0m[31m IndexError: list index out of range[0m
+
+(TaskException(...), '[abduce-binsec:run] binsec-failure+nzr+top-level+unreachable in 0.06721282005310059 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash
+executed in 0.05628252029418945 s
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 52, in solve[0m
+[31m[1m[error]  :[0m[31m     self.get_initital_examples()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 39, in get_initital_examples[0m
+[31m[1m[error]  :[0m[31m     vmodel = self.get_vulnerability_model(self.engine.examples)[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 34, in get_vulnerability_model[0m
+[31m[1m[error]  :[0m[31m     return self.checkers.check_vulnerability([], vset)[1][0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 428, in check_vulnerability[0m
+[31m[1m[error]  :[0m[31m     return self._check_dgoal_reachable_util(candidate, reject, complete)[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 436, in _check_dgoal_reachable_util[0m
+[31m[1m[error]  :[0m[31m     parser = self._run_binsec_command(candidate, directives)[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 482, in _run_binsec_command[0m
+[31m[1m[error]  :[0m[31m     rc, to, out, err = execute_command(command, self.log, timeout=self.args.binsec_timeout)[0m
+[31m[1m[error]  :[0m[31m                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 140, in execute_command[0m
+[31m[1m[error]  :[0m[31m     proc = Popen(cmd, stdout=PIPE, stderr=STDOUT, stdin=(PIPE if stdin is not None else None))[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__[0m
+[31m[1m[error]  :[0m[31m     self._execute_child(args, executable, preexec_fn, close_fds,[0m
+[31m[1m[error]  :[0m[31m   File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child[0m
+[31m[1m[error]  :[0m[31m     raise child_exception_type(errno_num, err_msg, err_filename)[0m
+[31m[1m[error]  :[0m[31m FileNotFoundError: [Errno 2] No such file or directory: 'binsec'[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level in 0.05628252029418945 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash
+executed in 0.46900057792663574 s
+[33m[1m[warning]:[0m[33m could not recover as many vulnerability models as requested (0 only)[0m
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [0.41127443313598633][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 54, in solve[0m
+[31m[1m[error]  :[0m[31m     self.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 48, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     self.engine.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 97, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     emodel = self.get_example()[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 55, in get_example[0m
+[31m[1m[error]  :[0m[31m     return self.examples.get_any()[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/model.py", line 17, in get_any[0m
+[31m[1m[error]  :[0m[31m     return self.models[0][0m
+[31m[1m[error]  :[0m[31m            ~~~~~~~~~~~^^^[0m
+[31m[1m[error]  :[0m[31m IndexError: list index out of range[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level+unreachable in 0.46900057792663574 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash
+executed in 0.06357192993164062 s
+[33m[1m[warning]:[0m[33m command failed[0m
+[33m[1m[warning]:[0m[33m could not recover as many vulnerability models as requested (0 only)[0m
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  1[0m
+[32m[result] :[0m       * binsec times:    [][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 54, in solve[0m
+[31m[1m[error]  :[0m[31m     self.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 48, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     self.engine.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 97, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     emodel = self.get_example()[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 55, in get_example[0m
+[31m[1m[error]  :[0m[31m     return self.examples.get_any()[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/model.py", line 17, in get_any[0m
+[31m[1m[error]  :[0m[31m     return self.models[0][0m
+[31m[1m[error]  :[0m[31m            ~~~~~~~~~~~^^^[0m
+[31m[1m[error]  :[0m[31m IndexError: list index out of range[0m
+
+(TaskException(...), '[abduce-binsec:run] binsec-failure+nzr+top-level+unreachable in 0.06357192993164062 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash
+executed in 0.05906271934509277 s
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 52, in solve[0m
+[31m[1m[error]  :[0m[31m     self.get_initital_examples()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 39, in get_initital_examples[0m
+[31m[1m[error]  :[0m[31m     vmodel = self.get_vulnerability_model(self.engine.examples)[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 34, in get_vulnerability_model[0m
+[31m[1m[error]  :[0m[31m     return self.checkers.check_vulnerability([], vset)[1][0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 428, in check_vulnerability[0m
+[31m[1m[error]  :[0m[31m     return self._check_dgoal_reachable_util(candidate, reject, complete)[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 436, in _check_dgoal_reachable_util[0m
+[31m[1m[error]  :[0m[31m     parser = self._run_binsec_command(candidate, directives)[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 482, in _run_binsec_command[0m
+[31m[1m[error]  :[0m[31m     rc, to, out, err = execute_command(command, self.log, timeout=self.args.binsec_timeout)[0m
+[31m[1m[error]  :[0m[31m                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 140, in execute_command[0m
+[31m[1m[error]  :[0m[31m     proc = Popen(cmd, stdout=PIPE, stderr=STDOUT, stdin=(PIPE if stdin is not None else None))[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__[0m
+[31m[1m[error]  :[0m[31m     self._execute_child(args, executable, preexec_fn, close_fds,[0m
+[31m[1m[error]  :[0m[31m   File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child[0m
+[31m[1m[error]  :[0m[31m     raise child_exception_type(errno_num, err_msg, err_filename)[0m
+[31m[1m[error]  :[0m[31m FileNotFoundError: [Errno 2] No such file or directory: 'binsec'[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level in 0.05906271934509277 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash
+executed in 0.05719637870788574 s
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 52, in solve[0m
+[31m[1m[error]  :[0m[31m     self.get_initital_examples()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 39, in get_initital_examples[0m
+[31m[1m[error]  :[0m[31m     vmodel = self.get_vulnerability_model(self.engine.examples)[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 34, in get_vulnerability_model[0m
+[31m[1m[error]  :[0m[31m     return self.checkers.check_vulnerability([], vset)[1][0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 428, in check_vulnerability[0m
+[31m[1m[error]  :[0m[31m     return self._check_dgoal_reachable_util(candidate, reject, complete)[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 436, in _check_dgoal_reachable_util[0m
+[31m[1m[error]  :[0m[31m     parser = self._run_binsec_command(candidate, directives)[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 482, in _run_binsec_command[0m
+[31m[1m[error]  :[0m[31m     rc, to, out, err = execute_command(command, self.log, timeout=self.args.binsec_timeout)[0m
+[31m[1m[error]  :[0m[31m                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 140, in execute_command[0m
+[31m[1m[error]  :[0m[31m     proc = Popen(cmd, stdout=PIPE, stderr=STDOUT, stdin=(PIPE if stdin is not None else None))[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__[0m
+[31m[1m[error]  :[0m[31m     self._execute_child(args, executable, preexec_fn, close_fds,[0m
+[31m[1m[error]  :[0m[31m   File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child[0m
+[31m[1m[error]  :[0m[31m     raise child_exception_type(errno_num, err_msg, err_filename)[0m
+[31m[1m[error]  :[0m[31m FileNotFoundError: [Errno 2] No such file or directory: 'binsec'[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level in 0.05719637870788574 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash
+executed in 0.4702446460723877 s
+[33m[1m[warning]:[0m[33m could not recover as many vulnerability models as requested (0 only)[0m
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [0.41297388076782227][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 54, in solve[0m
+[31m[1m[error]  :[0m[31m     self.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 48, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     self.engine.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 97, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     emodel = self.get_example()[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 55, in get_example[0m
+[31m[1m[error]  :[0m[31m     return self.examples.get_any()[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/model.py", line 17, in get_any[0m
+[31m[1m[error]  :[0m[31m     return self.models[0][0m
+[31m[1m[error]  :[0m[31m            ~~~~~~~~~~~^^^[0m
+[31m[1m[error]  :[0m[31m IndexError: list index out of range[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level+unreachable in 0.4702446460723877 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash
+executed in 0.48813915252685547 s
+[33m[1m[warning]:[0m[33m could not recover as many vulnerability models as requested (0 only)[0m
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [0.4312777519226074][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 54, in solve[0m
+[31m[1m[error]  :[0m[31m     self.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 48, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     self.engine.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 97, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     emodel = self.get_example()[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 55, in get_example[0m
+[31m[1m[error]  :[0m[31m     return self.examples.get_any()[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/model.py", line 17, in get_any[0m
+[31m[1m[error]  :[0m[31m     return self.models[0][0m
+[31m[1m[error]  :[0m[31m            ~~~~~~~~~~~^^^[0m
+[31m[1m[error]  :[0m[31m IndexError: list index out of range[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level+unreachable in 0.48813915252685547 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash
+executed in 0.11259198188781738 s
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 52, in solve[0m
+[31m[1m[error]  :[0m[31m     self.get_initital_examples()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 39, in get_initital_examples[0m
+[31m[1m[error]  :[0m[31m     vmodel = self.get_vulnerability_model(self.engine.examples)[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 34, in get_vulnerability_model[0m
+[31m[1m[error]  :[0m[31m     return self.checkers.check_vulnerability([], vset)[1][0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 428, in check_vulnerability[0m
+[31m[1m[error]  :[0m[31m     return self._check_dgoal_reachable_util(candidate, reject, complete)[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 436, in _check_dgoal_reachable_util[0m
+[31m[1m[error]  :[0m[31m     parser = self._run_binsec_command(candidate, directives)[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 482, in _run_binsec_command[0m
+[31m[1m[error]  :[0m[31m     rc, to, out, err = execute_command(command, self.log, timeout=self.args.binsec_timeout)[0m
+[31m[1m[error]  :[0m[31m                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 140, in execute_command[0m
+[31m[1m[error]  :[0m[31m     proc = Popen(cmd, stdout=PIPE, stderr=STDOUT, stdin=(PIPE if stdin is not None else None))[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__[0m
+[31m[1m[error]  :[0m[31m     self._execute_child(args, executable, preexec_fn, close_fds,[0m
+[31m[1m[error]  :[0m[31m   File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child[0m
+[31m[1m[error]  :[0m[31m     raise child_exception_type(errno_num, err_msg, err_filename)[0m
+[31m[1m[error]  :[0m[31m FileNotFoundError: [Errno 2] No such file or directory: 'binsec'[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level in 0.11259198188781738 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash
+executed in 1.2263927459716797 s
+[33m[1m[warning]:[0m[33m could not recover as many vulnerability models as requested (0 only)[0m
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [1.1254823207855225][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 54, in solve[0m
+[31m[1m[error]  :[0m[31m     self.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 48, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     self.engine.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 97, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     emodel = self.get_example()[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 55, in get_example[0m
+[31m[1m[error]  :[0m[31m     return self.examples.get_any()[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/model.py", line 17, in get_any[0m
+[31m[1m[error]  :[0m[31m     return self.models[0][0m
+[31m[1m[error]  :[0m[31m            ~~~~~~~~~~~^^^[0m
+[31m[1m[error]  :[0m[31m IndexError: list index out of range[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level+unreachable in 1.2263927459716797 seconds')
+
+------------------------------------------------------------
+compiling example.c -> example.dir/example.run.bash
+example.dir/example.temp.raw.c:17:13: before: volatile
+
+------------------------------------------------------------
+compiling example.c -> example.dir/example.run.bash
+found func decl for __VERIFIER_error
+found func decl for __VERIFIER_nondet_int
+falg func reach_error for deletion
+flag external id 2 for deletion
+found func def for fun
+found func decl for fun
+found func def for a
+found func def for b
+replace funcid main with c2bc_main
+found func def for c2bc_main
+found func decl for c2bc_main
+found func def for a
+found func def for b
+delete external id 2
+add stub dependency c2bc_abort (from main)
+add stub dependency c2bc_assert_fail (from reach_error)
+add stub dependency c2bc_abort (from main)
+add stub dependency c2bc_abort (from __VERIFIER_nondet_int)
+add stub dependency c2bc_assert_fail (from reach_error)
+missing stub for function '__VERIFIER_error'
+'__VERIFIER_error'
+
+------------------------------------------------------------
+compiling example.c -> example.dir/example.run.bash
+found func decl for __VERIFIER_error
+found func decl for __VERIFIER_nondet_int
+falg func reach_error for deletion
+flag external id 2 for deletion
+found func def for fun
+found func decl for fun
+found func def for a
+found func def for b
+replace funcid main with c2bc_main
+found func def for c2bc_main
+found func decl for c2bc_main
+found func def for a
+found func def for b
+delete external id 2
+add stub dependency c2bc_abort (from main)
+add stub dependency c2bc_assert_fail (from reach_error)
+add stub dependency c2bc_abort (from __VERIFIER_nondet_int)
+add stub dependency c2bc_abort (from main)
+add stub dependency c2bc_assert_fail (from reach_error)
+missing stub for function '__VERIFIER_error'
+'__VERIFIER_error'
+
+------------------------------------------------------------
+compiling example.c -> example.dir/example.run.bash
+found func decl for __VERIFIER_error
+found func decl for __VERIFIER_nondet_int
+falg func reach_error for deletion
+flag external id 2 for deletion
+found func def for fun
+found func decl for fun
+found func def for a
+found func def for b
+replace funcid main with c2bc_main
+found func def for c2bc_main
+found func decl for c2bc_main
+found func def for a
+found func def for b
+delete external id 2
+add stub dependency c2bc_assert_fail (from reach_error)
+add stub dependency c2bc_abort (from main)
+add stub dependency c2bc_abort (from __VERIFIER_nondet_int)
+add stub dependency c2bc_assert_fail (from reach_error)
+add stub dependency c2bc_abort (from main)
+missing stub for function '__VERIFIER_error'
+'__VERIFIER_error'
+
+------------------------------------------------------------
+compiling ejemplo.c -> ejemplo.dir/ejemplo.run.bash
+[Errno 2] No such file or directory: 'ejemplo.c'
+
+------------------------------------------------------------
+compiling ejemplo.c -> ejemplo.dir/ejemplo.run.bash
+[Errno 2] No such file or directory: 'ejemplo.c'
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash
+executed in 0.4636216163635254 s
+[33m[1m[warning]:[0m[33m could not recover as many vulnerability models as requested (0 only)[0m
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [0.40607142448425293][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 54, in solve[0m
+[31m[1m[error]  :[0m[31m     self.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 48, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     self.engine.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 97, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     emodel = self.get_example()[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 55, in get_example[0m
+[31m[1m[error]  :[0m[31m     return self.examples.get_any()[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/model.py", line 17, in get_any[0m
+[31m[1m[error]  :[0m[31m     return self.models[0][0m
+[31m[1m[error]  :[0m[31m            ~~~~~~~~~~~^^^[0m
+[31m[1m[error]  :[0m[31m IndexError: list index out of range[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level+unreachable in 0.4636216163635254 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash
+executed in 0.45429253578186035 s
+[33m[1m[warning]:[0m[33m could not recover as many vulnerability models as requested (0 only)[0m
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [0.39795470237731934][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 54, in solve[0m
+[31m[1m[error]  :[0m[31m     self.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 48, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     self.engine.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 97, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     emodel = self.get_example()[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 55, in get_example[0m
+[31m[1m[error]  :[0m[31m     return self.examples.get_any()[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/model.py", line 17, in get_any[0m
+[31m[1m[error]  :[0m[31m     return self.models[0][0m
+[31m[1m[error]  :[0m[31m            ~~~~~~~~~~~^^^[0m
+[31m[1m[error]  :[0m[31m IndexError: list index out of range[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level+unreachable in 0.45429253578186035 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash
+executed in 0.4561197757720947 s
+[33m[1m[warning]:[0m[33m could not recover as many vulnerability models as requested (0 only)[0m
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [0.3996720314025879][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 54, in solve[0m
+[31m[1m[error]  :[0m[31m     self.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 48, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     self.engine.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 97, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     emodel = self.get_example()[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 55, in get_example[0m
+[31m[1m[error]  :[0m[31m     return self.examples.get_any()[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/model.py", line 17, in get_any[0m
+[31m[1m[error]  :[0m[31m     return self.models[0][0m
+[31m[1m[error]  :[0m[31m            ~~~~~~~~~~~^^^[0m
+[31m[1m[error]  :[0m[31m IndexError: list index out of range[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level+unreachable in 0.4561197757720947 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash
+executed in 0.450469970703125 s
+[33m[1m[warning]:[0m[33m could not recover as many vulnerability models as requested (0 only)[0m
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [0.39107275009155273][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 54, in solve[0m
+[31m[1m[error]  :[0m[31m     self.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 48, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     self.engine.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 97, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     emodel = self.get_example()[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 55, in get_example[0m
+[31m[1m[error]  :[0m[31m     return self.examples.get_any()[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/model.py", line 17, in get_any[0m
+[31m[1m[error]  :[0m[31m     return self.models[0][0m
+[31m[1m[error]  :[0m[31m            ~~~~~~~~~~~^^^[0m
+[31m[1m[error]  :[0m[31m IndexError: list index out of range[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level+unreachable in 0.450469970703125 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash
+executed in 0.472553014755249 s
+[33m[1m[warning]:[0m[33m could not recover as many vulnerability models as requested (0 only)[0m
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [0.41350507736206055][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 54, in solve[0m
+[31m[1m[error]  :[0m[31m     self.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 48, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     self.engine.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 97, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     emodel = self.get_example()[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 55, in get_example[0m
+[31m[1m[error]  :[0m[31m     return self.examples.get_any()[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/model.py", line 17, in get_any[0m
+[31m[1m[error]  :[0m[31m     return self.models[0][0m
+[31m[1m[error]  :[0m[31m            ~~~~~~~~~~~^^^[0m
+[31m[1m[error]  :[0m[31m IndexError: list index out of range[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level+unreachable in 0.472553014755249 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash --with-inequalities
+executed in 0.06061148643493652 s
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 52, in solve[0m
+[31m[1m[error]  :[0m[31m     self.get_initital_examples()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 39, in get_initital_examples[0m
+[31m[1m[error]  :[0m[31m     vmodel = self.get_vulnerability_model(self.engine.examples)[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 34, in get_vulnerability_model[0m
+[31m[1m[error]  :[0m[31m     return self.checkers.check_vulnerability([], vset)[1][0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 428, in check_vulnerability[0m
+[31m[1m[error]  :[0m[31m     return self._check_dgoal_reachable_util(candidate, reject, complete)[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 436, in _check_dgoal_reachable_util[0m
+[31m[1m[error]  :[0m[31m     parser = self._run_binsec_command(candidate, directives)[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 482, in _run_binsec_command[0m
+[31m[1m[error]  :[0m[31m     rc, to, out, err = execute_command(command, self.log, timeout=self.args.binsec_timeout)[0m
+[31m[1m[error]  :[0m[31m                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 140, in execute_command[0m
+[31m[1m[error]  :[0m[31m     proc = Popen(cmd, stdout=PIPE, stderr=STDOUT, stdin=(PIPE if stdin is not None else None))[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__[0m
+[31m[1m[error]  :[0m[31m     self._execute_child(args, executable, preexec_fn, close_fds,[0m
+[31m[1m[error]  :[0m[31m   File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child[0m
+[31m[1m[error]  :[0m[31m     raise child_exception_type(errno_num, err_msg, err_filename)[0m
+[31m[1m[error]  :[0m[31m FileNotFoundError: [Errno 2] No such file or directory: 'binsec'[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level in 0.06061148643493652 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash --with-inequalities
+executed in 0.4499995708465576 s
+[33m[1m[warning]:[0m[33m could not recover as many vulnerability models as requested (0 only)[0m
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [0.3894188404083252][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 54, in solve[0m
+[31m[1m[error]  :[0m[31m     self.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 48, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     self.engine.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 97, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     emodel = self.get_example()[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 55, in get_example[0m
+[31m[1m[error]  :[0m[31m     return self.examples.get_any()[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/model.py", line 17, in get_any[0m
+[31m[1m[error]  :[0m[31m     return self.models[0][0m
+[31m[1m[error]  :[0m[31m            ~~~~~~~~~~~^^^[0m
+[31m[1m[error]  :[0m[31m IndexError: list index out of range[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level+unreachable in 0.4499995708465576 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash
+executed in 0.06273579597473145 s
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 52, in solve[0m
+[31m[1m[error]  :[0m[31m     self.get_initital_examples()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 39, in get_initital_examples[0m
+[31m[1m[error]  :[0m[31m     vmodel = self.get_vulnerability_model(self.engine.examples)[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 34, in get_vulnerability_model[0m
+[31m[1m[error]  :[0m[31m     return self.checkers.check_vulnerability([], vset)[1][0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 428, in check_vulnerability[0m
+[31m[1m[error]  :[0m[31m     return self._check_dgoal_reachable_util(candidate, reject, complete)[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 436, in _check_dgoal_reachable_util[0m
+[31m[1m[error]  :[0m[31m     parser = self._run_binsec_command(candidate, directives)[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 482, in _run_binsec_command[0m
+[31m[1m[error]  :[0m[31m     rc, to, out, err = execute_command(command, self.log, timeout=self.args.binsec_timeout)[0m
+[31m[1m[error]  :[0m[31m                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/binsec.py", line 140, in execute_command[0m
+[31m[1m[error]  :[0m[31m     proc = Popen(cmd, stdout=PIPE, stderr=STDOUT, stdin=(PIPE if stdin is not None else None))[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__[0m
+[31m[1m[error]  :[0m[31m     self._execute_child(args, executable, preexec_fn, close_fds,[0m
+[31m[1m[error]  :[0m[31m   File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child[0m
+[31m[1m[error]  :[0m[31m     raise child_exception_type(errno_num, err_msg, err_filename)[0m
+[31m[1m[error]  :[0m[31m FileNotFoundError: [Errno 2] No such file or directory: 'binsec'[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level in 0.06273579597473145 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash --with-inequalities
+executed in 0.4488799571990967 s
+[33m[1m[warning]:[0m[33m could not recover as many vulnerability models as requested (0 only)[0m
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [0.3882462978363037][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 54, in solve[0m
+[31m[1m[error]  :[0m[31m     self.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 48, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     self.engine.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 97, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     emodel = self.get_example()[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 55, in get_example[0m
+[31m[1m[error]  :[0m[31m     return self.examples.get_any()[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/model.py", line 17, in get_any[0m
+[31m[1m[error]  :[0m[31m     return self.models[0][0m
+[31m[1m[error]  :[0m[31m            ~~~~~~~~~~~^^^[0m
+[31m[1m[error]  :[0m[31m IndexError: list index out of range[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level+unreachable in 0.4488799571990967 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash --with-inequalities
+executed in 0.5003938674926758 s
+[33m[1m[warning]:[0m[33m could not recover as many vulnerability models as requested (0 only)[0m
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [0.43838000297546387][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 54, in solve[0m
+[31m[1m[error]  :[0m[31m     self.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 48, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     self.engine.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 97, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     emodel = self.get_example()[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 55, in get_example[0m
+[31m[1m[error]  :[0m[31m     return self.examples.get_any()[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/model.py", line 17, in get_any[0m
+[31m[1m[error]  :[0m[31m     return self.models[0][0m
+[31m[1m[error]  :[0m[31m            ~~~~~~~~~~~^^^[0m
+[31m[1m[error]  :[0m[31m IndexError: list index out of range[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level+unreachable in 0.5003938674926758 seconds')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash --with-inequalities
+executed in 0.4903545379638672 s
+[33m[1m[warning]:[0m[33m could not recover as many vulnerability models as requested (0 only)[0m
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [0.4286918640136719][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 54, in solve[0m
+[31m[1m[error]  :[0m[31m     self.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 48, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     self.engine.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 97, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     emodel = self.get_example()[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 55, in get_example[0m
+[31m[1m[error]  :[0m[31m     return self.examples.get_any()[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/model.py", line 17, in get_any[0m
+[31m[1m[error]  :[0m[31m     return self.models[0][0m
+[31m[1m[error]  :[0m[31m            ~~~~~~~~~~~^^^[0m
+[31m[1m[error]  :[0m[31m IndexError: list index out of range[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level+unreachable in 0.4903545379638672 seconds')
+
+------------------------------------------------------------
+compiling example.c -> example.dir/example.run.bash
+found func def for __VERIFIER_error
+found func decl for __VERIFIER_error
+found func def for __VERIFIER_nondet_int
+found func decl for __VERIFIER_nondet_int
+found func def for v
+falg func reach_error for deletion
+flag external id 4 for deletion
+found func def for fun
+found func decl for fun
+found func def for a
+found func def for b
+found func def for c2bc_main
+found func decl for c2bc_main
+found func def for a
+found func def for b
+replace funcid main with c2bc_main
+found func def for c2bc_main
+found func decl for c2bc_main
+delete external id 4
+add stub dependency c2bc_assert_fail (from reach_error)
+add stub dependency c2bc_abort (from main)
+add stub dependency c2bc_assert_fail (from reach_error)
+add stub dependency c2bc_abort (from main)
+add stub dependency c2bc_assert_fail (from reach_error)
+add stub dependency c2bc_abort (from main)
+run gcc -O1 -static -m32 -no-pie -fno-pic -fno-stack-protector -Werror -Wno-pointer-compare -Wno-aggressive-loop-optimizations -Wno-vla-larger-than -Wno-overflow -Wno-incompatible-pointer-types -Wno-int-conversion -Wno-format-security -o example.dir/example.bin example.dir/example.stub.raw.c example.dir/example.uc.raw.c -lm
+example.dir/example.uc.raw.c:33:5: error: redefinition of ‘c2bc_main’
+   33 | int c2bc_main(void)
+      |     ^~~~~~~~~
+example.dir/example.uc.raw.c:25:5: note: previous definition of ‘c2bc_main’ with type ‘int(void)’
+   25 | int c2bc_main(void)
+      |     ^~~~~~~~~
+
+(TaskException(...), 'compilation failed')
+
+------------------------------------------------------------
+run example.dir/example.abduce-run.bash --with-inequalities
+executed in 0.5302271842956543 s
+[33m[1m[warning]:[0m[33m could not recover as many vulnerability models as requested (0 only)[0m
+[32m[result] :[0m execution statistics:[0m
+[32m[result] :[0m   core counters:[0m
+[32m[result] :[0m     number of solutions:          0[0m
+[32m[result] :[0m     number of unsolutions:        0[0m
+[32m[result] :[0m     number of examples:           0[0m
+[32m[result] :[0m     number of counter-examples:   0[0m
+[32m[result] :[0m     number of necessary literals: 0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   oracles:[0m
+[32m[result] :[0m     binsec:[0m
+[32m[result] :[0m       * binsec calls:    1[0m
+[32m[result] :[0m       * binsec timeouts: 0[0m
+[32m[result] :[0m       * binsec crashes:  0[0m
+[32m[result] :[0m       * binsec times:    [0.45809268951416016][0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   candidates generation:[0m
+[32m[result] :[0m     number of restarts:     0[0m
+[32m[result] :[0m     number of variables:    0[0m
+[32m[result] :[0m     number of literals:     0[0m
+[32m[result] :[0m     evaluated candidates:   0[0m
+[32m[result] :[0m     considered candidates:  0[0m
+[32m[result] :[0m     pruned candidates:      0[0m
+[32m[result] :[0m [0m
+[32m[result] :[0m   timers:[0m
+[32m[result] :[0m     solution:[0m
+[32m[result] :[0m       * first solution: 0[0m
+[32m[result] :[0m       * last  solution: 0[0m
+[32m[result] :[0m     unsolution:[0m
+[32m[result] :[0m       * first unsolution: 0[0m
+[32m[result] :[0m       * last  unsolution: 0[0m
+[32m[result] :[0m     counterex:[0m
+[32m[result] :[0m       * first counterex: 0[0m
+[32m[result] :[0m       * last  counterex: 0[0m
+[32m[result] :[0m     example:[0m
+[32m[result] :[0m       * first example: 0[0m
+[32m[result] :[0m       * last  example: 0[0m
+[32m[result] :[0m     necessaryc:[0m
+[32m[result] :[0m       * first necessaryc: 0[0m
+[32m[result] :[0m       * last  necessaryc: 0[0m
+[35m[1m[fatal]  :[0m[35m top-level exception recovery[0m
+[31m[1m[error]  :[0m[31m Traceback (most recent call last):[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/bin/pyabduce", line 28, in main[0m
+[31m[1m[error]  :[0m[31m     solver.solve()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 54, in solve[0m
+[31m[1m[error]  :[0m[31m     self.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/solver.py", line 48, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     self.engine.recover_necessary_constants()[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 97, in recover_necessary_constants[0m
+[31m[1m[error]  :[0m[31m     emodel = self.get_example()[0m
+[31m[1m[error]  :[0m[31m              ^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/engine.py", line 55, in get_example[0m
+[31m[1m[error]  :[0m[31m     return self.examples.get_any()[0m
+[31m[1m[error]  :[0m[31m            ^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m[error]  :[0m[31m   File "/home/nicol/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/venv/lib/python3.12/site-packages/pyabduction/model.py", line 17, in get_any[0m
+[31m[1m[error]  :[0m[31m     return self.models[0][0m
+[31m[1m[error]  :[0m[31m            ~~~~~~~~~~~^^^[0m
+[31m[1m[error]  :[0m[31m IndexError: list index out of range[0m
+
+(TaskException(...), '[abduce-binsec:run] nzr+top-level+unreachable in 0.5302271842956543 seconds')
+

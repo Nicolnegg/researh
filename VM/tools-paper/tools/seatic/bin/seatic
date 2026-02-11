@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+# ----------------------------------------
+import sys
+# ---------------------------------------
+from seatic import SeaticRunner, SeaticMergedRunner, SeaticShell, ConfigGeneratorRunner, SeaticAutoRunner, SeaticAction, SeaticMetaRunner, ToolGeneratorRunner, ToolCheckerRunner, PRINTING_PARADIGMS
+# ---------------------------------------
+# ---------------------------------------
+RUNNERS = {
+    'analyze': SeaticRunner,
+    'merge+analyze': SeaticMergedRunner,
+    'shell': SeaticShell,
+    'configure': ConfigGeneratorRunner,
+    'configure+analyze': SeaticAutoRunner,
+    'disasm': lambda args: SeaticRunner(args, actions=(SeaticAction.Prepare,)),
+    'configure+disasm': lambda args: SeaticAutoRunner(args, actions=(SeaticAction.Prepare,)),
+    'reexport': lambda args: SeaticRunner(args, actions=(SeaticAction.ExportResults,)),
+    'meta': SeaticMetaRunner,
+    'check-tools': ToolCheckerRunner,
+    'generate-tools': ToolGeneratorRunner,
+}
+# ---------------------------------------
+def main(args):
+    core = RUNNERS[args.run](args)
+    core.run()
+# ----------------------------------------
+# ----------------------------------------
+if __name__ == '__main__':
+    from argparse import ArgumentParser
+
+    ap = ArgumentParser(description='')
+
+    g1 = ap.add_argument_group('Core options')
+    g1.add_argument('-r', '--run', action='store', choices=RUNNERS.keys(), default='analyze', metavar='<runner>',
+                    help='select the seatic runner to execute. available runners are {}. default runner is analyze'.format(', '.join(RUNNERS.keys())))
+    g1.add_argument('--context-prefix', action='store', default=None, metavar='<dirname>', help='prepend all context locations with <dirname>')
+    g1.add_argument('--parallel', action='store_true', help='run seatic tasks in parallel')
+    g1.add_argument('--parallel-workers', action='store', metavar='<int>', type=int, default=None,
+                    help='max number of parallel tasks')
+    g1.add_argument('--configurator', action='store', metavar='<configurator>',
+                    help='select the configurator to use. mandatory when running the configure runner')
+    g1.add_argument('--no-tempdir-cleanup', action='store_false', dest='tempdir_cleanup',
+                    help='do not cleanup the content of TEMPDIR at execution end (not recommended if using binsec appimage)')
+
+    g2 = ap.add_argument_group('Input options')
+    g2.add_argument('-c', '--context-file', action='store', default=None, metavar='<context-file>',
+                    help='select a seatic context file to load')
+    g2.add_argument('-b', '--binary-file', action='store', default=None, metavar='<binary-file>',
+                    help='select a binary file to load. required for automatic configuration')
+    g2.add_argument('-o', '--output-dir', action='store', default='.', metavar='<directory>',
+                    help='select the output directory')
+    g2.add_argument('-m', '--meta-context', action='store', nargs='+', metavar='<context-file>', default=[],
+                    help='select a context-file for meta-analysis, can be specified multiple times')
+    g2.add_argument('--override-context', action='append', default=[], metavar=('<context-variable>', '<value>'), nargs=2,
+                    help='override a context variable')
+
+    g3 = ap.add_argument_group('Docker options')
+    g3.add_argument('--docker-keyfile', action='store', default='ssh_keys', metavar='<ssh-keyfile>',
+                    help='select the ssh keyfile required to access git repositories when building')
+    g3.add_argument('--docker-hostfile', action='store', default='ssh_host', metavar='<ssh-hostfile>',
+                    help='select the ssh hostfile recognizing accesses to the seatic tools git servers')
+    g3.add_argument('--docker-buildpath', action='store', default='.docker', metavar='<directory>',
+                    help='when generating tools, select the local directory in which they will be built. default is .docker')
+    g3.add_argument('--skip-container', action='append', default=[], metavar='<container-id>',
+                    help='do not build given container and discard further usages')
+
+    g4 = ap.add_argument_group('Analysis options')
+    g4.add_argument('--no-simulation', action='store_false', dest='simulation', help='do not perform nor register fistic qemu simulation')
+    g4.add_argument('--no-binsec', action='store_false', dest='binsec', help='do not perform nor register binsec analysis')
+    g4.add_argument('--no-robust', action='store_false', dest='robust', help='do not perform nor register binsec robust analysis')
+    g4.add_argument('--no-abduction', action='store_false', dest='abduction', help='do not perform nor register abductive analysis')
+    g4.add_argument('--no-vsimulation', action='store_false', dest='vsimulation', help='do not perform nor register vsimulation on abducted constraints')
+    g4.add_argument('--logged-vsimulation', action='store_true', help='recover vsimulation from logfiles')
+    g4.add_argument('--prepare-vsimulation', action='store_true', help='generates scripts for external vsimulation of mutants')
+    g4.add_argument('--vsimulation-list', action='store', metavar='<list-file>', default=None, help='restricted vsimulation list (preparation only)')
+    g4.add_argument('--vsimulation-estimate', action='store_true', help='estimate simulation results only')
+    g4.add_argument('--only-following-mutants', action='store', metavar='<;-separated-mutant-list>', default=[], type=lambda s: s.split(';'),
+                    help='only perform analysis on the given mutants')
+    g4.add_argument('--enforce-abducer-propagation', action='store_true', help='enforce config propagation to abducer')
+    g4.add_argument('--no-abduction-counterex', action='store_true', help='do not use counterexamples in abduction runs')
+    g4.add_argument('--no-abduction-necessaryc', action='store_true', help='do not use necessary constraints in abduction runs')
+    g4.add_argument('--no-abduction-ordering', action='store_true', help='do not use literal ordering in abduction runs')
+    g4.add_argument('--with-abduction-inequalities', action='store_true', help='generate inequality constraints with abduction')
+
+    g5 = ap.add_argument_group('Binsec options')
+    g5.add_argument('--binsec-from-robust', action='store_true', help='use the robust executable of binsec for running classic binsec')
+    g5.add_argument('--binsec-smt-logging', action='store_true', dest='logsmt', help='ask binsec to log smtlib predicates in files')
+
+    g6 = ap.add_argument_group('Output options')
+    g6.add_argument('--no-plots', action='store_false', dest='plots', help='do not generate nor export svg plots analysis results')
+    g6.add_argument('--no-single-plots', action='store_false', dest='single_plots', help='do not generate nor export svg plots analysis results of meta contexts')
+    g6.add_argument('--no-ranged-severity', action='store_false', dest='ranged_severity', help='distribute severity results at exact value, not in range')
+    g6.add_argument('--no-cumulative-severity', action='store_false', dest='cumulative_severity', help='do not display cumulative severity, only severity classes')
+    g6.add_argument('--auto-severity-classes', action='store_true', help='automatically build severity classes')
+    g6.add_argument('--plot-titles', action='store_true', help='add title to plots (not recommended for paper graphs exports)')
+    g6.add_argument('--meta-script', action='store', default=['execute_all'], type=lambda s: s.split(';'), help='scripts which meta analyses should be run')
+
+    g7 = ap.add_argument_group('Logging options')
+    g7.add_argument('-p', '--result-printing-paradigm', dest='rpp-bdr', action='store', choices=PRINTING_PARADIGMS, default='log',
+                    help='paradigm to use to print results and result tables')
+    g7.add_argument('-d', '--debug', action='store_true', help='print debug messages during execution')
+    g7.add_argument('--no-color', action='store_false', dest='color', help='do not color output')
+    g7.add_argument('--no-progress', action='store_false', dest='progress', help='do not show progress bars')
+    g7.add_argument('--task-logging', action='store_true', help='log command tasks outputs')
+
+    g8 = ap.add_argument_group('Configration options')
+    g8.add_argument('--no-controlled-memory', action='store_true', help='use memory template without controlled variables if available')
+
+    args = ap.parse_args()
+
+    try:
+        main(args)
+    except Exception as e:
+        #TODO Log
+        raise e
+        sys.exit(1)
+    sys.exit(0)

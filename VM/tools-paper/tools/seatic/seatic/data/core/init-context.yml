@@ -1,0 +1,83 @@
+type:
+        prefixable:
+                - config.abducer-binsec-config
+                - config.abducer-binsec-memory
+                - config.abducer-directives
+                - config.abducer-literals
+                - config.binsec
+                - config.binsec-memory
+                - config.binsec-robust
+                - config.binsec-robust-memory
+                - config.vsimulation-qemu-script
+                - config.vsimulation-script
+                - config.vsimulation-wrap-script
+                - environ.TMPDIR
+                - log.abducer
+                - log.assembly
+                - log.binsec
+                - log.binsec-robust
+                - log.binsec-robust-smt
+                - log.binsec-smt
+                - log.context
+                - log.fistic
+                - log.severity
+                - log.vsimulation
+                - mutation.outdir
+                - source
+                - target.assembly
+                - target.assembly-headers
+                - target.result
+                - target.result-svg
+                - target.vsimulation-cmakefile
+                - target.vsimulation-locals
+tool:
+        fistic: fistic-core
+        fistic-eval: fistic-evaluate
+        arm-objdump: arm-none-eabi-objdump
+        binsec: binsec
+        binsec-robust: binsec
+        abducer: pyabduce
+        qemu: qemu-system-arm
+source: source.bin
+environ:
+        TMPDIR: .tmp
+mutation:
+        targets: []
+        cpt: 1
+        outdir: faulted.bin
+config:
+        binsec: binsec.conf
+        binsec-memory: binsec.mem
+        binsec-robust: binsec-robust.conf
+        binsec-robust-memory: binsec-robust.mem
+target:
+        vsimulation-prefix: x
+        vsimulation-logs: /srv/sandbox/ys267386/simulation-logs
+        vsimulation-locals: vsimulation.local.log
+        vsimulation-cmakefile: CMakeLists.txt
+        assembly: source.s
+        assembly-headers: source.s.h
+        result: result.txt
+        result-svg: plots
+log:
+        fistic: fistic.log
+        binsec: binsec.log
+        binsec-smt: binsec.log
+        binsec-robust: robust.log
+        binsec-robust-smt: robust.log
+        context: seatic.ctx.yml
+        assembly: assembly.log
+        abducer: abducer.log
+        severity: severity.log
+        vsimulation: vsimulation.log
+timeout:
+        binsec: 60
+        binsec-robust: 60
+        abducer: 3600
+        vsimulation: 36000
+temp:
+        assembly: temp.s
+# opt: dict()
+# source-info: text-offset: 0
+# mutants: dict()
+# oracle: reach: 0xtruc

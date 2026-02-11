@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+{{ data.ctx['tool.qemu'] }} -machine lm3s6965evb -cpu cortex-m3 -nographic -monitor null -serial null -semihosting -kernel $1 > $1.log 2>&1

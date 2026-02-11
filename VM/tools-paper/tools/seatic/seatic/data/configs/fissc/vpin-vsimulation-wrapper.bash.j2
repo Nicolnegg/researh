@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
+timeout 5 $SCRIPT_DIR/$(basename {{ data.ctx['config.vsimulation-qemu-script'] }}) $1
+mkdir -p $(dirname $2)
+date > $2.time.log
+$SCRIPT_DIR/$(basename {{ data.ctx['config.vsimulation-script'] }}) --has-data -l $1.log && timeout {{ data.ctx['timeout.vsimulation'] }} $SCRIPT_DIR/$(basename {{ data.ctx['config.vsimulation-qemu-script'] }}) $1
+date >> $2.time.log
+$SCRIPT_DIR/$(basename {{ data.ctx['config.vsimulation-script'] }}) --compress -l $1.log -o $2
+rm $1.log

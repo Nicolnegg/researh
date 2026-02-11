@@ -1,0 +1,56 @@
+# Simple Example with C2BC + Binsec + PyAbduce
+
+## Goal
+
+Demonstrate, outside the original VM, how the pipeline
+
+C → c2bc → Binsec → PyAbduce
+
+automatically recovers the input condition under which a simple C program reaches an error (`__VERIFIER_error`).
+
+## Program
+
+`example.c`:
+
+- `__VERIFIER_error()` marks the error location.
+- `__VERIFIER_nondet_int()` provides two symbolic inputs `a` and `b`.
+- The core function is:
+
+##Terminal
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper
+source venv/bin/activate
+export PATH=~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/safety:$PATH  
+cd Examples/simple-example
+c2bc -i example.c --run-abduce --auto-control-variables
+c2bc -i example.c --run-abduce --auto-control-variables
+cat example.dir/example.abduce-binsec.log 
+binsec -sse -sse-script example.dir/example.binsec.config example.dir/example.bin
+
+```bash
+
+cd ~/Documentos/M2-Cyber/RESEARCH
+eval $(opam env)
+
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper
+source venv/bin/activate
+export PATH=/home/nicol/Documentos/M2-Cyber/RESEARCH/binsec/_opam/bin:$PATH
+cd Examples/simple-example
+
+c2bc -i example.c
+
+./example.dir/example.abduce-run.bash --with-inequalities --max-depth 2
+
+```
+
+-reach debe ser la mmisma que la dirección de error 0x08049884, noquereos que llegue al error
+
+PyAbduce NO esta “caracterizando lo que llega al error” por defecto: esta buscando una condicion C que BLOQUEE el error.
+
+Esto se ve directamente en el codigo:
+el negativo; objetivo inalcanzable
+positivo alcanzable
+
+svcomp.py (lines 204-215): “For abduction, the negative goal must be the bug (reach_error).”
+
++reach 0x80498fa = goal positivo (un punto “benigno”, tipicamente temprano en c2bc_main)
+-reach 0x8049884 = goal negativo (EL BUG). De hecho 0x08049884 es reach_error (la entrada de la funcion) en tu binario.

@@ -1,0 +1,19 @@
+starting from <c2bc_main>
+# SSE directives (one per line, e.g. "reach 0x401000", "cut at 0x401234")
+reach 0x80498a5
+cut at 0x8049897
+cut at 0x804987c
+cut at 0x80498ac
+
+esp := 0xfff80000
+@[0x080e3f4c,4] := from_file
+@[0x080e3f48,4] := from_file
+@[0x080e3f40,4] := from_file
+@[0x080e3f3c,4] := from_file
+@[0x080e3f54,4] := from_file
+@[0x080e3f50,4] := from_file
+cut at 0x8049897
+cut at 0x804987c
+cut at 0x80498ac
+reach 0x8049875
+at 0x8049885 assume (@[0x080e3f4f,1] <s @[0x080e6a4a,1])

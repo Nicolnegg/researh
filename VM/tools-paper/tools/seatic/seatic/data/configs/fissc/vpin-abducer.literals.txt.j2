@@ -1,0 +1,11 @@
+{% for op in (' = ', ' <> ') %}{% for offset_u in (0, 1, 2, 3) %}{% for offset_c in (0, 1, 2, 3) -%}
+literal:@[{{ data.get_hex8loc('g_userPin', offset_u) }},1]{{ op }}@[{{ data.get_hex8loc('g_cardPin', offset_c) }},1]
+{% endfor %}{% endfor %}{% endfor -%}
+{% for offset in (0, 1, 2, 3) -%}
+variable:{{ data.get_hex8loc('g_userPin', offset) }}
+controlled:{{ data.get_hex8loc('g_userPin', offset) }}
+variable:{{ data.get_hex8loc('g_cardPin', offset) }}
+{% endfor -%}
+{% for val in data._constants -%}
+constant:{{ val }}
+{% endfor -%}

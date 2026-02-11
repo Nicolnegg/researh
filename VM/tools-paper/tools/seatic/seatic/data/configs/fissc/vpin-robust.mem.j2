@@ -1,0 +1,16 @@
+sp<32> := 0xffffff00;
+t<1> := 1<1>; #thumb mode on
+controlled dummy<32>;
+controlled userpin0<8>;
+controlled userpin1<8>;
+controlled userpin2<8>;
+controlled userpin3<8>;
+@[{{ data.get_hex8loc('g_userPin', 0) }},1] := userpin0<8>;
+@[{{ data.get_hex8loc('g_userPin', 1) }},1] := userpin1<8>;
+@[{{ data.get_hex8loc('g_userPin', 2) }},1] := userpin2<8>;
+@[{{ data.get_hex8loc('g_userPin', 3) }},1] := userpin3<8>;
+@[{{ data.get_hex8loc('g_ptc') }},1] := [ 1<8>, 3<8> ]s;
+@[{{ data.get_hex8loc('g_countermeasure') }},1] := 0<8>;
+{% for loc, val in data._memory.items() -%}
+@[{{ data.get_hex8(loc) }},4] := {{ data.get_hex8(val) }};
+{% endfor %}

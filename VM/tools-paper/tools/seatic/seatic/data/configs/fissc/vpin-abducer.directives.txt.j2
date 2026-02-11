@@ -1,0 +1,7 @@
++{{ data.get_hexloc('@reach') }} reach
+-{{ data.get_hexloc('@reach-negation') }} reach
+{{ data.get_hexloc('@cut') }} cut
+{{ data.get_hexloc('@init') }} assume @[{{ data.get_hex8loc('g_userPin') }},4] <> @[{{ data.get_hex8loc('g_cardPin') }},4]
+{{ data.get_hexloc('@init') }} assume @[{{ data.get_hex8loc('g_ptc') }},1] <=s 0x03
+{{ data.get_hexloc('@init') }} assume @[{{ data.get_hex8loc('g_ptc') }},1] >s 0x00
+{{ data.get_hexloc('@init') }} assume @[{{ data.get_hex8loc('g_countermeasure') }},1] = 0x00

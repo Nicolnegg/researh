@@ -1,0 +1,2371 @@
+
+example.dir/example.bin:     formato del fichero elf32-i386
+
+SYMBOL TABLE:
+00000000 l    df *ABS*	00000000 crt1.o
+08048158 l     O .note.ABI-tag	00000020 __abi_tag
+0804972d l       .text	00000000 __wrap_main
+00000000 l    df *ABS*	00000000 libc_fatal.o
+08049090 l     F .text	00000007 __libc_message_impl.cold
+00000000 l    df *ABS*	00000000 abort.o
+080e68e8 l     O .bss	0000000c lock
+080e68f4 l     O .bss	00000004 stage
+00000000 l    df *ABS*	00000000 iofputs.o
+08049275 l     F .text	00000059 _IO_fputs.cold
+00000000 l    df *ABS*	00000000 iofwrite.o
+080492ce l     F .text	00000059 _IO_fwrite.cold
+00000000 l    df *ABS*	00000000 fileops.o
+0805ddb0 l     F .text	00000140 new_do_write
+0805def0 l     F .text	00000310 mmap_remap_check
+0805e200 l     F .text	000001c1 decide_maybe_mmap
+080b2c88 l     O .rodata	00000013 __PRETTY_FUNCTION__.0
+08049327 l     F .text	0000005f _IO_new_file_underflow.cold
+0805e970 l       .text	00000000 .L161
+0805eb38 l       .text	00000000 .L186
+0805eb28 l       .text	00000000 .L160
+0805eb10 l       .text	00000000 .L159
+0805eb00 l       .text	00000000 .L158
+0805eaf0 l       .text	00000000 .L156
+00000000 l    df *ABS*	00000000 dcigettext.o
+08081ed0 l     F .text	000001b5 plural_eval
+08049386 l     F .text	00000007 plural_eval.cold
+08082090 l     F .text	0000007d transcmp
+080e6a48 l     O .bss	00000004 output_charset_cached.1
+080e6a44 l     O .bss	00000004 output_charset_cache.0
+080e6a54 l     O .bss	00000004 lock.4
+080e6a50 l     O .bss	00000004 freemem.3
+080e6a4c l     O .bss	00000004 freemem_size.2
+080e6a58 l     O .bss	00000004 transmem_list
+080e6a60 l     O .bss	00000020 tree_lock
+080e6a5c l     O .bss	00000004 root
+0808207d l       .text	00000000 .L23
+08082070 l       .text	00000000 .L22
+08082063 l       .text	00000000 .L21
+0808205c l       .text	00000000 .L20
+0808202b l       .text	00000000 .L19
+0808201d l       .text	00000000 .L18
+0808200f l       .text	00000000 .L17
+08082001 l       .text	00000000 .L16
+08082040 l       .text	00000000 .L15
+08082032 l       .text	00000000 .L14
+0808204e l       .text	00000000 .L12
+00000000 l    df *ABS*	00000000 loadmsgcat.o
+080e6aa8 l     O .bss	0000000c lock.0
+0804938d l     F .text	00000005 _nl_load_domain.cold
+08083da2 l       .text	00000000 .L228
+080840a7 l       .text	00000000 .L223
+080847ca l       .text	00000000 .L243
+08084187 l       .text	00000000 .L225
+08084651 l       .text	00000000 .L231
+0808479d l       .text	00000000 .L240
+08084761 l       .text	00000000 .L237
+08084d02 l       .text	00000000 .L247
+080848f0 l       .text	00000000 .L258
+08084a1d l       .text	00000000 .L262
+080849ff l       .text	00000000 .L255
+08084d20 l       .text	00000000 .L252
+08084b04 l       .text	00000000 .L266
+08084d7a l       .text	00000000 .L271
+0808467e l       .text	00000000 .L68
+08084ca8 l       .text	00000000 .L67
+08084c99 l       .text	00000000 .L66
+08084bd6 l       .text	00000000 .L65
+08084bc7 l       .text	00000000 .L63
+08084c12 l       .text	00000000 .L52
+08084c03 l       .text	00000000 .L51
+08084bf4 l       .text	00000000 .L50
+08084be5 l       .text	00000000 .L49
+08084b7c l       .text	00000000 .L47
+080847bb l       .text	00000000 .L97
+080847ac l       .text	00000000 .L96
+08084ba9 l       .text	00000000 .L95
+08084b9a l       .text	00000000 .L94
+08084b8b l       .text	00000000 .L92
+08084c4e l       .text	00000000 .L61
+08084c3f l       .text	00000000 .L60
+08084c30 l       .text	00000000 .L59
+08084c21 l       .text	00000000 .L58
+08084bb8 l       .text	00000000 .L56
+08084c8a l       .text	00000000 .L75
+08084c7b l       .text	00000000 .L74
+08084c6c l       .text	00000000 .L73
+08084c5d l       .text	00000000 .L72
+08084896 l       .text	00000000 .L70
+0808478e l       .text	00000000 .L90
+0808477f l       .text	00000000 .L89
+08084770 l       .text	00000000 .L88
+08084707 l       .text	00000000 .L87
+080846f8 l       .text	00000000 .L85
+08084752 l       .text	00000000 .L83
+08084743 l       .text	00000000 .L82
+08084734 l       .text	00000000 .L81
+08084725 l       .text	00000000 .L80
+08084716 l       .text	00000000 .L78
+08084cf3 l       .text	00000000 .L103
+08084ce4 l       .text	00000000 .L102
+08084cd5 l       .text	00000000 .L101
+08084cc6 l       .text	00000000 .L100
+08084cb7 l       .text	00000000 .L98
+080848e1 l       .text	00000000 .L125
+080848d2 l       .text	00000000 .L124
+080848c3 l       .text	00000000 .L123
+080848b4 l       .text	00000000 .L122
+080848a5 l       .text	00000000 .L120
+08084a0e l       .text	00000000 .L131
+080849a5 l       .text	00000000 .L130
+08084996 l       .text	00000000 .L129
+08084987 l       .text	00000000 .L128
+08084978 l       .text	00000000 .L126
+080849f0 l       .text	00000000 .L118
+080849e1 l       .text	00000000 .L117
+080849d2 l       .text	00000000 .L116
+080849c3 l       .text	00000000 .L115
+080849b4 l       .text	00000000 .L113
+08084d11 l       .text	00000000 .L111
+08084b6d l       .text	00000000 .L110
+08084b5e l       .text	00000000 .L109
+08084aaa l       .text	00000000 .L108
+08084a9b l       .text	00000000 .L106
+08084af5 l       .text	00000000 .L138
+08084ae6 l       .text	00000000 .L137
+08084ad7 l       .text	00000000 .L136
+08084ac8 l       .text	00000000 .L135
+08084ab9 l       .text	00000000 .L133
+08084d6b l       .text	00000000 .L144
+08084d5c l       .text	00000000 .L143
+08084d4d l       .text	00000000 .L142
+08084d3e l       .text	00000000 .L141
+08084d2f l       .text	00000000 .L139
+00000000 l    df *ABS*	00000000 printf_fp.o
+08088720 l     F .text	00000108 hack_digit
+08088830 l     F .text	00001fa6 __printf_fp_buffer_1.isra.0
+080b414c l     O .rodata	00000015 __PRETTY_FUNCTION__.0
+08049392 l     F .text	0000000b __printf_fp_buffer_1.isra.0.cold
+00000000 l    df *ABS*	00000000 printf_fphex.o
+0808ad40 l     F .text	00000e9f __printf_fphex_buffer
+080b4184 l     O .rodata	00000016 __PRETTY_FUNCTION__.0
+0804939d l     F .text	00000005 __printf_fphex_buffer.cold
+00000000 l    df *ABS*	00000000 iofclose.o
+080493a2 l     F .text	00000059 _IO_new_fclose.cold
+00000000 l    df *ABS*	00000000 iogetdelim.o
+080493fb l     F .text	00000059 __getdelim.cold
+00000000 l    df *ABS*	00000000 wfileops.o
+0808dfc0 l     F .text	000000ca adjust_wide_data
+080b4568 l     O .rodata	00000014 __PRETTY_FUNCTION__.0
+08049454 l     F .text	0000006a _IO_wfile_underflow.cold
+00000000 l    df *ABS*	00000000 nptl-stack.o
+080494be l     F .text	00000005 __nptl_free_stacks.cold
+00000000 l    df *ABS*	00000000 pthread_once.o
+08090bf0 l     F .text	00000157 __pthread_once_slow
+08090d80 l     F .text	00000059 clear_once_control
+08090d50 l     F .text	00000026 __pthread_cleanup_combined_routine_voidptr
+080494c3 l     F .text	00000041 __pthread_once_slow.cold
+00000000 l    df *ABS*	00000000 printf_buffer_flush.o
+080b4874 l     O .rodata	00000016 __PRETTY_FUNCTION__.0
+08049504 l     F .text	00000002 __printf_buffer_flush.cold
+08049504 l       .text	00000000 .L3
+0809eaf4 l       .text	00000000 .L15
+0809eb30 l       .text	00000000 .L14
+0809ebd4 l       .text	00000000 .L13
+0809eb48 l       .text	00000000 .L12
+0809eb60 l       .text	00000000 .L11
+0809eb78 l       .text	00000000 .L10
+0809eb10 l       .text	00000000 .L9
+0809eb90 l       .text	00000000 .L8
+0809eba8 l       .text	00000000 .L7
+0809ebc0 l       .text	00000000 .L6
+0809eae0 l       .text	00000000 .L4
+00000000 l    df *ABS*	00000000 wprintf_buffer_flush.o
+080b488c l     O .rodata	00000017 __PRETTY_FUNCTION__.0
+08049506 l     F .text	00000002 __wprintf_buffer_flush.cold
+00000000 l    df *ABS*	00000000 unwind-dw2.o
+080a7a10 l     F .text	0000007f init_dwarf_reg_size_table
+080e6bf8 l     O .bss	00000012 dwarf_reg_size_table
+080a7a90 l     F .text	0000019b uw_install_context_1
+08049508 l     F .text	00000008 uw_install_context_1.cold
+080a7c30 l     F .text	0000019b read_encoded_value
+08049510 l     F .text	00000005 read_encoded_value.cold
+080a7dd0 l     F .text	0000087e execute_stack_op
+08049515 l     F .text	00000016 execute_stack_op.cold
+080a8650 l     F .text	00000460 uw_update_context_1
+0804952b l     F .text	00000016 uw_update_context_1.cold
+080a8ab0 l     F .text	000007bc execute_cfa_program_specialized
+08049541 l     F .text	00000008 execute_cfa_program_specialized.cold
+080a9270 l     F .text	000007e8 execute_cfa_program_generic
+08049549 l     F .text	00000008 execute_cfa_program_generic.cold
+080a9a60 l     F .text	000005aa uw_frame_state_for
+08049551 l     F .text	00000008 uw_frame_state_for.cold
+080aa010 l     F .text	00000156 uw_init_context_1
+080e6bf4 l     O .bss	00000004 once_regsizes.0
+08049559 l     F .text	00000005 uw_init_context_1.cold
+080aa170 l     F .text	000001e6 _Unwind_RaiseException_Phase2
+0804955e l     F .text	0000000b _Unwind_RaiseException_Phase2.cold
+080aa360 l     F .text	00000252 _Unwind_ForcedUnwind_Phase2
+08049569 l     F .text	0000000b _Unwind_ForcedUnwind_Phase2.cold
+08049574 l     F .text	00000005 _Unwind_GetGR.cold
+08049579 l     F .text	00000007 _Unwind_SetGR.cold
+080aa820 l     F .text	00000005 _Unwind_DebugHook
+08049580 l     F .text	0000000b _Unwind_RaiseException.cold
+0804958b l     F .text	0000000b _Unwind_Resume.cold
+08049596 l     F .text	00000005 _Unwind_Resume_or_Rethrow.cold
+0804959b l     F .text	0000000b _Unwind_Backtrace.cold
+080a8238 l       .text	00000000 .L102
+080a8824 l       .text	00000000 .L255
+080a8b4b l       .text	00000000 .L318
+080a930f l       .text	00000000 .L457
+080a9c08 l       .text	00000000 .L656
+080a7cc0 l       .text	00000000 .L62
+080a7d40 l       .text	00000000 .L74
+080a7d30 l       .text	00000000 .L67
+080a7d00 l       .text	00000000 .L60
+08049510 l       .text	00000000 .L52
+080a7d70 l       .text	00000000 .L75
+080a7d20 l       .text	00000000 .L63
+080a7e60 l       .text	00000000 .L116
+08049520 l       .text	00000000 .L92
+080a8210 l       .text	00000000 .L122
+080a8178 l       .text	00000000 .L121
+080a8160 l       .text	00000000 .L120
+080a8148 l       .text	00000000 .L119
+080a8130 l       .text	00000000 .L118
+080a7eb0 l       .text	00000000 .L114
+080a8190 l       .text	00000000 .L175
+080a81c8 l       .text	00000000 .L176
+080a80c0 l       .text	00000000 .L111
+080a7f90 l       .text	00000000 .L110
+080a80e0 l       .text	00000000 .L109
+080a8100 l       .text	00000000 .L108
+080a8090 l       .text	00000000 .L106
+080a828c l       .text	00000000 .L103
+080a827f l       .text	00000000 .L101
+080a8070 l       .text	00000000 .L100
+080a8018 l       .text	00000000 .L99
+080a7f00 l       .text	00000000 .L172
+080a83e6 l       .text	00000000 .L173
+080a834e l       .text	00000000 .L174
+080a8307 l       .text	00000000 .L95
+080a7fa7 l       .text	00000000 .L235
+080a8473 l       .text	00000000 .L169
+080a8482 l       .text	00000000 .L168
+080a8494 l       .text	00000000 .L167
+080a84a3 l       .text	00000000 .L166
+080a84b6 l       .text	00000000 .L165
+080a84c6 l       .text	00000000 .L164
+080a84d5 l       .text	00000000 .L163
+080a84e4 l       .text	00000000 .L162
+080a84f4 l       .text	00000000 .L161
+080a8504 l       .text	00000000 .L160
+080a8514 l       .text	00000000 .L159
+080a8523 l       .text	00000000 .L158
+080a8538 l       .text	00000000 .L157
+080a854d l       .text	00000000 .L156
+080a8562 l       .text	00000000 .L155
+080a8449 l       .text	00000000 .L154
+080a845e l       .text	00000000 .L152
+080a85c9 l       .text	00000000 .L147
+080a85c0 l       .text	00000000 .L146
+080a85b7 l       .text	00000000 .L145
+080a85d7 l       .text	00000000 .L179
+080a8928 l       .text	00000000 .L261
+080a8880 l       .text	00000000 .L260
+080a88c0 l       .text	00000000 .L259
+080a87f8 l       .text	00000000 .L258
+080a87a0 l       .text	00000000 .L256
+080a8c07 l       .text	00000000 .L346
+080a8c36 l       .text	00000000 .L345
+080a8c4a l       .text	00000000 .L344
+080a8c5e l       .text	00000000 .L343
+080a9073 l       .text	00000000 .L380
+080a90d7 l       .text	00000000 .L381
+080a9173 l       .text	00000000 .L382
+080a91af l       .text	00000000 .L383
+080a91db l       .text	00000000 .L384
+080a8c6f l       .text	00000000 .L337
+080a8c9c l       .text	00000000 .L336
+080a8cbe l       .text	00000000 .L385
+080a910f l       .text	00000000 .L386
+080a9147 l       .text	00000000 .L387
+080a8bcf l       .text	00000000 .L332
+080a8d79 l       .text	00000000 .L388
+080a8dd7 l       .text	00000000 .L389
+080a8e3f l       .text	00000000 .L390
+080a8ebf l       .text	00000000 .L391
+080a8f7b l       .text	00000000 .L392
+080a8f13 l       .text	00000000 .L393
+080a8fdf l       .text	00000000 .L394
+08049541 l       .text	00000000 .L321
+080a9047 l       .text	00000000 .L395
+080a8d17 l       .text	00000000 .L396
+080a93c7 l       .text	00000000 .L485
+080a93f6 l       .text	00000000 .L484
+080a940e l       .text	00000000 .L483
+080a9426 l       .text	00000000 .L482
+080a9843 l       .text	00000000 .L519
+080a98a6 l       .text	00000000 .L520
+080a9943 l       .text	00000000 .L521
+080a997f l       .text	00000000 .L522
+080a99ab l       .text	00000000 .L523
+080a9440 l       .text	00000000 .L476
+080a946d l       .text	00000000 .L475
+080a948f l       .text	00000000 .L524
+080a98df l       .text	00000000 .L525
+080a9917 l       .text	00000000 .L526
+080a938e l       .text	00000000 .L471
+080a9558 l       .text	00000000 .L527
+080a95b7 l       .text	00000000 .L528
+080a9624 l       .text	00000000 .L529
+080a969a l       .text	00000000 .L530
+080a9754 l       .text	00000000 .L531
+080a96e6 l       .text	00000000 .L532
+080a97b6 l       .text	00000000 .L533
+08049549 l       .text	00000000 .L460
+080a9817 l       .text	00000000 .L534
+080a94ef l       .text	00000000 .L535
+080a9d4f l       .text	00000000 .L615
+080a9d40 l       .text	00000000 .L613
+080a9d90 l       .text	00000000 .L612
+080a9d70 l       .text	00000000 .L611
+080a9dc8 l       .text	00000000 .L609
+00000000 l    df *ABS*	00000000 unwind-dw2-fde-dip.o
+080aaea0 l     F .text	000000a7 btree_node_update_separator_after_split
+080aaf50 l     F .text	00000022 fde_unencoded_compare
+080aaf80 l     F .text	00000098 frame_downheap
+080ab020 l     F .text	000000b8 version_lock_lock_exclusive
+080e6c90 l     O .bss	00000018 version_lock_mutex
+080e6c60 l     O .bss	00000030 version_lock_cond
+080ab0e0 l     F .text	00000152 read_encoded_value_with_base
+080495a6 l     F .text	00000007 read_encoded_value_with_base.cold
+080ab240 l     F .text	00000037 fde_unencoded_extract
+080ab280 l     F .text	000002d2 fde_radixsort
+080ab560 l     F .text	0000006a version_lock_unlock_exclusive
+080ab5d0 l     F .text	000000ae btree_allocate_node
+080ab680 l     F .text	0000005e btree_handle_root_split.part.0
+080ab6e0 l     F .text	00000387 btree_insert.isra.0
+08049610 l     F .text	00000059 btree_release_tree_recursively
+08049670 l     F .text	0000004f btree_destroy
+080aba70 l     F .text	00000118 get_cie_encoding
+080abb90 l     F .text	00000785 btree_remove
+080ac320 l     F .text	000000a5 fde_mixed_encoding_extract
+080495ad l     F .text	00000008 fde_mixed_encoding_extract.cold
+080ac3d0 l     F .text	00000306 classify_object_over_fdes
+080495b5 l     F .text	00000008 classify_object_over_fdes.cold
+080ac6e0 l     F .text	0000007a get_pc_range
+080ac760 l     F .text	00000087 __deregister_frame_info_bases.part.0
+080e6c3c l     O .bss	0000000c registered_objects
+080e6c48 l     O .bss	0000000c registered_frames
+080e6c38 l     O .bss	00000001 in_shutdown
+080495bd l     F .text	00000005 __deregister_frame_info_bases.part.0.cold
+080ac7f0 l     F .text	000000ad fde_single_encoding_extract
+080495c2 l     F .text	00000005 fde_single_encoding_extract.cold
+080ac8a0 l     F .text	000000a2 fde_single_encoding_compare
+080495c7 l     F .text	00000007 fde_single_encoding_compare.cold
+080ac950 l     F .text	00000102 fde_mixed_encoding_compare
+080495ce l     F .text	00000007 fde_mixed_encoding_compare.cold
+080aca60 l     F .text	00000280 add_fdes.isra.0
+080495d5 l     F .text	00000008 add_fdes.isra.0.cold
+080acce0 l     F .text	000002b0 linear_search_fdes
+080495dd l     F .text	00000008 linear_search_fdes.cold
+080496c0 l     F .text	00000039 release_registered_frames
+080e6c20 l     O .bss	00000018 object_mutex
+080cac80 l     O .rodata	00000008 terminator.1
+080495e5 l     F .text	0000000b _Unwind_Find_FDE.cold
+080ab120 l       .text	00000000 .L53
+080ab1b0 l       .text	00000000 .L64
+080ab190 l       .text	00000000 .L58
+080ab180 l       .text	00000000 .L51
+080495a6 l       .text	00000000 .L50
+080ab1e0 l       .text	00000000 .L65
+080ab1a0 l       .text	00000000 .L54
+00000000 l    df *ABS*	00000000 unwind-c.o
+080ae120 l     F .text	00000081 base_of_encoded_value
+080495f0 l     F .text	00000005 base_of_encoded_value.cold
+080ae1b0 l     F .text	00000152 read_encoded_value_with_base
+080495f5 l     F .text	00000007 read_encoded_value_with_base.cold
+080495fc l     F .text	00000008 __gcc_personality_v0.cold
+080ae1f0 l       .text	00000000 .L20
+080ae280 l       .text	00000000 .L31
+080ae260 l       .text	00000000 .L25
+080ae250 l       .text	00000000 .L18
+080495f5 l       .text	00000000 .L17
+080ae2b0 l       .text	00000000 .L32
+080ae270 l       .text	00000000 .L21
+00000000 l    df *ABS*	00000000 crtstuff.c
+080cad14 l     O .eh_frame	00000000 __EH_FRAME_BEGIN__
+08049760 l     F .text	00000000 deregister_tm_clones
+080497a0 l     F .text	00000000 register_tm_clones
+080497e0 l     F .text	00000000 __do_global_dtors_aux
+080e3f20 l     O .bss	00000001 completed.1
+080e09d8 l     O .fini_array	00000000 __do_global_dtors_aux_fini_array_entry
+08049830 l     F .text	00000000 frame_dummy
+080e3f24 l     O .bss	00000018 object.0
+080e09d4 l     O .init_array	00000000 __frame_dummy_init_array_entry
+00000000 l    df *ABS*	00000000 example.stub.raw.c
+080e3f48 l     O .bss	00000004 _stub_failure_counter
+080e3f44 l     O .bss	00000004 _stub_failure_cut_counter
+080e3f40 l     O .bss	00000004 _stub_abort_counter
+080e3f3c l     O .bss	00000004 _stub_abort_cut_counter
+080e3f4c l     O .bss	00000004 _main_hook
+00000000 l    df *ABS*	00000000 example.uc.raw.c
+00000000 l    df *ABS*	00000000 libc-start.o
+08049920 l     F .text	0000003e call_fini
+08049960 l     F .text	00000135 handle_zhaoxin
+08049aa0 l     F .text	000002c0 handle_amd
+08049d60 l     F .text	0000009a __libc_start_call_main
+08049e00 l     F .text	0000008f get_extended_indices.constprop.0
+08049e90 l     F .text	000001a7 get_common_indices.constprop.0
+0804a040 l     F .text	000003d1 get_common_cache_info.constprop.0
+0804a420 l     F .text	000002a2 intel_check_word.constprop.0
+080b13c0 l     O .rodata	00000220 intel_02_known
+080b160c l     O .rodata	00000011 __PRETTY_FUNCTION__.0
+0804a6d0 l     F .text	000000e2 handle_intel.constprop.0
+0804a7c0 l     F .text	000005c3 update_active.constprop.0
+080b12e0 l     O .rodata	000000c1 CSWTCH.91
+08049b76 l       .text	00000000 .L104
+08049b2d l       .text	00000000 .L49
+0804bb3c l       .text	00000000 .L421
+08049bd0 l       .text	00000000 .L67
+08049b9a l       .text	00000000 .L111
+08049c95 l       .text	00000000 .L65
+08049c81 l       .text	00000000 .L64
+08049b93 l       .text	00000000 .L63
+08049bf2 l       .text	00000000 .L62
+08049c6d l       .text	00000000 .L61
+08049cb0 l       .text	00000000 .L59
+08049cff l       .text	00000000 .L77
+08049cf5 l       .text	00000000 .L76
+08049ceb l       .text	00000000 .L75
+08049ce1 l       .text	00000000 .L74
+08049cd7 l       .text	00000000 .L73
+08049ccd l       .text	00000000 .L72
+08049cc3 l       .text	00000000 .L85
+08049d09 l       .text	00000000 .L83
+08049d1f l       .text	00000000 .L69
+0804bbe5 l       .text	00000000 .L429
+0804bb8d l       .text	00000000 .L422
+0804bc15 l       .text	00000000 .L428
+0804bbc7 l       .text	00000000 .L427
+0804bba8 l       .text	00000000 .L426
+0804bb32 l       .text	00000000 .L425
+0804bbfd l       .text	00000000 .L424
+00000000 l    df *ABS*	00000000 check_fds.o
+0804bcc0 l     F .text	000000c0 check_one_fd
+00000000 l    df *ABS*	00000000 libc-tls.o
+080e41c0 l     O .bss	00000208 static_slotinfo
+00000000 l    df *ABS*	00000000 cxa_atexit.o
+080b1688 l     O .rodata	0000000d __PRETTY_FUNCTION__.0
+080b1698 l     O .rodata	00000012 __PRETTY_FUNCTION__.1
+080e4400 l     O .bss	00000208 initial
+00000000 l    df *ABS*	00000000 malloc.o
+0804cf10 l     F .text	00000021 _dl_tunable_set_mmap_threshold
+080e30a0 l     O .data	0000004c mp_
+0804cf40 l     F .text	00000021 _dl_tunable_set_mmaps_max
+0804cf70 l     F .text	00000021 _dl_tunable_set_top_pad
+0804cfa0 l     F .text	00000017 _dl_tunable_set_perturb_byte
+080e6640 l     O .bss	00000004 perturb_byte
+0804cfc0 l     F .text	00000021 _dl_tunable_set_trim_threshold
+0804cff0 l     F .text	00000017 _dl_tunable_set_arena_max
+0804d010 l     F .text	00000017 _dl_tunable_set_arena_test
+0804d030 l     F .text	0000003c _dl_tunable_set_tcache_max
+0804d070 l     F .text	00000027 _dl_tunable_set_tcache_count
+0804d0a0 l     F .text	00000017 _dl_tunable_set_tcache_unsorted_limit
+0804d0c0 l     F .text	00000038 _dl_tunable_set_mxfast
+080e6644 l     O .bss	00000001 global_max_fast
+0804d100 l     F .text	0000001d malloc_printerr
+0804d120 l     F .text	0000011e int_mallinfo
+080e3100 l     O .data	0000045c main_arena
+0804d240 l     F .text	00000036 alloc_perturb
+0804d280 l     F .text	0000009a munmap_chunk
+080b25c8 l     O .rodata	0000000d __PRETTY_FUNCTION__.13
+0804d320 l     F .text	00000057 _dl_tunable_set_hugetlb
+0804d380 l     F .text	0000002e detach_arena.part.0
+080b2630 l     O .rodata	0000000d __PRETTY_FUNCTION__.4
+0804d3b0 l     F .text	00000569 __malloc_info.part.0
+0804d920 l     F .text	000000ae unlink_chunk.isra.0
+0804d9d0 l     F .text	000001ae malloc_consolidate
+0804db80 l     F .text	000000ab _int_free_create_chunk
+0804dc30 l     F .text	000001ea ptmalloc_init.part.0
+080e6630 l     O .bss	00000001 __malloc_initialized
+080e6628 l     O .bss	00000004 tcache_key
+00000018 l       .tbss	00000004 thread_arena
+080e6645 l     O .bss	00000001 __always_fail_morecore
+0804de20 l     F .text	00000236 alloc_new_heap
+080e662c l     O .bss	00000004 aligned_heap_area
+0804e060 l     F .text	0000005f new_heap
+0804e0c0 l     F .text	000005bd arena_get2
+080e6638 l     O .bss	00000004 free_list
+080e663c l     O .bss	00000004 free_list_lock
+080e6624 l     O .bss	00000004 narenas_limit.2
+080e3084 l     O .data	00000004 narenas
+080e6620 l     O .bss	00000004 next_to_use.5
+080e6634 l     O .bss	00000004 list_lock
+080b2618 l     O .rodata	00000016 __PRETTY_FUNCTION__.6
+080b2640 l     O .rodata	0000000e __PRETTY_FUNCTION__.3
+0804e680 l     F .text	0000008e arena_get_retry
+0804e710 l     F .text	000000ea sysmalloc_mmap_fallback.constprop.0
+0804e800 l     F .text	0000014b sysmalloc_mmap.isra.0
+0804e950 l     F .text	000000f4 systrim.constprop.0
+0804ea50 l     F .text	000004bd _int_free_maybe_consolidate.part.0
+080e3080 l     O .data	00000004 may_shrink_heap.12
+080b25d8 l     O .rodata	0000000a __PRETTY_FUNCTION__.11
+080b25e4 l     O .rodata	0000001c __PRETTY_FUNCTION__.10
+0804ef10 l     F .text	00000143 _int_free_merge_chunk
+0804f060 l     F .text	0000043e _int_free
+00000010 l       .tbss	00000004 tcache
+0804f4a0 l     F .text	00000876 sysmalloc
+080b2600 l     O .rodata	0000000a __PRETTY_FUNCTION__.8
+0804fd20 l     F .text	00000ee1 _int_malloc
+080b260c l     O .rodata	0000000c __PRETTY_FUNCTION__.7
+08050c10 l     F .text	00000111 tcache_init.part.0
+08050d30 l     F .text	0000027c _int_realloc
+080b2598 l     O .rodata	0000000d __PRETTY_FUNCTION__.16
+08050fb0 l     F .text	000001b5 _int_memalign
+080b2578 l     O .rodata	0000000e __PRETTY_FUNCTION__.18
+00000014 l       .tbss	00000001 tcache_shutting_down
+080b2650 l     O .rodata	0000000e __PRETTY_FUNCTION__.1
+08051640 l     F .text	00000313 _mid_memalign.isra.0
+080b2588 l     O .rodata	0000000e __PRETTY_FUNCTION__.17
+080b2660 l     O .rodata	0000001e __PRETTY_FUNCTION__.0
+080b25b8 l     O .rodata	0000000f __PRETTY_FUNCTION__.14
+080b25a8 l     O .rodata	0000000d __PRETTY_FUNCTION__.15
+080b2568 l     O .rodata	0000000e __PRETTY_FUNCTION__.19
+080b2560 l     O .rodata	00000006 __PRETTY_FUNCTION__.20
+08052df0 l       .text	00000000 .L1507
+08052de0 l       .text	00000000 .L1516
+08052e30 l       .text	00000000 .L1515
+08052e40 l       .text	00000000 .L1514
+08052e00 l       .text	00000000 .L1513
+08052e18 l       .text	00000000 .L1512
+08052e50 l       .text	00000000 .L1511
+08052e68 l       .text	00000000 .L1510
+08052db0 l       .text	00000000 .L1508
+00000000 l    df *ABS*	00000000 memset.o
+08052fa0 l     F .text	00000034 memset_ifunc
+00000000 l    df *ABS*	00000000 getsysstats.o
+080549a0 l     F .text	000001ab next_line
+080b26f0 l     O .rodata	0000000a __PRETTY_FUNCTION__.0
+08054b50 l     F .text	00000149 read_sysfs_file
+08054ca0 l     F .text	000000e0 get_nproc_stat
+08054d80 l     F .text	00000086 __get_nprocs_sched
+00000000 l    df *ABS*	00000000 setvmaname.o
+080e355c l     O .data	00000004 prctl_supported.0
+00000000 l    df *ABS*	00000000 malloc-hugepages.o
+080b278c l     O .rodata	00000018 mode_always.2
+080b2774 l     O .rodata	00000018 mode_madvise.1
+080b275c l     O .rodata	00000018 mode_never.0
+00000000 l    df *ABS*	00000000 dl-tls.o
+08055890 l     F .text	00000368 _dl_allocate_tls_init.part.0
+080b2958 l     O .rodata	00000016 __PRETTY_FUNCTION__.1
+080b2970 l     O .rodata	00000015 __PRETTY_FUNCTION__.2
+080b2944 l     O .rodata	00000014 __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 dl-tunables.o
+08056430 l     F .text	00000262 do_tunable_update_val
+080566a0 l     F .text	0000008a tunable_initialize
+08056730 l     F .text	00000254 parse_tunables
+080e17e0 l     O .data.rel.ro	00001040 tunable_list
+00000000 l    df *ABS*	00000000 dl-support.o
+08056e10 l     F .text	00000003 .hidden _dl_sysinfo_int80
+080b2b70 l     O .rodata	0000000d __PRETTY_FUNCTION__.4
+080e3660 l     O .data	00000278 _dl_main_map
+080e09e0 l     O .data.rel.ro	00000010 rfv.0
+080b5c00 l     O .rodata	000001be unsecure_envvars.3
+080b2b64 l     O .rodata	0000000b __PRETTY_FUNCTION__.2
+080b2b4c l     O .rodata	00000015 __PRETTY_FUNCTION__.1
+080e35e8 l     O .data	00000004 __compound_literal.3
+080e38dc l     O .data	0000000c __compound_literal.0
+080e38d8 l     O .data	00000004 __compound_literal.1
+080e68d8 l     O .bss	00000004 __compound_literal.2
+00000000 l    df *ABS*	00000000 dl-sysdep.o
+080b2ba8 l     O .rodata	00000017 __PRETTY_FUNCTION__.0
+08057ac7 l       .text	00000000 .L124
+08057d5b l       .text	00000000 .L29
+08057e89 l       .text	00000000 .L65
+08057c57 l       .text	00000000 .L90
+08057bf6 l       .text	00000000 .L102
+08057abb l       .text	00000000 .L104
+08057b95 l       .text	00000000 .L108
+08057b2c l       .text	00000000 .L110
+08057ae5 l       .text	00000000 .L114
+08057cb7 l       .text	00000000 .L116
+08057d09 l       .text	00000000 .L118
+08057dc4 l       .text	00000000 .L120
+08057edd l       .text	00000000 .L130
+08057eb4 l       .text	00000000 .L20
+08057d57 l       .text	00000000 .L138
+08058030 l       .text	00000000 .L46
+08057ff0 l       .text	00000000 .L59
+08057f58 l       .text	00000000 .L69
+08057c53 l       .text	00000000 .L139
+08057bf2 l       .text	00000000 .L140
+08057ab7 l       .text	00000000 .L141
+08057b91 l       .text	00000000 .L142
+08057b28 l       .text	00000000 .L143
+08057ae1 l       .text	00000000 .L144
+08057cb3 l       .text	00000000 .L145
+08057d05 l       .text	00000000 .L146
+08057dc0 l       .text	00000000 .L147
+00000000 l    df *ABS*	00000000 setenv.o
+080e6900 l     O .bss	00000004 envlock
+080e68f8 l     O .bss	00000004 last_environ
+080e68fc l     O .bss	00000004 known_values
+00000000 l    df *ABS*	00000000 vfprintf-internal.o
+080595d0 l     F .text	0000007a read_int
+08059650 l     F .text	0000026e outstring_converted_wide_string
+080598c0 l     F .text	000000ee group_number
+080599b0 l     F .text	00001a88 printf_positional
+080b2c34 l     O .rodata	00000012 __PRETTY_FUNCTION__.1
+080b64e0 l     O .rodata	0000005b jump_table
+080e0a00 l     O .data.rel.ro	00000080 step4_jumps.0
+080b2c48 l     O .rodata	00000007 null
+080e0d00 l     O .data.rel.ro	00000080 step0_jumps.7
+080e0b00 l     O .data.rel.ro	00000080 step4_jumps.3
+080e0c80 l     O .data.rel.ro	00000080 step1_jumps.6
+080e0a80 l     O .data.rel.ro	00000080 step3b_jumps.2
+080e0b80 l     O .data.rel.ro	00000080 step3a_jumps.4
+080e0c00 l     O .data.rel.ro	00000080 step2_jumps.5
+08059e00 l       .text	00000000 .L442
+0805a0b0 l       .text	00000000 .L113
+00000000 l    df *ABS*	00000000 errname.o
+080b6540 l     O .rodata	0000010c _sys_errnameidx
+080b6660 l     O .rodata	00000455 _sys_errname
+00000000 l    df *ABS*	00000000 printf-parsemb.o
+0805d240 l     F .text	0000007d read_int
+0805d340 l       .text	00000000 .L16
+0805d3d8 l       .text	00000000 .L40
+0805d560 l       .text	00000000 .L63
+0805d470 l       .text	00000000 .L24
+0805d460 l       .text	00000000 .L23
+0805d450 l       .text	00000000 .L22
+0805d440 l       .text	00000000 .L21
+0805d430 l       .text	00000000 .L20
+0805d420 l       .text	00000000 .L19
+0805d328 l       .text	00000000 .L17
+0805d619 l       .text	00000000 .L80
+0805d3c8 l       .text	00000000 .L41
+0805d681 l       .text	00000000 .L47
+0805d627 l       .text	00000000 .L46
+0805d637 l       .text	00000000 .L45
+0805d64a l       .text	00000000 .L43
+0805d5b8 l       .text	00000000 .L69
+0805d588 l       .text	00000000 .L64
+0805d81d l       .text	00000000 .L72
+0805d804 l       .text	00000000 .L71
+0805d881 l       .text	00000000 .L70
+0805d868 l       .text	00000000 .L68
+0805d84f l       .text	00000000 .L67
+0805d836 l       .text	00000000 .L66
+00000000 l    df *ABS*	00000000 genops.o
+08060590 l     F .text	000000fb flush_cleanup
+080e6910 l     O .bss	00000004 run_fp
+080e6914 l     O .bss	0000000c list_all_lock
+08060690 l     F .text	0000022c save_for_backup
+080608c0 l     F .text	000002f7 _IO_un_link.part.0
+080e690c l     O .bss	00000004 stdio_needs_locking
+080e6904 l     O .bss	00000004 freeres_list
+080e6908 l     O .bss	00000001 dealloc_buffers
+00000000 l    df *ABS*	00000000 stdfiles.o
+080e6920 l     O .bss	0000000c _IO_stdfile_2_lock
+080e39c0 l     O .data	0000008c _IO_wide_data_2
+080e692c l     O .bss	0000000c _IO_stdfile_1_lock
+080e3b00 l     O .data	0000008c _IO_wide_data_1
+080e6938 l     O .bss	0000000c _IO_stdfile_0_lock
+080e3c40 l     O .data	0000008c _IO_wide_data_0
+00000000 l    df *ABS*	00000000 strops.o
+08062da0 l     F .text	000001cb enlarge_userbuf
+080b2c9c l     O .rodata	00000010 __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 pthread_mutex_conf.o
+08063960 l     F .text	00000017 _dl_tunable_set_mutex_spin_count
+08063980 l     F .text	00000017 _dl_tunable_set_stack_cache_size
+080639a0 l     F .text	00000019 _dl_tunable_set_stack_hugetlb
+00000000 l    df *ABS*	00000000 pthread_mutex_lock.o
+08063a30 l     F .text	00000663 __pthread_mutex_lock_full
+080b2d70 l     O .rodata	0000001a __PRETTY_FUNCTION__.1
+080b2d8c l     O .rodata	00000016 __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 pthread_mutex_unlock.o
+08064340 l     F .text	000004d9 __pthread_mutex_unlock_full
+080b2dc8 l     O .rodata	0000001f __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 tpp.o
+080b2e90 l     O .rodata	0000001e __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 memchr.o
+08065110 l     F .text	00000034 __memchr_ifunc
+00000000 l    df *ABS*	00000000 memcmp.o
+08065150 l     F .text	00000035 memcmp_ifunc
+00000000 l    df *ABS*	00000000 strchr.o
+08065190 l     F .text	00000034 strchr_ifunc
+00000000 l    df *ABS*	00000000 strcmp.o
+080651d0 l     F .text	00000035 strcmp_ifunc
+00000000 l    df *ABS*	00000000 strnlen.o
+08065210 l     F .text	00000024 __strnlen_ifunc
+00000000 l    df *ABS*	00000000 strrchr.o
+08065240 l     F .text	00000034 strrchr_ifunc
+00000000 l    df *ABS*	00000000 strstr.o
+08065280 l     F .text	00000522 two_way_long_needle
+00000000 l    df *ABS*	00000000 wcrtomb.o
+080e69a4 l     O .bss	00000008 state
+080b2f50 l     O .rodata	00000013 __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 wcsmbsload.o
+080e2d20 l     O .data.rel.ro	0000003c to_wc
+080e2ce0 l     O .data.rel.ro	0000003c to_mb
+00000000 l    df *ABS*	00000000 wcsrtombs.o
+080e69ac l     O .bss	00000008 state
+080b2fc8 l     O .rodata	0000000c __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 getpagesize.o
+080b3000 l     O .rodata	0000000e __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 tsearch.o
+0806cec0 l     F .text	0000008c trecurse
+0806cf50 l     F .text	0000008b trecurse_r
+0806cfe0 l     F .text	00000051 tdestroy_recurse
+0806d040 l     F .text	0000017b maybe_split_for_insert.isra.0
+00000000 l    df *ABS*	00000000 dl-catch.o
+0806dcd0 l     F .text	00000096 fatal_error
+00000000 l    df *ABS*	00000000 dl-exception.o
+0806df60 l     F .text	0000001b length_mismatch
+080b30ac l     O .rodata	0000000e _dl_out_of_memory
+00000000 l    df *ABS*	00000000 dl-load.o
+0806e420 l     F .text	000000a3 is_dst
+0806e4d0 l     F .text	000001ba is_trusted_path_normalize
+080b6ef0 l     O .rodata	00000010 system_dirs_len
+080b6f00 l     O .rodata	00000024 system_dirs
+0806e690 l     F .text	000003d2 open_verify.constprop.0
+0806ea70 l     F .text	000000b9 add_path.constprop.0.isra.0
+0806eb30 l     F .text	000005a2 open_path.isra.0
+080e69b4 l     O .bss	00000004 max_dirnamelen
+0806f0e0 l     F .text	000000e8 add_name_to_object.isra.0
+080b35c4 l     O .rodata	00000013 __PRETTY_FUNCTION__.5
+0806f410 l     F .text	000000fe expand_dynamic_string_token
+080b35e8 l     O .rodata	0000001c __PRETTY_FUNCTION__.8
+0806f510 l     F .text	0000028a fillin_rpath.isra.0
+0806f7a0 l     F .text	000001ee decompose_rpath
+0806f990 l     F .text	0000005a cache_rpath
+080b3604 l     O .rodata	0000000f __PRETTY_FUNCTION__.9
+0806ff20 l     F .text	00001a03 _dl_map_object_from_fd.constprop.0
+080b35a0 l     O .rodata	00000017 __PRETTY_FUNCTION__.1
+080b2b4c l     O .rodata	00000015 __PRETTY_FUNCTION__.0
+080af008 l     O .rodata	00000004 dummy_bucket.6
+080b35d8 l     O .rodata	0000000f __PRETTY_FUNCTION__.7
+080b35b8 l     O .rodata	00000009 expected2.2
+080b6ee0 l     O .rodata	00000010 expected.3
+00000000 l    df *ABS*	00000000 dl-lookup.o
+080726c0 l     F .text	000001a3 check_match
+080b3914 l     O .rodata	0000000c __PRETTY_FUNCTION__.1
+08072870 l     F .text	000009d1 do_lookup_x
+080b3920 l     O .rodata	00000014 __PRETTY_FUNCTION__.2
+00000000 l    df *ABS*	00000000 dl-misc.o
+080b6f40 l     O .rodata	00000078 primes.0
+00000000 l    df *ABS*	00000000 dl-origin.o
+080b395c l     O .rodata	0000000f __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 dl-printf.o
+08074740 l     F .text	00000506 _dl_debug_vdprintf
+080b398c l     O .rodata	00000013 __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 dl-reloc.o
+080b53a0 l     O .rodata	0000003b errstring.1
+080b73e0 l     O .rodata	00000040 msg.0
+080b3b84 l     O .rodata	00000019 __PRETTY_FUNCTION__.2
+080756e0 l       .text	00000000 .L119
+08076320 l       .text	00000000 .L143
+08075890 l       .text	00000000 .L159
+08075d80 l       .text	00000000 .L172
+08076330 l       .text	00000000 .L195
+08075f2a l       .text	00000000 .L211
+08075719 l       .text	00000000 .L155
+08075704 l       .text	00000000 .L154
+0807573f l       .text	00000000 .L231
+080756cf l       .text	00000000 .L152
+08075806 l       .text	00000000 .L151
+08075838 l       .text	00000000 .L157
+080757a6 l       .text	00000000 .L149
+0807577a l       .text	00000000 .L148
+080757f6 l       .text	00000000 .L147
+080757be l       .text	00000000 .L146
+08075728 l       .text	00000000 .L168
+08075712 l       .text	00000000 .L305
+080756fd l       .text	00000000 .L306
+080756c8 l       .text	00000000 .L307
+080757f9 l       .text	00000000 .L156
+080763b6 l       .text	00000000 .L153
+08075840 l       .text	00000000 .L150
+080763d0 l       .text	00000000 .L144
+08075db2 l       .text	00000000 .L207
+08075d9d l       .text	00000000 .L206
+08075dea l       .text	00000000 .L243
+08075d78 l       .text	00000000 .L204
+08075eb4 l       .text	00000000 .L203
+08075dd3 l       .text	00000000 .L209
+08075e9c l       .text	00000000 .L201
+08075e6d l       .text	00000000 .L200
+08075e5d l       .text	00000000 .L199
+08075e25 l       .text	00000000 .L198
+08075dbc l       .text	00000000 .L220
+08075dab l       .text	00000000 .L308
+08075d96 l       .text	00000000 .L309
+08075d71 l       .text	00000000 .L184
+08075e60 l       .text	00000000 .L208
+080763e8 l       .text	00000000 .L205
+08075dda l       .text	00000000 .L202
+080763dc l       .text	00000000 .L196
+00000000 l    df *ABS*	00000000 dl-setup_hash.o
+080b3bd0 l     O .rodata	0000000f __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 dl-cache.o
+08076bd0 l     F .text	0000031a search_cache
+080e69c0 l     O .bss	00000004 cache
+080e69b8 l     O .bss	00000004 cachesize
+080e69bc l     O .bss	00000004 cache_new
+080b3be0 l     O .rodata	00000016 __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 gconv_db.o
+08077300 l     F .text	00000096 free_derivation
+080773a0 l     F .text	00000057 free_modules_db
+08077400 l     F .text	0000003e derivation_compare
+080b3bf8 l     O .rodata	00000015 __PRETTY_FUNCTION__.0
+08077500 l     F .text	00000b0d find_derivation
+080e69d0 l     O .bss	00000004 known_derivations
+00000000 l    df *ABS*	00000000 gconv_conf.o
+08078550 l     F .text	000003ca __gconv_get_path
+080b3c28 l     O .rodata	00000011 default_gconv_path
+080b3c10 l     O .rodata	00000011 __PRETTY_FUNCTION__.1
+080b7808 l     O .rodata	00000008 empty_path_elem
+08078920 l     F .text	00000117 insert_module
+08078a40 l     F .text	000003a6 add_module
+080b3c24 l     O .rodata	00000004 gconv_module_ext
+08078df0 l     F .text	00000092 add_alias2.part.0
+08078e90 l     F .text	000002ef read_conf_file.isra.0
+080e69e0 l     O .bss	00000004 modcounter.0
+08079180 l     F .text	0000033a __gconv_read_conf
+080b3c3c l     O .rodata	0000000e gconv_conf_filename
+080e3d00 l     O .data	00000180 builtin_modules
+080b7420 l     O .rodata	000003e7 builtin_aliases
+080e69e4 l     O .bss	00000004 once
+00000000 l    df *ABS*	00000000 gconv_builtin.o
+080e2d80 l     O .data.rel.ro	000000c0 map
+080b3c74 l     O .rodata	0000001a __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 gconv_simple.o
+080b5680 l     O .rodata	00000020 __PRETTY_FUNCTION__.20
+080b5660 l     O .rodata	00000020 __PRETTY_FUNCTION__.19
+080b5620 l     O .rodata	00000022 __PRETTY_FUNCTION__.18
+080b55e0 l     O .rodata	00000022 __PRETTY_FUNCTION__.17
+080b3e80 l     O .rodata	00000015 __PRETTY_FUNCTION__.16
+080b55a0 l     O .rodata	00000021 __PRETTY_FUNCTION__.15
+080b5560 l     O .rodata	00000021 __PRETTY_FUNCTION__.14
+080b3e64 l     O .rodata	0000001b __PRETTY_FUNCTION__.13
+080b5540 l     O .rodata	00000020 __PRETTY_FUNCTION__.12
+080b3e48 l     O .rodata	0000001a __PRETTY_FUNCTION__.11
+080b3e40 l     O .rodata	00000005 inmask.9
+080b5520 l     O .rodata	00000020 __PRETTY_FUNCTION__.10
+080b3e24 l     O .rodata	0000001a __PRETTY_FUNCTION__.8
+080b5500 l     O .rodata	00000020 __PRETTY_FUNCTION__.7
+080b3e08 l     O .rodata	0000001a __PRETTY_FUNCTION__.6
+080b54e0 l     O .rodata	00000020 __PRETTY_FUNCTION__.5
+080b3dec l     O .rodata	0000001a __PRETTY_FUNCTION__.4
+080b54a0 l     O .rodata	00000027 __PRETTY_FUNCTION__.3
+080b5460 l     O .rodata	00000021 __PRETTY_FUNCTION__.2
+080b5420 l     O .rodata	00000027 __PRETTY_FUNCTION__.1
+080b53e0 l     O .rodata	00000021 __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 gconv_cache.o
+08080520 l     F .text	00000102 find_module_idx
+080e69f0 l     O .bss	00000004 gconv_cache
+080e69ec l     O .bss	00000004 cache_size
+08080630 l     F .text	0000012f find_module.constprop.0
+080e69e8 l     O .bss	00000004 cache_malloced
+00000000 l    df *ABS*	00000000 gconv_dl.o
+08080f40 l     F .text	00000025 known_compare
+08080f70 l     F .text	000000a2 do_release_shlib
+080b3ec0 l     O .rodata	00000011 __PRETTY_FUNCTION__.0
+08081020 l     F .text	00000038 do_release_all
+080e69f4 l     O .bss	00000004 loaded
+080b3ed4 l     O .rodata	00000013 __PRETTY_FUNCTION__.1
+00000000 l    df *ABS*	00000000 setlocale.o
+080812b0 l     F .text	0000020a new_composite_name
+080814c0 l     F .text	000000c9 free_category
+080e2e80 l     O .data.rel.ro	00000034 _nl_current_used
+080e2e40 l     O .data.rel.ro	00000034 _nl_category_postload
+00000000 l    df *ABS*	00000000 finddomain.o
+080e6a80 l     O .bss	00000020 lock.0
+080e6aa0 l     O .bss	00000004 _nl_loaded_domains
+00000000 l    df *ABS*	00000000 localealias.o
+08084e70 l     F .text	0000002c alias_compare
+08084ea0 l     F .text	000005d2 read_alias_file
+080b3f38 l     O .rodata	0000000e aliasfile.0
+080e6abc l     O .bss	00000004 nmap
+080e6ac0 l     O .bss	00000004 map
+080e6ab8 l     O .bss	00000004 maxmap
+080e6ac8 l     O .bss	00000004 string_space_act
+080e6ac4 l     O .bss	00000004 string_space_max
+080e6acc l     O .bss	00000004 string_space
+080e6ad0 l     O .bss	00000004 lock
+080e6ab4 l     O .bss	00000004 locale_alias_path.1
+00000000 l    df *ABS*	00000000 plural.o
+080b3f48 l     O .rodata	0000001b yypact
+080b7fe0 l     O .rodata	00000039 yycheck
+080b8020 l     O .rodata	00000039 yytable
+080b805c l     O .rodata	0000001b yydefact
+080b7fa4 l     O .rodata	0000000e yyr2
+080b7fb4 l     O .rodata	0000000e yyr1
+080aff81 l     O .rodata	00000003 yypgoto
+080b8059 l     O .rodata	00000003 yydefgoto
+080b8080 l     O .rodata	00000107 yytranslate
+08086342 l       .text	00000000 .L80
+08086750 l       .text	00000000 .L34
+080865e1 l       .text	00000000 .L79
+08086657 l       .text	00000000 .L78
+08086589 l       .text	00000000 .L77
+080865f7 l       .text	00000000 .L76
+08086400 l       .text	00000000 .L72
+0808630a l       .text	00000000 .L74
+08086541 l       .text	00000000 .L71
+080866dd l       .text	00000000 .L70
+08086710 l       .text	00000000 .L69
+0808664f l       .text	00000000 .L67
+080867ea l       .text	00000000 .L41
+08086926 l       .text	00000000 .L48
+080868a7 l       .text	00000000 .L47
+080867bc l       .text	00000000 .L35
+080867cf l       .text	00000000 .L37
+08086819 l       .text	00000000 .L46
+080867f9 l       .text	00000000 .L45
+08086859 l       .text	00000000 .L44
+08086839 l       .text	00000000 .L43
+08086768 l       .text	00000000 .L42
+08086879 l       .text	00000000 .L40
+080868f5 l       .text	00000000 .L39
+080868c7 l       .text	00000000 .L38
+00000000 l    df *ABS*	00000000 plural-exp.o
+080b819c l     O .rodata	00000014 plvar
+080b8188 l     O .rodata	00000014 plone
+00000000 l    df *ABS*	00000000 libc_sigaction.o
+08086cf0 l       .text	00000000 __restore_rt
+08086cf8 l       .text	00000000 __restore
+00000000 l    df *ABS*	00000000 qsort.o
+08086ed0 l     F .text	000001a5 do_swap
+08087080 l     F .text	000002df msort_with_tmp.part.0
+08087360 l     F .text	0000014d indirect_msort_with_tmp
+00000000 l    df *ABS*	00000000 grouping_iterator.o
+080b3f64 l     O .rodata	00000019 __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 printf_buffer_pad_1.o
+080b3fa4 l     O .rodata	00000016 __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 printf_buffer_putc_1.o
+080b3fdc l     O .rodata	00000017 __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 printf_buffer_puts_1.o
+080b3ff4 l     O .rodata	00000017 __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 printf_buffer_to_file.o
+080b403c l     O .rodata	0000001e __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 printf_buffer_write.o
+080b405c l     O .rodata	00000016 __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 reg-modifier.o
+080e6ad8 l     O .bss	00000004 next_bit
+080e6adc l     O .bss	00000004 lock
+00000000 l    df *ABS*	00000000 reg-printf.o
+080e6ae8 l     O .bss	00000004 lock
+00000000 l    df *ABS*	00000000 reg-type.o
+080e6af0 l     O .bss	00000004 lock
+080e3ef8 l     O .data	00000004 pa_next_type
+00000000 l    df *ABS*	00000000 translated_number_width.o
+080b419c l     O .rodata	0000001a __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 wprintf_buffer_putc_1.o
+080b41b8 l     O .rodata	00000018 __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 wgenops.o
+0808cf90 l     F .text	00000254 save_for_wbackup
+00000000 l    df *ABS*	00000000 iofwide.o
+080b457c l     O .rodata	0000000a __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 futex-internal.o
+08090390 l     F .text	000002a7 __futex_abstimed_wait_common
+00000000 l    df *ABS*	00000000 pthread_kill.o
+08090a50 l     F .text	00000160 __pthread_kill_implementation.constprop.0
+080b82d8 l     O .rodata	00000008 sigall_set
+00000000 l    df *ABS*	00000000 pthread_rwlock_init.o
+080b82e0 l     O .rodata	00000008 default_rwlockattr
+00000000 l    df *ABS*	00000000 stpcpy.o
+08091900 l     F .text	0000003a __stpcpy_ifunc
+00000000 l    df *ABS*	00000000 strcasecmp_l.o
+08091940 l     F .text	00000035 __strcasecmp_l_ifunc
+00000000 l    df *ABS*	00000000 strcpy.o
+08091980 l     F .text	0000003a strcpy_ifunc
+00000000 l    df *ABS*	00000000 strcspn.o
+080919c0 l     F .text	00000024 strcspn_ifunc
+00000000 l    df *ABS*	00000000 wcslen.o
+08098560 l     F .text	00000024 __wcslen_ifunc
+00000000 l    df *ABS*	00000000 opendir.o
+08098a30 l     F .text	00000092 opendir_tail
+00000000 l    df *ABS*	00000000 getcwd.o
+080b45d8 l     O .rodata	00000009 __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 dl-runtime.o
+080b4618 l     O .rodata	0000000a __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 dl-libc.o
+08099d20 l     F .text	0000003d do_dlopen
+08099d60 l     F .text	0000007a dlerror_run
+08099de0 l     F .text	00000085 do_dlsym_private
+08099e70 l     F .text	00000035 do_dlsym
+08099eb0 l     F .text	00000037 do_dlvsym
+08099ef0 l     F .text	00000005 do_dlclose
+08099f00 l     F .text	0000006d free_slotinfo
+00000000 l    df *ABS*	00000000 gconv.o
+080b4648 l     O .rodata	00000008 __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 gconv_charset.o
+0809a9c0 l     F .text	00000165 gconv_parse_code
+00000000 l    df *ABS*	00000000 findlocale.o
+080b4650 l     O .rodata	00000004 slashdot.0
+080b8300 l     O .rodata	00000034 codeset_idx.2
+080b4658 l     O .rodata	00000010 __PRETTY_FUNCTION__.1
+00000000 l    df *ABS*	00000000 loadarchive.o
+0809b740 l     F .text	0000000d rangecmp
+080e6b40 l     O .bss	00000004 archloaded
+080e6bdc l     O .bss	00000004 archmapped
+080e6bcc l     O .bss	00000010 headmap
+080e6b60 l     O .bss	0000006c archive_stat
+080b46b0 l     O .rodata	0000001f archfname
+080b4690 l     O .rodata	0000001d __PRETTY_FUNCTION__.1
+080b4678 l     O .rodata	00000017 __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 loadlocale.o
+080b8980 l     O .rodata	00000034 _nl_category_num_items
+080b8380 l     O .rodata	00000040 _nl_value_type_LC_IDENTIFICATION
+080b8920 l     O .rodata	0000004c _nl_value_type_LC_COLLATE
+080b86dc l     O .rodata	00000018 _nl_value_type_LC_NUMERIC
+080b8460 l     O .rodata	0000027c _nl_value_type_LC_TIME
+080b83c0 l     O .rodata	00000008 _nl_value_type_LC_MEASUREMENT
+080b8430 l     O .rodata	0000000c _nl_value_type_LC_PAPER
+080b843c l     O .rodata	00000014 _nl_value_type_LC_MESSAGES
+080b843c l     O .rodata	00000014 _nl_value_type_LC_TELEPHONE
+080b8414 l     O .rodata	0000001c _nl_value_type_LC_NAME
+080b83e0 l     O .rodata	00000034 _nl_value_type_LC_ADDRESS
+080b8700 l     O .rodata	000000b8 _nl_value_type_LC_MONETARY
+080b87c0 l     O .rodata	00000158 _nl_value_type_LC_CTYPE
+080b46d0 l     O .rodata	00000017 __PRETTY_FUNCTION__.0
+0809c934 l       .text	00000000 .L75
+0809c608 l       .text	00000000 .L26
+0809c660 l       .text	00000000 .L25
+0809c5b8 l       .text	00000000 .L24
+0809c8f0 l       .text	00000000 .L23
+0809c7b0 l       .text	00000000 .L22
+0809c760 l       .text	00000000 .L21
+0809c850 l       .text	00000000 .L20
+0809c890 l       .text	00000000 .L19
+0809c800 l       .text	00000000 .L18
+0809c6c0 l       .text	00000000 .L17
+0809c4f0 l       .text	00000000 .L15
+00000000 l    df *ABS*	00000000 C-collate.o
+080b8de0 l     O .rodata	00000100 collseqmb
+080b89c0 l     O .rodata	0000041c collseqwc
+00000000 l    df *ABS*	00000000 C-ctype.o
+080e1238 l     O .data.rel.ro	00000010 lc_ctype_data
+080c5280 l     O .rodata	000019ec translit_from_idx
+080c1ea0 l     O .rodata	000033d8 translit_from_tbl
+080c04a0 l     O .rodata	000019ec translit_to_idx
+080ba8a0 l     O .rodata	00005bfc translit_to_tbl
+00000000 l    df *ABS*	00000000 C-monetary.o
+080aff83 l     O .rodata	00000002 not_available
+080c6d10 l     O .rodata	00000008 conversion_rate
+00000000 l    df *ABS*	00000000 printf_buffer_as_file.o
+0809e840 l     F .text	000000a6 __printf_buffer_as_file_commit
+080b4854 l     O .rodata	0000001f __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 memmem.o
+0809f1b0 l     F .text	0000045e two_way_long_needle
+00000000 l    df *ABS*	00000000 strspn.o
+0809f8c0 l     F .text	00000024 strspn_ifunc
+00000000 l    df *ABS*	00000000 sysconf.o
+0809fce0 l     F .text	00000187 __sysconf_check_spec
+080b4964 l     O .rodata	0000000e __PRETTY_FUNCTION__.0
+080b4938 l     O .rodata	00000018 __PRETTY_FUNCTION__.2
+080b4950 l     O .rodata	00000011 __PRETTY_FUNCTION__.1
+080a00a0 l       .text	00000000 .L22
+080a0150 l       .text	00000000 .L51
+080a0160 l       .text	00000000 .L36
+080a01a0 l       .text	00000000 .L55
+080a0200 l       .text	00000000 .L54
+080a0223 l       .text	00000000 .L53
+080a0366 l       .text	00000000 .L99
+080a01ba l       .text	00000000 .L69
+080a01ec l       .text	00000000 .L100
+080a02dd l       .text	00000000 .L79
+080a02aa l       .text	00000000 .L78
+080a02a0 l       .text	00000000 .L77
+080a02d3 l       .text	00000000 .L76
+080a02c9 l       .text	00000000 .L75
+080a0264 l       .text	00000000 .L74
+080a01b0 l       .text	00000000 .L58
+080a025a l       .text	00000000 .L73
+080a0250 l       .text	00000000 .L72
+080a0246 l       .text	00000000 .L71
+080a01d8 l       .text	00000000 .L66
+080a01ce l       .text	00000000 .L65
+080a023c l       .text	00000000 .L70
+080a02e7 l       .text	00000000 .L68
+080a026e l       .text	00000000 .L67
+080a01c4 l       .text	00000000 .L64
+080a0282 l       .text	00000000 .L63
+080a0278 l       .text	00000000 .L62
+080a0296 l       .text	00000000 .L61
+080a028c l       .text	00000000 .L60
+080a01e2 l       .text	00000000 .L59
+080a033f l       .text	00000000 .L86
+080a0322 l       .text	00000000 .L85
+080a00fa l       .text	00000000 .L41
+080a0305 l       .text	00000000 .L84
+080a035c l       .text	00000000 .L83
+080a02fb l       .text	00000000 .L82
+080a01f6 l       .text	00000000 .L102
+080a02f1 l       .text	00000000 .L81
+00000000 l    df *ABS*	00000000 dl-close.o
+080a0580 l     F .text	00000116 remove_slotinfo
+080b4ad0 l     O .rodata	00000010 __PRETTY_FUNCTION__.0
+080e6be0 l     O .bss	00000004 dl_close_state.2
+080b4ae0 l     O .rodata	00000011 __PRETTY_FUNCTION__.1
+00000000 l    df *ABS*	00000000 dl-find_object.o
+080a1500 l     F .text	00000069 _dl_find_object_from_map
+080a1570 l     F .text	000001ab _dlfo_process_initial
+080e6bec l     O .bss	00000008 _dlfo_loaded_mappings
+080e2f78 l     O .data.rel.ro	00000004 _dlfo_nodelete_mappings_size
+080e2f74 l     O .data.rel.ro	00000004 _dlfo_nodelete_mappings
+080a1720 l     F .text	000000db _dlfo_sort_mappings.part.0
+080e2f80 l     O .data.rel.ro	00000014 _dlfo_main
+080e6be4 l     O .bss	00000008 _dlfo_loaded_mappings_version
+080e2f7c l     O .data.rel.ro	00000004 _dlfo_nodelete_mappings_end
+080b4b50 l     O .rodata	00000015 __PRETTY_FUNCTION__.2
+080b4b34 l     O .rodata	00000019 __PRETTY_FUNCTION__.1
+080b56a0 l     O .rodata	00000020 __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 dl-open.o
+080a23c0 l     F .text	00000137 add_to_global_update
+080b4d08 l     O .rodata	00000015 __PRETTY_FUNCTION__.0
+080a2500 l     F .text	0000001b call_dl_init
+080a2520 l     F .text	000000f4 dl_open_worker
+080a2b60 l     F .text	00000a3d dl_open_worker_begin
+080a2620 l     F .text	00000021 add_to_global_resize_failure.isra.0
+080a2650 l     F .text	00000147 add_to_global_resize
+080b4d68 l     O .rodata	00000018 __PRETTY_FUNCTION__.5
+080b4d5c l     O .rodata	00000009 __PRETTY_FUNCTION__.4
+080b4d44 l     O .rodata	00000015 __PRETTY_FUNCTION__.3
+080b4d20 l     O .rodata	00000014 __PRETTY_FUNCTION__.1
+080b4d34 l     O .rodata	0000000e __PRETTY_FUNCTION__.2
+00000000 l    df *ABS*	00000000 dl-sort-maps.o
+080a35a0 l     F .text	000000bb dfs_traversal.part.0
+080b4d80 l     O .rodata	00000012 __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 dl-version.o
+080b4f24 l     O .rodata	00000017 __PRETTY_FUNCTION__.1
+080b4f14 l     O .rodata	0000000d __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 rtld_static_init.o
+080e2fa0 l     O .data.rel.ro	00000034 _dlfcn_hook
+080b4f3c l     O .rodata	00000013 __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 dlinfo.o
+080a4bc0 l     F .text	0000012e dlinfo_doit
+080a4cbb l       .text	00000000 .L2
+080a4bf0 l       .text	00000000 .L11
+080a4c00 l       .text	00000000 .L10
+080a4c10 l       .text	00000000 .L9
+080a4c30 l       .text	00000000 .L8
+080a4c40 l       .text	00000000 .L7
+080a4c60 l       .text	00000000 .L6
+080a4c80 l       .text	00000000 .L5
+080a4ca0 l       .text	00000000 .L3
+00000000 l    df *ABS*	00000000 dlmopen.o
+080a4d60 l     F .text	00000070 dlmopen_doit
+00000000 l    df *ABS*	00000000 dlopen.o
+080a4eb0 l     F .text	0000007d dlopen_doit
+00000000 l    df *ABS*	00000000 dlsym.o
+080a5010 l     F .text	0000001d dlsym_doit
+00000000 l    df *ABS*	00000000 dlvsym.o
+080a5150 l     F .text	00000020 dlvsym_doit
+00000000 l    df *ABS*	00000000 cacheinfo.o
+080a5410 l       .text	00000000 .L16
+080a5360 l       .text	00000000 .L15
+080a5370 l       .text	00000000 .L14
+080a5380 l       .text	00000000 .L13
+080a5390 l       .text	00000000 .L12
+080a53a0 l       .text	00000000 .L11
+080a53b0 l       .text	00000000 .L10
+080a53c0 l       .text	00000000 .L9
+080a53d0 l       .text	00000000 .L8
+080a53e0 l       .text	00000000 .L7
+080a53f0 l       .text	00000000 .L6
+080a5400 l       .text	00000000 .L5
+080a5350 l       .text	00000000 .L3
+00000000 l    df *ABS*	00000000 dl-call-libc-early-init.o
+080b4f50 l     O .rodata	00000019 __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 dl-deps.o
+080a5650 l     F .text	0000003c openaux
+080b50c8 l     O .rodata	00000014 __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 dl-init.o
+080a6690 l     F .text	0000012d call_init
+080b510c l     O .rodata	0000000a __PRETTY_FUNCTION__.0
+00000000 l    df *ABS*	00000000 dl-lookup-direct.o
+080a6920 l     F .text	000000c8 check_match
+00000000 l    df *ABS*	00000000 dl-sym.o
+080a6f40 l     F .text	0000002d call_dl_lookup
+080a6f70 l     F .text	00000232 do_sym
+00000000 l    df *ABS*	00000000 crtstuff.c
+080df9c4 l     O .eh_frame	00000000 __FRAME_END__
+00000000 l    df *ABS*	00000000 
+08048000 l       .note.gnu.build-id	00000000 __ehdr_start
+080e09e0 l       .fini_array	00000000 __fini_array_end
+08048178 l       .rel.plt	00000000 __rel_iplt_start
+080481e0 l       .rel.plt	00000000 __rel_iplt_end
+080e09d8 l       .fini_array	00000000 __fini_array_start
+080e09d8 l       .init_array	00000000 __init_array_end
+080e09d4 l       .tbss	00000000 __preinit_array_end
+080e2ff4 l     O .got.plt	00000000 _GLOBAL_OFFSET_TABLE_
+080e09d4 l       .init_array	00000000 __init_array_start
+080e09d4 l       .tbss	00000000 __preinit_array_start
+0804cf00 g     F .text	00000000 .hidden __x86.get_pc_thunk.cx
+080e10c0 g     O .data.rel.ro	00000178 .hidden _nl_C_LC_CTYPE
+08055790 g     F .text	0000001b .hidden __stack_chk_fail_local
+0809a2c0 g     F .text	0000011f __dl_libc_freemem
+080a79a0 g     F .text	00000070 .hidden __sfp_handle_exceptions
+08091900  w  i   .text	0000003a stpcpy
+080b9300 g     O .rodata	0000004c .hidden _nl_C_LC_CTYPE_class_print
+0806d1c0  w    F .text	00000174 tsearch
+080e3f60 g     O .bss	00000004 .hidden __x86_shared_non_temporal_threshold
+08054000  w    F .text	000000a9 clock_gettime
+080a0530 g     F .text	00000050 .hidden __getdtablesize
+08062880 g     F .text	0000002d _IO_remove_marker
+080a4610  w    F .text	00000037 secure_getenv
+080984d0 g     F .text	0000008b .hidden __stpcpy_ia32
+08086d00 g     F .text	00000187 __libc_sigaction
+0804989e g     F .text	0000000f c2bc_abort
+08091980 g   i   .text	0000003a strcpy
+0808dc00 g     F .text	000000d8 _IO_wdefault_xsgetn
+08076910 g     F .text	000001a0 .hidden __thread_gscope_wait
+080a71b0 g     F .text	000000bb .hidden _dl_vsym
+08076840 g     F .text	000000cd .hidden _dl_setup_hash
+08060be0 g     F .text	0000029d _IO_link_in
+080ad380 g     F .text	00000d93 .hidden _Unwind_Find_FDE
+08058ac0  w    F .text	00000124 unsetenv
+08074c50 g     F .text	0000002d .hidden _dl_debug_printf
+08086c50  w    F .text	00000040 gsignal
+08061d40 g     F .text	0000006f _IO_sputbackc
+080b9540 g     O .rodata	00000048 .hidden _nl_C_LC_CTYPE_class_upper
+08061c90 g     F .text	00000094 _IO_default_finish
+08098390 g     F .text	00000087 .hidden __strcpy_ia32
+08065150  w  i   .text	00000035 bcmp
+080a3b60 g     F .text	000008a3 .hidden _dl_check_map_versions
+080aa690 g     F .text	0000001a .hidden _Unwind_GetIPInfo
+0807cae0 g     F .text	00000e06 __gconv_transform_utf8_internal
+080e68e0 g     O .bss	00000004 .hidden __libc_argc
+08086c10 g     F .text	00000031 .hidden __longjmp
+0805ed90  w    F .text	00000097 _IO_file_finish
+080b8f40 g     O .rodata	0000005c .hidden _nl_C_LC_CTYPE_width
+0808a7e0 g     F .text	000000cf .hidden __printf_buffer_flush_fp
+0806cd80  w    F .text	00000042 getrlimit
+08084d90 g     F .text	000000e0 .hidden _nl_unload_domain
+080a4cf0 g     F .text	00000068 __dlinfo
+080a47f0  w    F .text	000001c3 dlerror
+080aa680 g     F .text	0000000f .hidden _Unwind_GetIP
+08091a80  w    F .text	00000088 strtok_r
+0809d780 g     F .text	00000130 .hidden __mpn_impn_mul_n_basecase
+0808d750 g     F .text	000000a9 _IO_wdoallocbuf
+080a4cf0  w    F .text	00000068 dlinfo
+08049884 g     F .text	0000001a reach_error
+08098cc0 g     F .text	0000000d .hidden __getpid
+0808bed0 g     F .text	00000165 __register_printf_modifier
+08062c40 g     F .text	00000094 _IO_list_lock
+0809fe70  w    F .text	000005d6 sysconf
+080e3cd0 g     O .data	00000004 stdout
+08088670 g     F .text	000000a8 .hidden __printf_buffer_write
+0809f8f0 g     F .text	00000068 __strcasecmp_ia32
+08099730 g     F .text	00000025 __stat64_time64
+080837a0 g     F .text	000015e9 .hidden _nl_load_domain
+080e283c g     O .data.rel.ro	00000004 .hidden _dl_vdso_clock_gettime
+080912b0 g     F .text	000003ea ___pthread_rwlock_wrlock
+08061850 g     F .text	0000007d _IO_default_doallocate
+0804bca5 g     F .text	00000000 .hidden __x86.get_pc_thunk.si
+0806cd80 g     F .text	00000042 __new_getrlimit
+080a0530  w    F .text	00000050 getdtablesize
+00000028 g       .tbss	00000004 __libc_dlerror_result
+0809fc00  w    F .text	000000d6 fdopendir
+08066f40 g     F .text	0000028b .hidden __strcmp_sse4_2
+08063890 g     F .text	0000004d __libc_cleanup_push_defer
+08060020 g     F .text	000001bb _IO_new_file_xsputn
+08074f10 g     F .text	00000065 .hidden _dl_reloc_bad_type
+0806a940 g     F .text	00000354 .hidden __memchr_sse2_bsf
+0808fde0 g     F .text	0000003b .hidden __printf_buffer_flush_snprintf
+0808d1f0 g     F .text	0000002f _IO_least_wmarker
+08061c80 g     F .text	00000003 _IO_default_sync
+080ad0b0 g     F .text	0000009b .hidden __register_frame
+0805f450  w    F .text	000000df _IO_file_sync
+0808c650 g     F .text	00000032 .hidden __wprintf_buffer_to_file_init
+080907e0 g     F .text	00000028 __nptl_stack_list_del
+0809dca0 g     F .text	00000110 .hidden __mpn_impn_sqr_n_basecase
+08090de0 g     F .text	0000001f __pthread_once
+080a5200 g     F .text	0000008e ___dlvsym
+0808dea0 g     F .text	00000097 _IO_seekwmark
+0809e480 g     F .text	0000010f .hidden __mpn_extract_long_double
+0806aca0 g     F .text	000006eb .hidden __strnlen_sse2
+080e29e4 g     O .data.rel.ro	00000054 _IO_wfile_jumps
+080af00c g     O .rodata	00000004 .hidden _sys_errlist_internal_len
+080b93c0 g     O .rodata	0000004c .hidden _nl_C_LC_CTYPE_class_xdigit
+080640a0 g     F .text	0000029e __pthread_mutex_lock
+0805ff70  w    F .text	000000a4 _IO_file_write
+080a27a0 g     F .text	0000009c _dl_find_dso_for_object
+08090ea0  w    F .text	000001fc pthread_rwlock_rdlock
+080498cf g     F .text	00000006 __VERIFIER_nondet_int_a
+080696c0 g     F .text	000003d4 .hidden __strchr_sse2
+0807aee0 g     F .text	000004f5 __gconv_transform_ascii_internal
+0806da20 g     F .text	00000044 .hidden __init_misc
+0809e290 g     F .text	00000098 .hidden __mpn_sub_n
+0806c230 g     F .text	000000f4 .hidden __wcsmbs_clone_conv
+08051170 g     F .text	0000003f __glibc_morecore
+0809f870  w    F .text	0000004c strndup
+0809ce80 g     F .text	0000003d .hidden __mpn_cmp
+0808fd10 g     F .text	000000cc .hidden __libio_codecvt_length
+08091760  w    F .text	000000bf argz_add_sep
+0806c8a0 g     F .text	00000020 __sched_get_priority_max
+080a4700 g     F .text	0000003c .hidden __mpn_addmul_1
+08065210 g   i   .text	00000024 __strnlen
+08056330 g     F .text	000000fe .hidden __tls_init_tp
+08099760  w    F .text	0000006b stat64
+0809a780 g     F .text	000001bd .hidden __gconv
+0806b860 g     F .text	00000058 memmove
+0807d8f0 g     F .text	0000082d __gconv_transform_ucs2_internal
+08090e00  w    F .text	00000091 pthread_rwlock_init
+080e6ad4 g     O .bss	00000004 .hidden __printf_modifier_table
+08099840 g     F .text	000000e7 __tcgetattr
+080e3f50 g     O .bss	00000004 __VERIFIER_nondet_slot_b
+080742b0 g     F .text	000002fa .hidden _dl_new_object
+080aac50 g     F .text	00000128 .hidden _Unwind_Resume_or_Rethrow
+080541e0 g     F .text	00000351 __fstatat64_time64
+080545f0 g     F .text	000000a7 __fcntl64_nocancel
+0808c490  w    F .text	00000022 snprintf
+08052260 g     F .text	000003f7 __calloc
+08061630 g     F .text	000000d0 _IO_default_xsgetn
+0804ca50 g     F .text	000001de .hidden __libc_message_impl
+0806a1e0 g     F .text	000001e6 .hidden __strrchr_sse2_bsf
+08091a80 g     F .text	00000088 __strtok_r
+0806dfb0 g     F .text	000000af _dl_exception_create
+080550b0  w    F .text	00000024 munmap
+0804bca9 g     F .text	00000000 .hidden __x86.get_pc_thunk.di
+0806c850 g     F .text	00000024 __sched_getparam
+080e2828 g     O .data.rel.ro	00000004 .hidden __libc_stack_end
+08061a50 g     F .text	0000003f _IO_enable_locks
+0806c850  w    F .text	00000024 sched_getparam
+080b4668 g     O .rodata	00000010 .hidden _nl_default_locale_path
+0808c2a0 g     F .text	000000ef __register_printf_specifier
+080e35b0 g     O .data	00000004 .hidden _dl_debug_fd
+080e1420 g     O .data.rel.ro	0000003c .hidden _nl_C_LC_NAME
+0806d1c0 g     F .text	00000174 __tsearch
+08087990 g     F .text	00000607 ____strtol_l_internal
+0805fc90 g     F .text	00000146 _IO_file_seekoff_mmap
+08085f70 g     F .text	0000006e .hidden __gettext_free_exp
+080e3060 g     O .data	00000004 .hidden __x86_data_cache_size_half
+0809e8f0 g     F .text	000000c7 __printf_buffer_as_file_overflow
+08076ef0 g     F .text	00000367 .hidden _dl_load_cache_lookup
+080e6ae4  w    O .bss	00000004 .hidden __libc_reg_printf_freemem_ptr
+00000002 g       *ABS*	00000000 _nl_current_LC_NUMERIC_used
+0806cb50  w    F .text	000000ba __write
+0808fb40 g     F .text	000000cc .hidden __libio_codecvt_out
+08086a20 g     F .text	00000108 .hidden __gettext_extract_plural
+08052b40  w    F .text	000001ff malloc_stats
+080615d0 g     F .text	00000057 _IO_sgetn
+08054fe0 g     F .text	00000092 __mmap
+080e66a8 g     O .bss	00000008 .hidden _dl_stack_user
+08055080 g     F .text	00000026 __mprotect
+080e6a40 g     O .bss	00000004 _nl_domain_bindings
+0806de30 g     F .text	000000f0 _dl_catch_exception
+080e3cf4 g     O .data	00000001 __libc_single_threaded
+080e69d4 g     O .bss	00000004 .hidden __gconv_path_envvar
+08051a50 g     F .text	0000013c .hidden __malloc_arena_thread_freeres
+080aa6e0 g     F .text	0000000f .hidden _Unwind_GetRegionStart
+080587b0 g     F .text	00000297 .hidden __add_to_environ
+080e35e0 g     O .data	00000008 .hidden _dl_initial_searchlist
+08058710 g     F .text	0000009c .hidden getenv
+0805feb0 g     F .text	0000002c _IO_file_seek
+08098560  w  i   .text	00000024 wcslen
+0804c620 g     F .text	000000d1 .hidden _itoa_word
+080e3f5c g     O .bss	00000004 .hidden __x86_rep_movsb_stop_threshold
+0000000c g       .tbss	00000004 errno
+08090e00 g     F .text	00000091 __pthread_rwlock_init
+0806da00 g     F .text	00000019 __tdestroy
+08098cd0 g     F .text	0000086e __getcwd
+080aadb0 g     F .text	000000e7 .hidden _Unwind_Backtrace
+08062830 g     F .text	00000050 _IO_init_marker
+0809f610  w    F .text	00000257 memmem
+080878d0 g     F .text	00000034 __strtol_internal
+0806a3d0 g     F .text	00000564 .hidden __memchr_sse2
+080b7820 g     O .rodata	0000000d .hidden _nl_category_name_idxs
+080986d0  w    F .text	00000029 wmempcpy
+08064dc0 g     F .text	00000139 __pthread_current_priority
+0808d580 g     F .text	0000006f __woverflow
+080e3a60 g     O .data	00000098 _IO_2_1_stdout_
+0808c390 g     F .text	00000005 __register_printf_function
+08065150 g   i   .text	00000035 __memcmpeq
+0809e100 g     F .text	00000128 .hidden __mpn_mul_n
+0805e410 g     F .text	0000003b _IO_new_file_init
+08098cc0  w    F .text	0000000d getpid
+0806cdd0  w    F .text	00000037 getpagesize
+080912b0 g     F .text	000003ea __pthread_rwlock_wrlock
+08080a20 g     F .text	00000483 .hidden __gconv_lookup_cache
+08099640 g     F .text	000000ea __openat64
+08073f30 g     F .text	0000004d .hidden _dl_higher_prime_number
+080b91e0 g     O .rodata	0000004c .hidden _nl_C_LC_CTYPE_class_cntrl
+080878b0 g     F .text	0000001e qsort
+08052ed0 g     F .text	0000006f __posix_memalign
+08062170 g     F .text	000002fd _IO_flush_all_linebuffered
+080999a0 g     F .text	0000017c .hidden _dl_make_stacks_executable
+0804ccc0 g     F .text	00000064 __lll_lock_wait
+0808c860  w    F .text	0000029b _IO_fclose
+08085480 g     F .text	000001a0 _nl_expand_alias
+080e69c8 g     O .bss	00000004 .hidden __gconv_modules_db
+080e6694 g     O .bss	00000004 .hidden _dl_stack_cache_lock
+0808ea60 g     F .text	0000004b .hidden _IO_wfile_underflow_maybe_mmap
+0808e090 g     F .text	0000019e _IO_wdo_write
+080a4e40  w    F .text	0000006e dlmopen
+080af000 g     O .rodata	00000004 _fp_hw
+0808cc50 g     F .text	00000331 __getdelim
+0806ca90  w    F .text	000000ba __read
+08090bb0 g     F .text	0000000d .hidden __pthread_kill_internal
+080e3560 g     O .data	00000018 .hidden _dl_load_tls_lock
+0809f180 g     F .text	00000021 __pthread_cleanup_pop
+0809f180  w    F .text	00000021 _pthread_cleanup_pop
+08061420 g     F .text	00000006 _IO_default_underflow
+08073f80 g     F .text	00000282 .hidden _dl_strtoul
+08055760 g     F .text	00000027 __fprintf_chk
+08087fe0  w    F .text	00000072 _IO_funlockfile
+080a67c0 g     F .text	00000152 .hidden _dl_init
+08080780 g     F .text	000001fc .hidden __gconv_load_cache
+08052ab0 g     F .text	00000084 __mallinfo
+0807a7e0 g     F .text	000006f2 __gconv_transform_ucs4le_internal
+080e68d0 g     O .bss	00000004 .hidden _dl_platformlen
+080e3f90 g     O .bss	00000004 _dl_tls_static_used
+0808d890 g     F .text	00000068 _IO_switch_to_wget_mode
+080e304c g     O .data	00000004 .hidden __x86_rep_stosb_threshold
+080aa610 g     F .text	0000000f .hidden _Unwind_GetCFA
+080e3064 g     O .data	00000004 .hidden __exit_funcs
+08085fe0 g     F .text	00000a3c .hidden __gettextparse
+08053d30 g     F .text	00000065 memcpy
+08061490 g     F .text	00000132 _IO_default_xsputn
+0809d300 g     F .text	00000057 .hidden __mpn_lshift
+080e3f04 g     O .data	00000000 .hidden __TMC_END__
+0809ca10 g     F .text	0000039e .hidden _nl_load_locale
+0808ac80 g     F .text	000000b9 ___printf_fp
+0805db80 g     F .text	000001f3 _IO_fwrite
+08061700 g     F .text	000000ec _IO_default_setbuf
+08061db0 g     F .text	00000067 _IO_sungetc
+080498f3 g     F .text	00000026 c2bc_main
+08074d40 g     F .text	00000107 .hidden _dl_try_allocate_static_tls
+0808c6d0 g     F .text	00000027 .hidden __get_errlist
+080a5030 g     F .text	00000086 __dlsym
+08080760 g     F .text	00000011 __gconv_get_cache
+08090640 g     F .text	0000002b __futex_abstimed_wait64
+080a44a0 g     F .text	0000005c .hidden _dl_addr_inside_object
+0808f9f0 g     F .text	0000014c _IO_fwide
+08081060 g     F .text	000001ec .hidden __gconv_find_shlib
+080639c0 g     F .text	0000006e .hidden __pthread_tunables_init
+0809cdb0 g     F .text	000000a3 .hidden _nl_unload_locale
+0805e710 g     F .text	00000192 _IO_new_file_close_it
+080e68cc g     O .bss	00000004 .hidden _dl_debug_mask
+0808eab0 g     F .text	000002b4 _IO_wfile_overflow
+08052100 g     F .text	00000043 __libc_memalign
+08064fd0 g     F .text	000000b3 __libc_scratch_buffer_set_array_size
+080957d0 g     F .text	00000058 __strcasecmp_l_nonascii
+0809a020 g     F .text	00000079 __libc_dlsym_private
+08061000 g     F .text	00000065 __overflow
+0809d360 g     F .text	000003d7 .hidden __mpn_mul
+0808e910 g     F .text	0000014c .hidden _IO_wfile_underflow_mmap
+0808fea0 g     F .text	000000d1 .hidden __vsnprintf_internal
+080b8200 g     O .rodata	0000008c .hidden __strtol_ul_max_tab
+08056fd0 g     F .text	00000a20 .hidden _dl_non_dynamic_init
+0804c230 g     F .text	000000ec .hidden __internal_atexit
+0809fb80  w    F .text	00000080 rewinddir
+08052100 g     F .text	00000043 __memalign
+0809e330 g     F .text	0000003c .hidden __mpn_submul_1
+0805ff50 g     F .text	00000020 _IO_file_close
+080916b0 g     F .text	000000a4 __pthread_sigmask
+08052660 g     F .text	000002c2 __malloc_trim
+080e6aec  w    O .bss	00000004 .hidden __libc_reg_type_freemem_ptr
+080a4740 g     F .text	00000018 __dladdr
+080e3ef4 g     O .data	00000004 .hidden _nl_current_default_domain
+080e6aa4 g     O .bss	00000004 _nl_msg_cat_cntr
+08051370 g     F .text	000002c3 malloc
+080a72f0 g     F .text	00000433 .hidden __letf2
+0806c9a0  w    F .text	000000ea __open
+08062980 g     F .text	00000078 _IO_unsave_markers
+080ba5a0 g     O .rodata	00000300 .hidden _nl_C_LC_CTYPE_class
+08087950 g     F .text	00000032 __isoc23_strtol
+08099540  w    F .text	0000004b isatty
+080e35b8 g     O .data	00000008 .hidden _dl_load_adds
+0806b3d0 g     F .text	0000019b .hidden __memchr_ia32
+080e0d90 g     O .data.rel.ro	00000014 .hidden __gettext_germanic_plural
+080a1b40 g     F .text	00000013 _dlfo_sort_mappings
+0806be50 g     F .text	00000079 .hidden __wcsmbs_getfct
+080e3ba0 g     O .data	00000098 _IO_2_1_stdin_
+08079620 g     F .text	0000054e __gconv_transform_internal_ucs4
+080a5420 g     F .text	00000054 .hidden __get_child_max
+08074ea0 g     F .text	0000006f .hidden _dl_protect_relro
+08074d10 g     F .text	00000029 .hidden _dl_fatal_printf
+08099640  w    F .text	000000ea openat64
+0806c8e0  w    F .text	00000026 sched_setscheduler
+080a72a0 g     F .text	0000001b __asprintf
+08065090 g     F .text	0000007c __strerror_r
+080e66a0 g     O .bss	00000008 .hidden _dl_stack_cache
+08090260 g     F .text	000000d1 __lll_lock_elision
+0806bed0 g     F .text	0000035c .hidden __wcsmbs_load_conv
+08055260  w    F .text	00000020 sysinfo
+0808ff80  w    F .text	000000c9 vsnprintf
+0809ddb0 g     F .text	00000344 .hidden __mpn_impn_sqr_n
+08088340 g     F .text	0000005f .hidden __printf_buffer_putc_1
+0808bed0  w    F .text	00000165 register_printf_modifier
+080e0fe0 g     O .data.rel.ro	00000054 .hidden _nl_C_LC_ADDRESS
+0804c349 g     F .text	00000000 .hidden __x86.get_pc_thunk.ax
+08055fc0 g     F .text	00000095 _dl_deallocate_tls
+080b92a0 g     O .rodata	0000004c .hidden _nl_C_LC_CTYPE_class_graph
+0809d8b0 g     F .text	000003ef .hidden __mpn_impn_mul_n
+0809ce60 g     F .text	0000001c .hidden __current_locale_name
+08090ea0 g     F .text	000001fc __pthread_rwlock_rdlock
+080a4fa0 g     F .text	00000066 ___dlopen
+080b95a0 g     O .rodata	00000600 .hidden _nl_C_LC_CTYPE_tolower
+08058d20  w    F .text	00000032 strtoul
+080e3044 g     O .data	00000000 .hidden __dso_handle
+08091a30 g     F .text	0000004c __strsep
+0806c880  w    F .text	00000020 sched_getscheduler
+0804c130 g     F .text	000000fe .hidden __new_exitfn
+08074cd0 g     F .text	0000001f .hidden _dl_printf
+08090100 g     F .text	00000038 __libc_alloca_cutoff
+08058d60 g     F .text	00000032 __isoc23_strtoul
+0804cd90 g     F .text	00000170 .hidden __nptl_deallocate_tsd
+08055320 g     F .text	000000ec .hidden __malloc_thp_mode
+0808d220 g     F .text	0000002a _IO_switch_to_main_wget_area
+08081280 g     F .text	00000030 __gconv_dl_freemem
+08081eb0 g     F .text	0000001e __dcgettext
+00000002 g       *ABS*	00000000 _nl_current_LC_CTYPE_used
+080910a0  w    F .text	00000201 pthread_rwlock_unlock
+08090ea0 g     F .text	000001fc ___pthread_rwlock_rdlock
+080630a0 g     F .text	0000007e _IO_str_init_readonly
+0805f5b0  w    F .text	000006df _IO_file_seekoff
+0804c090 g     F .text	00000053 .hidden __libc_assert_fail
+08062470 g     F .text	00000049 __libio_freemem
+0809fb30 g     F .text	0000004f .hidden _nl_cleanup_time
+0809ef00 g     F .text	000000d1 .hidden __printf_buffer_flush_asprintf
+0806dd70 g     F .text	0000004e _dl_signal_exception
+08055dc0 g     F .text	0000005a .hidden _dl_count_modids
+080e43e8 g     O .bss	00000004 __exit_funcs_lock
+080aa750 g     F .text	000000c5 .hidden __frame_state_for
+08056cd0 g     F .text	00000096 .hidden __tunable_get_val
+080e3f00 g     O .data	00000004 .hidden __nptl_stack_cache_maxsize
+0808ddc0 g     F .text	00000032 _IO_adjust_wcolumn
+08053de0 g     F .text	00000043 __GI_memset
+080569e0 g     F .text	00000176 .hidden __tunables_init
+08058ce0 g     F .text	00000034 __strtoul_internal
+08057a10 g     F .text	00000003 .hidden _dl_audit_pltexit
+08063370 g     F .text	00000323 _IO_str_seekoff
+080521f0  w    F .text	00000062 pvalloc
+080586c0 g     F .text	0000004d __ctype_init
+0808fc10 g     F .text	000000cc .hidden __libio_codecvt_in
+080e664c  w    O .bss	00000004 ___brk_addr
+080910a0 g     F .text	00000201 __pthread_rwlock_unlock
+080e3f84 g     O .bss	00000004 _dl_tls_static_optional
+0806c910 g     F .text	0000008c __lseek64
+0805e600  w    F .text	00000046 _IO_file_setbuf
+0805e8b0 g     F .text	000004d8 _IO_new_file_fopen
+08053da0  w    F .text	00000022 mempcpy
+08052ab0 g     F .text	00000084 __libc_mallinfo
+08090340 g     F .text	00000043 __lll_unlock_elision
+0808cc30 g     F .text	00000016 _IO_new_fopen
+0809ec00 g     F .text	00000096 .hidden __wprintf_buffer_done
+080885f0 g     F .text	0000003c .hidden __printf_buffer_to_file_init
+080e6648  w    O .bss	00000004 _environ
+080881f0 g     F .text	00000096 .hidden __printf_buffer_done
+08079600 g     F .text	00000012 __gconv_btwoc_ascii
+08098560 g   i   .text	00000024 __wcslen
+0806cc30 g     F .text	00000011 .hidden __libc_do_syscall_int80
+08062bc0 g     F .text	00000003 _IO_default_write
+0806ca90 g     F .text	000000ba __libc_read
+080a4740  w    F .text	00000018 dladdr
+08078110 g     F .text	000002b0 .hidden __gconv_find_transform
+080ae310 g     F .text	000002ba .hidden __gcc_personality_v0
+080a4500 g     F .text	00000103 .hidden __rtld_static_init
+0805ff10 g     F .text	00000040 _IO_file_close_mmap
+08055e50 g     F .text	000000c3 .hidden _dl_allocate_tls_storage
+080a0450  w    F .text	000000bf lseek
+08051b90 g     F .text	00000568 __libc_realloc
+080a54d0 g     F .text	00000042 .hidden __atomic_wide_counter_load_relaxed
+08098670  w    F .text	00000029 wmemcpy
+0000001c g       .tbss	00000004 __libc_tsd_CTYPE_TOLOWER
+0807ece0 g     F .text	000007e2 __gconv_transform_ucs2reverse_internal
+08058bf0  w    F .text	000000a7 clearenv
+080e3f8c g     O .bss	00000004 .hidden _dl_tls_static_align
+08076770 g     F .text	000000cb .hidden _dl_scope_free
+080e6648 g     O .bss	00000004 .hidden __environ
+0808c4c0 g     F .text	0000008f .hidden __translated_number_width
+08054fe0  w    F .text	00000092 mmap
+080540b0  w    F .text	00000038 _Exit
+080e3cd8 g     O .data	00000010 .hidden __elision_aconf
+080a50c0 g     F .text	00000086 ___dlsym
+08087fa0  w    F .text	00000020 strtol_l
+0809c3c0 g     F .text	00000645 .hidden _nl_intern_locale_data
+08090910 g     F .text	000000f6 __nptl_deallocate_stack
+08073250 g     F .text	00000bbc .hidden _dl_lookup_symbol_x
+080a47c0  w    F .text	00000025 dlclose
+0808bc00 g     F .text	00000087 .hidden __printf_buffer_flush_fphex_to_wide
+0806c450 g     F .text	0000005a .hidden _nl_cleanup_ctype
+080e3fa4 g     O .bss	00000004 _dl_tls_max_dtv_idx
+08088630 g     F .text	00000032 .hidden __printf_buffer_to_file_done
+0809e590 g     F .text	000002a6 .hidden __mpn_extract_float128
+080b9060 g     O .rodata	000000a8 .hidden _nl_C_LC_CTYPE_map_toupper
+080b9180 g     O .rodata	0000004c .hidden _nl_C_LC_CTYPE_class_punct
+080490ab g     F .text	000001ca abort
+080e6a00 g     O .bss	00000020 .hidden __libc_setlocale_lock
+08056990 g     F .text	00000019 .hidden __tunable_is_initialized
+08049740 g     F .text	00000001 .hidden _dl_relocate_static_pie
+08086bb0 g     F .text	00000056 __sigjmp_save
+080e3cf0 g     O .data	00000004 __sched_fifo_min_prio
+08055790 g     F .text	0000001b __stack_chk_fail
+08097d40 g     F .text	00000029 __strcasecmp_sse4_2
+080995c0 g     F .text	00000073 __lstat64
+0804bca1 g     F .text	00000000 .hidden __x86.get_pc_thunk.dx
+080a1470 g     F .text	0000008c .hidden _dl_close
+080e3fc0 g     O .bss	00000200 _dl_static_dtv
+0808ac80 g     F .text	000000b9 __printf_fp
+080e68b0 g     O .bss	00000004 .hidden _dl_bind_not
+080e38e8 g     O .data	00000004 .hidden __libc_enable_secure
+08081e30 g     F .text	00000077 _nl_postload_ctype
+080a7730 g     F .text	0000026f .hidden __unordtf2
+08054140  w    F .text	00000099 fstat64
+0806d3a0  w    F .text	00000613 tdelete
+0805d9d0 g     F .text	000001ab _IO_fputs
+080e66c8 g     O .bss	00000008 .hidden _dl_hwcap3
+08079b70 g     F .text	00000715 __gconv_transform_ucs4_internal
+08054750 g     F .text	00000064 __open_nocancel
+080e66e8 g     O .bss	00000004 .hidden _dl_auxv
+08049000 g     F .init	00000000 .hidden _init
+0809a120 g     F .text	000000f9 .hidden __libc_dlvsym
+080b9420 g     O .rodata	00000044 .hidden _nl_C_LC_CTYPE_class_digit
+080636a0 g     F .text	0000003f _IO_str_pbackfail
+0808f870 g     F .text	0000017d _IO_wfile_xsputn
+080e17bc g     O .data.rel.ro	00000004 __rseq_offset
+080e69d8 g     O .bss	00000004 __gconv_max_path_elem_len
+08062be0 g     F .text	00000001 _IO_default_imbue
+0809cec0 g     F .text	00000438 .hidden __mpn_divrem
+08087910  w    F .text	00000032 strtol
+080e2838 g     O .data.rel.ro	00000004 .hidden _dl_vdso_clock_gettime64
+08086b70 g     F .text	00000035 __sigsetjmp
+0806c910 g     F .text	0000008c __libc_lseek64
+080a4dd0 g     F .text	0000006e __dlmopen
+08059370 g     F .text	00000020 __isoc23_strtoul_l
+08065210  w  i   .text	00000024 strnlen
+080b5ec0 g     O .rodata	00000024 .hidden _dl_x86_platforms
+080546a0 g     F .text	000000a7 .hidden __fcntl64_nocancel_adjusted
+080834a0 g     F .text	0000029a .hidden _nl_find_domain
+080a69f0 g     F .text	00000162 .hidden _dl_lookup_direct
+08099760 g     F .text	0000006b __stat64
+08062bb0 g     F .text	00000006 _IO_default_read
+0804cd60 g     F .text	00000023 __lll_lock_wake
+080ad250 g     F .text	00000083 .hidden __register_frame_table
+0805d200 g     F .text	00000033 .hidden __get_errname
+0805e710  w    F .text	00000192 _IO_file_close_it
+0804ad90 g     F .text	00000f11 .hidden __libc_start_main_impl
+080e6980 g     O .bss	00000024 __default_pthread_attr
+080e68d4 g     O .bss	00000004 .hidden _dl_platform
+08090850 g     F .text	000000ba .hidden __nptl_free_stacks
+08062bf0 g     F .text	00000013 _IO_iter_begin
+080ba1a0 g     O .rodata	00000400 .hidden _nl_C_LC_CTYPE_class32
+0806a0d0 g     F .text	00000104 .hidden __strchr_sse2_bsf
+0808bc90 g     F .text	000000c3 .hidden __wprintf_fphex_l_buffer
+08055e20 g     F .text	00000027 _dl_get_tls_static_info
+0809ae60 g     F .text	0000002a __gconv_destroy_spec
+08065240 g   i   .text	00000034 strrchr
+08087910 g     F .text	00000032 __strtol
+080586a0 g     F .text	00000018 __ctype_tolower_loc
+0804bd80 g     F .text	00000030 .hidden __libc_check_standard_fds
+08052260  w    F .text	000003f7 calloc
+08091940  w  i   .text	00000035 strcasecmp_l
+0806e3e0 g     F .text	00000036 _dl_exception_free
+0805fee0 g     F .text	00000024 _IO_file_stat
+08049097 g     F .text	00000014 _dl_start
+08064960 g     F .text	00000012 __pthread_mutex_unlock
+08052930  w    F .text	00000034 malloc_usable_size
+0806da00  w    F .text	00000019 tdestroy
+080acf90 g     F .text	0000008b .hidden __register_frame_info_bases
+0808ed70 g     F .text	0000017a _IO_wfile_sync
+080521f0 g     F .text	00000062 __libc_pvalloc
+0804cd30 g     F .text	00000021 __lll_lock_wake_private
+08076ab0 g     F .text	0000001e .hidden _dl_runtime_resolve
+08056300 g     F .text	0000002d .hidden __tls_pre_init_tp
+0806c880 g     F .text	00000020 __sched_getscheduler
+08065240  w  i   .text	00000034 rindex
+0806dab0 g     F .text	0000021d .hidden __readonly_area
+08088290 g     F .text	000000a8 .hidden __printf_buffer_pad_1
+080569b0 g     F .text	0000002c .hidden __tunable_set_val
+08074cf0 g     F .text	0000001f .hidden _dl_error_printf
+0806cb50  w    F .text	000000ba write
+080a4760  w    F .text	0000005e dladdr1
+080985d0  w    F .text	00000092 wmemchr
+080521b0 g     F .text	0000003f __libc_valloc
+080b8fa0 g     O .rodata	000000a8 .hidden _nl_C_LC_CTYPE_map_tolower
+08069aa0 g     F .text	0000062f .hidden __strrchr_sse2
+08081c30 g     F .text	000001f5 .hidden _nl_locale_subfreeres
+080e6648  w    O .bss	00000004 environ
+080e6700 g     O .bss	000001b0 .hidden _dl_x86_cpu_features
+08082bf0 g     F .text	000007dc .hidden __dcigettext
+08074210 g     F .text	00000094 .hidden _dl_add_to_namespace_list
+080636e0 g     F .text	0000004e _IO_str_finish
+08085c40 g     F .text	0000013b _nl_normalize_codeset
+080e4608 g     O .bss	00000001 .hidden __exit_funcs_done
+08081eb0  w    F .text	0000001e dcgettext
+080e3f94 g     O .bss	00000004 .hidden _dl_tls_static_size
+08074c80 g     F .text	0000002d .hidden _dl_debug_printf_c
+08062bd0 g     F .text	00000006 _IO_default_showmanyc
+08054e10 g     F .text	0000003c __get_nprocs
+08099540 g     F .text	0000004b .hidden __isatty
+0806bc40 g     F .text	00000025 .hidden __strcmp_ia32
+080e6a20 g     O .bss	00000020 .hidden _nl_state_lock
+080e68c8 g     O .bss	00000004 .hidden _dl_lazy
+080557b0 g     F .text	00000001 _dl_debug_state
+0807b3e0 g     F .text	00000adb __gconv_transform_internal_ascii
+0809fa80 g     F .text	000000ae .hidden __strspn_ia32
+08091900 g   i   .text	0000003a __stpcpy
+0806ce10 g     F .text	000000a2 __mmap64
+08090de0  w    F .text	0000001f pthread_once
+080ad310 g     F .text	00000024 .hidden __deregister_frame_info
+08063120 g     F .text	000001d2 _IO_str_overflow
+08088170 g     F .text	00000079 __grouping_iterator_next
+08054fb0  w    F .text	00000026 madvise
+08051370 g     F .text	000002c3 __malloc
+080957d0 g     F .text	00000058 __GI___strcasecmp_l
+080498db g     F .text	00000018 fun
+0806f9f0 g     F .text	00000373 .hidden _dl_init_paths
+080511b0 g     F .text	00000094 .hidden __malloc_fork_lock_parent
+080601e0 g     F .text	00000229 _IO_file_xsgetn
+08086b30 g     F .text	00000039 .hidden __hash_string
+080624c0 g     F .text	0000036d .hidden _IO_cleanup
+080e2824 g     O .data.rel.ro	00000004 .hidden _dl_argv
+080617f0 g     F .text	00000057 _IO_default_seekpos
+0809a3e0 g     F .text	0000039d __gconv_open
+080aab30 g     F .text	00000118 .hidden _Unwind_Resume
+08051960 g     F .text	000000e3 __free
+080a47c0 g     F .text	00000025 __dlclose
+080aad80 g     F .text	00000021 .hidden _Unwind_DeleteException
+0807e120 g     F .text	00000bbd __gconv_transform_internal_ucs2
+08055160  w    F .text	0000005d mremap
+0806cd80  w    F .text	00000042 __getrlimit
+0805e6d0 g     F .text	00000036 _IO_new_do_write
+00000000 g       .tdata	00000004 .hidden _nl_current_LC_CTYPE
+080537b0 g     F .text	00000578 .hidden __memset_sse2_rep
+08098bc0 g     F .text	000000f8 __readdir64
+08099b20 g     F .text	00000045 __nptl_change_stack_perm
+0805ee30  w    F .text	00000339 _IO_file_underflow
+0808cc50  w    F .text	00000331 getdelim
+08081250 g     F .text	0000002a .hidden __gconv_release_shlib
+080e1340 g     O .data.rel.ro	000000d8 .hidden _nl_C_LC_MONETARY
+080547c0 g     F .text	00000043 __read_nocancel
+08085650 g     F .text	000005ee _nl_make_l10nflist
+0808cb50 g     F .text	000000e0 .hidden __fopen_internal
+08061b40 g     F .text	00000131 _IO_no_init
+08052fe0 g     F .text	0000015f __strchrnul
+080a2340 g     F .text	00000076 .hidden _dl_find_object_freeres
+08052970 g     F .text	00000137 __mallinfo2
+0805f250  w    F .text	000001f7 _IO_file_overflow
+0806fd70 g     F .text	000001a6 _dl_process_pt_gnu_property
+08065110  w  i   .text	00000034 memchr
+0809ed40 g     F .text	00000189 _IO_getline_info
+080e3f54 g     O .bss	00000004 __VERIFIER_nondet_slot_a
+08055720 g     F .text	0000001b __chk_fail
+080e3efc g     O .data	00000004 __nptl_stack_hugetlb
+0805d2c0 g     F .text	00000703 .hidden __parse_one_specmb
+0808ab50 g     F .text	00000123 .hidden __wprintf_fp_l_buffer
+080e3cd4 g     O .data	00000004 stdin
+0806d340  w    F .text	00000058 tfind
+0804c700 g     F .text	00000286 .hidden _itoa
+080e3cec g     O .data	00000004 __sched_fifo_max_prio
+08063000 g     F .text	0000009a _IO_str_init_static
+0806f280 g     F .text	00000185 .hidden _dl_dst_substitute
+080c6d20 g     O .rodata	000000f0 .hidden _fpioconst_pow10
+0809eca0 g     F .text	00000092 .hidden __wprintf_buffer_flush
+080e3f9c g     O .bss	00000004 _dl_tls_dtv_slotinfo_list
+08055f20 g     F .text	00000021 _dl_allocate_tls_init
+0809a940 g     F .text	00000075 .hidden __gconv_close
+0806be30 g     F .text	0000001a .hidden __wcrtomb
+080e3cf8 g     O .data	00000004 .hidden __progname
+0808fe20 g     F .text	00000036 .hidden __printf_buffer_snprintf_init
+080e6684 g     O .bss	00000004 .hidden _dl_sysinfo_map
+08049700 g     F .text	00000032 .hidden _start
+080ad2e0 g     F .text	00000024 .hidden __deregister_frame_info_bases
+08061e50 g     F .text	0000031d _IO_flush_all
+080657b0 g     F .text	0000031f strstr
+0808c860 g     F .text	0000029b _IO_new_fclose
+08062c30 g     F .text	00000005 _IO_iter_file
+08061e20 g     F .text	0000002f _IO_adjust_column
+08090bc0  w    F .text	00000026 pthread_kill
+0000000c g       .tbss	00000004 .hidden __libc_errno
+08063790 g     F .text	00000017 _dl_tunable_set_elision_skip_trylock_internal_abort
+08059390 g     F .text	0000023c .hidden __correctly_grouped_prefixmb
+080a72f0 g     F .text	00000433 .hidden __lttf2
+080585f0 g     F .text	00000046 .hidden __libc_init_first
+0805dd80 g     F .text	0000002d .hidden _IO_vtable_check
+0806ca90  w    F .text	000000ba read
+080e66f8 g     O .bss	00000004 .hidden _dl_inhibit_cache
+0809f130 g     F .text	0000001a __vasprintf
+0809e370 g     F .text	00000104 .hidden __mpn_extract_double
+080671d0 g     F .text	000002ab strncmp
+08095860 g     F .text	000024d2 .hidden __strcasecmp_l_ssse3
+080e1040 g     O .data.rel.ro	0000006c .hidden _nl_C_LC_COLLATE
+080a4fa0  w    F .text	00000066 dlopen
+0808fce0 g     F .text	00000026 .hidden __libio_codecvt_encoding
+080a2270 g     F .text	000000c7 .hidden _dl_find_object_dlclose
+08085d80 g     F .text	000001e9 _nl_explode_name
+0808d800 g     F .text	00000085 _IO_wdefault_doallocate
+0806c4b0  w    F .text	000002e3 wcsrtombs
+0806c7a0  w    F .text	00000053 getdents64
+0804c350 g     F .text	000002a0 .hidden __run_exit_handlers
+08051370 g     F .text	000002c3 __libc_malloc
+080e305c g     O .data	00000004 .hidden __x86_data_cache_size
+080912b0  w    F .text	000003ea pthread_rwlock_wrlock
+08053140 g     F .text	00000668 .hidden __memset_sse2
+08054f20  w    F .text	00000084 get_avphys_pages
+080512d0 g     F .text	00000091 .hidden __malloc_fork_unlock_child
+080628c0 g     F .text	0000002f _IO_marker_delta
+08051960 g     F .text	000000e3 __libc_free
+08058a50  w    F .text	00000064 setenv
+0805f170 g     F .text	00000072 _IO_file_underflow_mmap
+0808dd50 g     F .text	00000067 _IO_sungetwc
+080e3cf8  w    O .data	00000004 program_invocation_short_name
+08097d70 g     F .text	000004c6 .hidden __strcasecmp_l_sse4_2
+08098b20 g     F .text	00000044 .hidden __opendir
+08063350 g     F .text	00000013 _IO_str_count
+080a1b60 g     F .text	000001a5 .hidden _dl_find_object_init
+0806c8a0  w    F .text	00000020 sched_get_priority_max
+080e6ae4 g     O .bss	00000004 .hidden __printf_arginfo_table
+0808ff80 g     F .text	000000c9 ___vsnprintf
+080a2840 g     F .text	00000199 .hidden _dl_open
+08087fe0  w    F .text	00000072 funlockfile
+0805f1f0 g     F .text	00000051 _IO_file_underflow_maybe_mmap
+08098700 g     F .text	000001f6 .hidden __wcslen_sse2
+08055760 g     F .text	00000027 ___fprintf_chk
+08063770 g     F .text	00000017 _dl_tunable_set_elision_retry_try_xbegin
+080521f0 g     F .text	00000062 __pvalloc
+080916b0  w    F .text	000000a4 pthread_sigmask
+08051b90 g     F .text	00000568 realloc
+080b9360 g     O .rodata	00000044 .hidden _nl_C_LC_CTYPE_class_space
+0808fe60 g     F .text	00000031 .hidden __printf_buffer_snprintf_done
+08099930 g     F .text	00000027 ___asprintf_chk
+080a4410 g     F .text	00000059 .hidden _dl_check_all_versions
+08055800 g     F .text	00000089 .hidden _dl_debug_initialize
+08091820 g     F .text	000000d7 .hidden __argz_create_sep
+080919f0 g     F .text	0000003d __strdup
+080e3fa0 g     O .bss	00000001 _dl_tls_dtv_gaps
+080772d0 g     F .text	00000025 .hidden __gconv_alias_compare
+08060410 g     F .text	0000010c .hidden _IO_file_xsgetn_mmap
+0804c320 g     F .text	00000029 .hidden __cxa_atexit
+08067480 g     F .text	000016ab .hidden __memcmp_ssse3
+08088060 g     F .text	00000025 .hidden __grouping_iterator_init_none
+080986a0 g     F .text	00000029 .hidden __wmemmove
+08060020  w    F .text	000001bb _IO_file_xsputn
+08054960 g     F .text	0000003c .hidden __brk
+08098bc0  w    F .text	000000f8 readdir64
+080e2f40 g     O .data.rel.ro	00000034 .hidden _nl_C
+0808de60 g     F .text	00000037 _IO_wmarker_delta
+080e66d0 g     O .bss	00000008 .hidden _dl_hwcap2
+08098590  w    F .text	00000039 wcsnlen
+0808c2a0  w    F .text	000000ef register_printf_specifier
+08052d40 g     F .text	0000018c __libc_mallopt
+0806bc70 g     F .text	000001be .hidden __wcrtomb_internal
+0809f150 g     F .text	00000022 __pthread_cleanup_push
+08049750 g     F .text	00000004 .hidden __x86.get_pc_thunk.bx
+08062ba0 g     F .text	00000006 _IO_default_stat
+0805f450 g     F .text	000000df _IO_new_file_sync
+08065150 g   i   .text	00000035 memcmp
+08049875 g     F .text	0000000f c2bc_assert_fail
+0806c8e0 g     F .text	00000026 __sched_setscheduler
+0808c690 g     F .text	00000032 .hidden __wprintf_buffer_to_file_done
+0806c8c0  w    F .text	00000020 sched_get_priority_min
+080a4660 g     F .text	00000098 .hidden __mpn_add_n
+08052660  w    F .text	000002c2 malloc_trim
+080e669c g     O .bss	00000004 .hidden _dl_stack_cache_actsize
+00000004 g       .tdata	00000004 .hidden _nl_current_LC_NUMERIC
+080e3048 g     O .data	00000004 c2bc_bss_exhibiter_keystring
+08058da0 g     F .text	000005a7 ____strtoul_l_internal
+080b9ba0 g     O .rodata	00000600 .hidden _nl_C_LC_CTYPE_toupper
+080aa830 g     F .text	000001e9 .hidden _Unwind_RaiseException
+080995c0  w    F .text	00000073 lstat64
+08091940 g   i   .text	00000035 __strcasecmp_l
+080628b0 g     F .text	0000000f _IO_marker_difference
+080745b0 g     F .text	00000187 .hidden _dl_get_origin
+08088460 g     F .text	00000023 __printf_buffer_to_file_switch
+08086c90  w    F .text	00000054 sigaction
+080784e0 g     F .text	00000066 __gconv_db_freemem
+080e66e4 g     O .bss	00000004 .hidden _dl_phdr
+0808d900 g     F .text	00000070 _IO_free_wbackup_area
+08073ec0 g     F .text	00000066 .hidden _dl_name_match_p
+080637b0 g     F .text	00000030 _dl_tunable_set_elision_enable
+0809b6e0 g     F .text	0000005a .hidden _nl_remove_locale
+0806cdd0 g     F .text	00000037 __getpagesize
+080b5160 g     O .rodata	000001a4 .hidden _itoa_base_table
+08060fa0 g     F .text	00000058 _IO_free_backup_area
+080a4f30 g     F .text	00000066 __dlopen
+08058640 g     F .text	0000001c .hidden __syscall_error
+080a72c0 g     F .text	0000002d .hidden __ctzdi2
+080e1520 g     O .data.rel.ro	0000029c .hidden _nl_C_LC_TIME
+0806d9e0  w    F .text	0000001d twalk_r
+08098900 g     F .text	00000051 .hidden __wcslen_ia32
+0805e410  w    F .text	0000003b _IO_file_init
+080a50c0  w    F .text	00000086 dlsym
+080550e0  w    F .text	00000079 .hidden sbrk
+0808bbe0 g     F .text	0000001f .hidden __printf_fphex_l_buffer
+080b5320 g     O .rodata	00000024 .hidden _itoa_lower_digits
+080919f0  w    F .text	0000003d strdup
+080e2ec0 g     O .data.rel.ro	00000074 .hidden _nl_C_locobj
+08061070 g     F .text	0000014a __underflow
+08079530 g     F .text	000000cc .hidden __gconv_get_builtin_trans
+080e35c0 g     O .data	00000004 .hidden _dl_nns
+080e3054 g     O .data	00000004 .hidden __x86_shared_cache_size
+080aa6b0 g     F .text	00000012 .hidden _Unwind_SetIP
+0809fb80 g     F .text	00000080 __rewinddir
+08099930 g     F .text	00000027 __asprintf_chk
+080e2820 g     O .data.rel.ro	00000004 .hidden _dl_random
+080e68e4 g     O .bss	00000004 __abort_msg
+080a4470 g     F .text	0000002d .hidden _dl_unmap
+080e6690 g     O .bss	00000004 .hidden _dl_scope_free_list
+08054e50 g     F .text	0000003c __get_nprocs_conf
+08077480 g     F .text	0000007e .hidden __gconv_release_step
+08065190  w  i   .text	00000034 index
+080794f0 g     F .text	00000034 __gconv_conf_freemem
+08056b60 g     F .text	000000f8 .hidden __tunables_print
+0809eab0 g     F .text	00000145 .hidden __printf_buffer_flush
+080985d0 g     F .text	00000092 __wmemchr
+08063750 g     F .text	00000017 _dl_tunable_set_elision_skip_lock_internal_abort
+0804bcad g     F .text	00000000 .hidden __x86.get_pc_thunk.bp
+0808cc30  w    F .text	00000016 fopen
+080e3f20 g       .bss	00000000 __bss_start
+0806d9e0 g     F .text	0000001d __twalk_r
+0806c9a0 g     F .text	000000ea __libc_open
+08080ee0 g     F .text	00000051 __gconv_cache_freemem
+0808d5f0 g     F .text	0000015a _IO_wdefault_xsputn
+0807bec0 g     F .text	00000c14 __gconv_transform_internal_utf8
+08061430 g     F .text	00000057 _IO_default_uflow
+08052fa0 g   i   .text	00000034 memset
+080e6698 g     O .bss	00000004 .hidden _dl_in_flight_stack
+0805fde0 g     F .text	0000006b .hidden _IO_file_seekoff_maybe_mmap
+080986d0 g     F .text	00000029 .hidden __wmempcpy
+08087fa0  w    F .text	00000020 __strtol_l
+08063730 g     F .text	00000017 _dl_tunable_set_elision_skip_lock_busy
+080498ad g     F .text	00000021 main
+080a55b0 g     F .text	00000092 .hidden _dl_call_fini
+080e68b4 g     O .bss	00000004 .hidden _dl_origin_path
+08098590 g     F .text	00000039 __wcsnlen
+08052f40 g     F .text	00000051 __malloc_info
+080e0d80 g     O .data.rel.ro	00000010 .hidden __wcsmbs_gconv_fcts_c
+0806b8c0 g     F .text	000001be .hidden __strchr_ia32
+0806ccd0 g     F .text	00000055 __pread64_nocancel
+0805ed90 g     F .text	00000097 _IO_new_file_finish
+0806b850 g     F .text	0000000e __memmove_chk
+080a5520 g     F .text	00000088 .hidden _dl_call_libc_early_init
+080e3f80 g     O .bss	00000004 _dl_tls_generation
+080e69c4 g     O .bss	00000004 .hidden __gconv_lock
+08054e90  w    F .text	00000084 get_phys_pages
+0806c800 g     F .text	00000041 __sched_cpucount
+08052970  w    F .text	00000137 mallinfo2
+0805e550 g     F .text	000000a7 _IO_new_file_attach
+080e3068 g     O .data	00000004 .hidden __nptl_nthreads
+080a5480 g     F .text	0000004e .hidden __atomic_wide_counter_fetch_add_relaxed
+080ca420 g     O .rodata	0000001f .hidden ___m128i_shift_right
+08052d40  w    F .text	0000018c mallopt
+0808c860  w    F .text	0000029b fclose
+08055740 g     F .text	0000001f __fortify_fail
+080e6680 g     O .bss	00000004 .hidden _dl_clktck
+08076ad0 g     F .text	000000f5 .hidden _dl_cache_libcmp
+080e2d5c g     O .data.rel.ro	00000008 .hidden __rtld_search_dirs
+08074f80 g     F .text	000017ed .hidden _dl_relocate_object
+08052f40  w    F .text	00000051 malloc_info
+08099840  w    F .text	000000e7 tcgetattr
+080e68c4 g     O .bss	00000004 .hidden _dl_dynamic_weak
+08098b20  w    F .text	00000044 opendir
+0808dac0 g     F .text	00000132 __wunderflow
+0806da70 g     F .text	00000035 __memcpy_chk
+080611c0 g     F .text	0000014a __uflow
+080ad150 g     F .text	00000073 .hidden __register_frame_info_table_bases
+0806f1d0 g     F .text	000000a1 .hidden _dl_dst_count
+080af5e8 g     O .rodata	00000002 .hidden _nl_C_name
+08082110 g     F .text	00000ad4 .hidden _nl_find_msg
+08060e80 g     F .text	00000027 _IO_least_marker
+0808d250 g     F .text	0000002a _IO_switch_to_wbackup_area
+08062d70 g     F .text	00000029 _IO_list_resetlock
+080b5ee4 g     O .rodata	0000001b .hidden _dl_x86_hwcap_flags
+08090050 g     F .text	000000a7 __fgets_unlocked
+08058520 g     F .text	000000ce .hidden __libc_early_init
+080e66c0 g     O .bss	00000008 .hidden _dl_hwcap4
+0809f610 g     F .text	00000257 __memmem
+080a5170 g     F .text	0000008e __dlvsym
+080a0450 g     F .text	000000bf __lseek
+080b3f18 g     O .rodata	00000012 _nl_default_dirname
+080b3f08 g     O .rodata	00000006 .hidden _nl_POSIX_name
+0806d9c0 g     F .text	0000001f __twalk
+0809eed0 g     F .text	00000022 _IO_getline
+08056d70 g     F .text	0000009e .hidden _dl_early_allocate
+08074e50 g     F .text	0000004a .hidden _dl_allocate_static_tls
+08052970 g     F .text	00000137 __libc_mallinfo2
+08091b10 g     F .text	0000184b .hidden __strcpy_ssse3
+080651d0 g   i   .text	00000035 strcmp
+0808d510 g     F .text	00000067 _IO_wdefault_uflow
+0809e230 g     F .text	00000057 .hidden __mpn_rshift
+080e12c0 g     O .data.rel.ro	00000028 .hidden _nl_C_LC_MEASUREMENT
+08077460 g     F .text	00000011 __gconv_get_alias_db
+08064960  w    F .text	00000012 pthread_mutex_unlock
+080e3040  w      .data	00000000 data_start
+08064f00 g     F .text	000000c4 __libc_scratch_buffer_grow_preserve
+0809ae90 g     F .text	00000842 .hidden _nl_find_locale
+08098420 g     F .text	000000ae .hidden __strcspn_ia32
+08065110 g   i   .text	00000034 __memchr
+0808c390  w    F .text	00000005 register_printf_function
+080e6ae0 g     O .bss	00000004 .hidden __printf_function_table
+08059350  w    F .text	00000020 strtoul_l
+0808cb00 g     F .text	0000004e .hidden __fopen_maybe_mmap
+080724d0 g     F .text	000001e1 _dl_rtld_di_serinfo
+08098cd0  w    F .text	0000086e getcwd
+08099640 g     F .text	000000ea __libc_openat64
+080e6688 g     O .bss	00000004 .hidden _dl_sysinfo_dso
+080e14e0 g     O .data.rel.ro	00000034 .hidden _nl_C_LC_TELEPHONE
+080b9120 g     O .rodata	0000004c .hidden _nl_C_LC_CTYPE_class_alnum
+080ad340 g     F .text	0000003e .hidden __deregister_frame
+08061310 g     F .text	00000060 _IO_setb
+080ae5cc g     F .fini	00000000 .hidden _fini
+0808c3a0 g     F .text	000000ef __register_printf_type
+0805e8b0  w    F .text	000004d8 _IO_file_fopen
+080a36a0 g     F .text	000004ba .hidden _dl_sort_maps
+08054540  w    F .text	00000063 fstatat64
+0806cd30 g     F .text	00000043 __write_nocancel
+080498ce g     F .text	00000001 __VERIFIER_error
+080a4760 g     F .text	0000005e __dladdr1
+080874b0 g     F .text	000003f1 __qsort_r
+08052100  w    F .text	00000043 memalign
+080910a0 g     F .text	00000201 ___pthread_rwlock_unlock
+08068b30 g     F .text	00000b81 .hidden __memcmp_sse4_2
+08053da0 g     F .text	00000022 __mempcpy
+08077260 g     F .text	00000049 .hidden _dl_unload_cache
+080a72a0  w    F .text	0000001b asprintf
+08098240 g     F .text	00000144 .hidden __strcspn_sse42
+0805e600 g     F .text	00000046 _IO_new_file_setbuf
+08065090  w    F .text	0000007c strerror_r
+0808eef0 g     F .text	0000097a _IO_wfile_seekoff
+0808c5c0 g     F .text	00000082 .hidden __wprintf_buffer_flush_to_file
+0809f8f0 g     F .text	00000068 __strcasecmp_nonascii
+0808e230 g     F .text	000006d9 _IO_wfile_underflow
+080e66fc g     O .bss	00000004 .hidden _dl_minsigstacksize
+08054fb0 g     F .text	00000026 __madvise
+080637e0 g     F .text	000000a8 .hidden __lll_elision_init
+0808c700 g     F .text	0000015f _IO_file_doallocate
+0806c4b0 g     F .text	000002e3 .hidden __wcsrtombs
+080919c0 g   i   .text	00000024 strcspn
+08080980 g     F .text	00000097 .hidden __gconv_compare_alias_cache
+080b3f10 g     O .rodata	00000005 _libc_intl_domainname
+080e69dc g     O .bss	00000004 __gconv_path_elem
+080c6e20 g     O .rodata	000035c0 .hidden __tens
+08087fc0 g     F .text	00000020 __isoc23_strtol_l
+0808de00 g     F .text	00000060 _IO_init_wmarker
+08081590 g     F .text	00000697 setlocale
+080e3f88 g     O .bss	00000004 _dl_tls_static_surplus
+00000024 g       .tbss	00000004 __libc_tsd_CTYPE_B
+080e460c g     O .bss	00000004 __pthread_force_elision
+080a0510 g     F .text	0000001d .hidden __getclktck
+080aa740 g     F .text	0000000f .hidden _Unwind_GetTextRelBase
+0805fe50 g     F .text	00000056 _IO_file_read
+080e3ccc g     O .data	00000004 stderr
+08060520 g     F .text	00000067 .hidden _IO_file_xsgetn_maybe_mmap
+08055280 g     F .text	0000009c .hidden __malloc_default_thp_pagesize
+0806ce10  w    F .text	000000a2 mmap64
+0808c550 g     F .text	00000061 .hidden __wprintf_buffer_putc_1
+080b9240 g     O .rodata	00000044 .hidden _nl_C_LC_CTYPE_class_blank
+08090a10 g     F .text	0000003c __pthread_get_minstack
+08054140 g     F .text	00000099 __fstat64
+0804bdb0 g     F .text	000002e0 .hidden __libc_setup_tls
+080e28e8 g     O .data.rel.ro	00000054 _IO_file_jumps
+080a72a0 g     F .text	0000001b ___asprintf
+08091a30  w    F .text	0000004c strsep
+0808a8b0 g     F .text	000001e7 .hidden __printf_fp_l_buffer
+080545b0 g     F .text	0000003a __close_nocancel
+080561d0 g     F .text	0000012f .hidden _dl_init_static_tls
+08093360 g     F .text	0000186c .hidden __stpcpy_ssse3
+080e43e0 g     O .bss	00000008 .hidden __new_exitfn_called
+080aa6f0 g     F .text	00000035 .hidden _Unwind_FindEnclosingFunction
+08091a30 g     F .text	0000004c __strsep_g
+08083740 g     F .text	00000055 .hidden _nl_finddomain_subfreeres
+08062f70 g     F .text	0000008a _IO_str_init_static_internal
+080521b0  w    F .text	0000003f valloc
+080e35a8 g     O .data	00000004 .hidden _dl_stack_flags
+080b3ee8 g     O .rodata	0000000d .hidden _nl_category_name_sizes
+080a5200  w    F .text	0000008e dlvsym
+080a0450 g     F .text	000000bf __libc_lseek
+0804c9f0 g     F .text	00000059 .hidden _fitoa
+0808c040 g     F .text	000000fc .hidden __handle_registered_modifier_mb
+0808cc30  w    F .text	00000016 _IO_fopen
+0808d480 g     F .text	0000008f _IO_wdefault_finish
+0808c3a0  w    F .text	000000ef register_printf_type
+0805ff70 g     F .text	000000a4 _IO_new_file_write
+08052ab0  w    F .text	00000084 mallinfo
+08058660 g     F .text	00000018 __ctype_b_loc
+080640a0 g     F .text	0000029e ___pthread_mutex_lock
+08055160 g     F .text	0000005d __mremap
+080aa6d0 g     F .text	0000000f .hidden _Unwind_GetLanguageSpecificData
+0809f870 g     F .text	0000004c __strndup
+080af008 g     O .rodata	00000004 __rseq_flags
+0809f150  w    F .text	00000022 _pthread_cleanup_push
+080916a0  w    F .text	00000007 pthread_self
+080e66f0 g     O .bss	00000004 .hidden _dl_init_all_dirs
+080498d5 g     F .text	00000006 __VERIFIER_nondet_int_b
+080951c0 g     F .text	00000606 .hidden __stpcpy_sse2
+08055f50 g     F .text	00000061 _dl_allocate_tls
+080e3f98 g     O .bss	00000004 _dl_tls_static_nelem
+080e6af4 g     O .bss	00000004 .hidden __fork_generation
+08077440 g     F .text	00000011 __gconv_get_modules_db
+0808dce0 g     F .text	0000006f _IO_sputbackwc
+08098ad0 g     F .text	0000004c .hidden __opendirat
+0809a220 g     F .text	00000092 .hidden __libc_dlclose
+0806d9c0  w    F .text	0000001f twalk
+080794c0 g     F .text	00000027 .hidden __gconv_load_conf
+080783c0 g     F .text	00000119 .hidden __gconv_close_transform
+080557c0 g     F .text	00000040 .hidden _dl_debug_update
+080e282c g     O .data.rel.ro	00000004 .hidden _dl_vdso_clock_getres
+08055410 g     F .text	00000308 .hidden __malloc_hugepage_config
+08056060 g     F .text	00000077 .hidden _dl_tls_get_addr_soft
+0805e550  w    F .text	000000a7 _IO_file_attach
+080540f0 g     F .text	0000004c __fstat64_time64
+08091820  w    F .text	000000d7 argz_create_sep
+080a4610 g     F .text	00000037 __libc_secure_getenv
+080e1460 g     O .data.rel.ro	00000038 .hidden _nl_C_LC_NUMERIC
+080986a0  w    F .text	00000029 wmemmove
+0808df40 g     F .text	00000080 _IO_unsave_wmarkers
+0805e450 g     F .text	000000f7 _IO_file_open
+08054540 g     F .text	00000063 __fstatat64
+080551c0 g     F .text	0000009f .hidden __set_vma_name
+080e2d64 g     O .data.rel.ro	00000008 .hidden __rtld_env_path_list
+08071930 g     F .text	00000b97 .hidden _dl_map_object
+080e4620 g     O .bss	00002000 __pthread_keys
+0809c2a0 g     F .text	0000011c .hidden _nl_archive_subfreeres
+00000008 g       .tdata	00000004 __libc_tsd_LOCALE
+0805db80  w    F .text	000001f3 fwrite
+08062ce0 g     F .text	00000081 _IO_list_unlock
+08085620 g     F .text	0000002b __libc_localealias_freemem
+0809d740 g     F .text	00000039 .hidden __mpn_mul_1
+080b5360 g     O .rodata	00000024 .hidden _itoa_upper_digits
+080aaa20 g     F .text	00000108 .hidden _Unwind_ForcedUnwind
+080e3f04 g       .data	00000000 _edata
+0808c490 g     F .text	00000022 __snprintf
+080e3590 g     O .data	00000018 .hidden _dl_load_lock
+080874b0  w    F .text	000003f1 qsort_r
+0806c8c0 g     F .text	00000020 __sched_get_priority_min
+080833d0 g     F .text	000000c6 __intl_freemem
+08060f10 g     F .text	00000087 _IO_switch_to_get_mode
+080e6ca8 g       .bss	00000000 _end
+08090140 g     F .text	00000075 __pthread_enable_asynccancel
+080e66b0 g     O .bss	00000008 .hidden _dl_stack_used
+08099b70 g     F .text	000001af .hidden _dl_fixup
+0805e6d0  w    F .text	00000036 _IO_do_write
+0804c990 g     F .text	00000059 .hidden _fitoa_word
+0809fc00 g     F .text	000000d6 .hidden __fdopendir
+0808aaa0 g     F .text	000000af .hidden __printf_buffer_flush_fp_to_wide
+08054000 g     F .text	000000a9 __clock_gettime
+08099590 g     F .text	00000028 __lstat64_time64
+08056c60 g     F .text	0000006e .hidden __tunable_get_default
+080e6650 g     O .bss	00000018 .hidden _r_debug_extended
+080e6b00 g     O .bss	00000034 .hidden _nl_locale_file_list
+08094bd0 g     F .text	000005e5 .hidden __strcpy_sse2
+08080eb0 g     F .text	0000002d .hidden __gconv_release_cache
+080e6668 g     O .bss	00000001 __nptl_initial_report_events
+0808c860 g     F .text	0000029b __new_fclose
+080a5290 g     F .text	0000008f __libc_dlerror_result_free
+080e35ac g     O .data	00000002 .hidden _dl_fpu_control
+0808d970 g     F .text	00000142 __wuflow
+0809fe70 g     F .text	000005d6 __sysconf
+080e3058 g     O .data	00000004 .hidden __x86_shared_cache_size_half
+080640a0  w    F .text	0000029e pthread_mutex_lock
+08086c90 g     F .text	00000054 __sigaction
+080e2840 g     O .data.rel.ro	00000498 .hidden __io_vtables
+08052260 g     F .text	000003f7 __libc_calloc
+080e6960 g     O .bss	00000004 __default_pthread_attr_lock
+080e664c g     O .bss	00000004 .hidden __curbrk
+08078010 g     F .text	000000f1 .hidden __gconv_compare_alias
+080e3f58 g     O .bss	00000004 .hidden __x86_string_control
+0806d340 g     F .text	00000058 __tfind
+080e3e80 g     O .data	00000074 .hidden _nl_global_locale
+08061d30 g     F .text	0000000b _IO_default_seekoff
+080e68c0 g     O .bss	00000004 .hidden _dl_verbose
+08074cb0 g     F .text	0000001e .hidden _dl_dprintf
+080b5dc0 g     O .rodata	00000100 .hidden _dl_x86_cap_flags
+08061370 g     F .text	000000a7 _IO_doallocbuf
+0806ddc0 g     F .text	00000062 _dl_signal_error
+080e66e0 g     O .bss	00000004 .hidden _dl_phnum
+08062170  w    F .text	000002fd _flushlbf
+0806e060 g     F .text	00000371 _dl_exception_create_format
+080e2d6c g     O .data.rel.ro	00000004 .hidden __stack_prot
+080b81c0 g     O .rodata	00000023 .hidden __strtol_ul_rem_tab
+080a1800 g     F .text	00000331 _dl_find_object
+0809e9c0 g     F .text	0000004b __printf_buffer_as_file_xsputn
+08098b70 g     F .text	00000048 .hidden __closedir
+08054e10  w    F .text	0000003c get_nprocs
+0808ff80  w    F .text	000000c9 __vsnprintf
+080e68b8 g     O .bss	00000004 .hidden _dl_profile_map
+08060ee0 g     F .text	00000028 _IO_switch_to_backup_area
+08090bc0 g     F .text	00000026 __pthread_kill
+080a47f0 g     F .text	000001c3 __dlerror
+08064820 g     F .text	00000133 __pthread_mutex_unlock_usercnt
+0804c5f0 g     F .text	00000023 .hidden exit
+080aa620 g     F .text	0000005b .hidden _Unwind_SetGR
+0809ea80 g     F .text	00000028 .hidden __printf_buffer_as_file_terminate
+0807a290 g     F .text	00000542 __gconv_transform_internal_ucs4le
+0805e3d0 g     F .text	0000003b .hidden _IO_new_file_init_internal
+0806ba80 g     F .text	000001b9 .hidden __strrchr_ia32
+08090810 g     F .text	00000035 __nptl_stack_list_add
+080550b0 g     F .text	00000024 __munmap
+00000020 g       .tbss	00000004 __libc_tsd_CTYPE_TOUPPER
+08052930 g     F .text	00000034 __malloc_usable_size
+080800c0 g     F .text	00000454 __gconv_transliterate
+080e0dc0 g     O .data.rel.ro	00000218 .hidden _sys_errlist_internal
+08059350  w    F .text	00000020 __strtoul_l
+080a4e40 g     F .text	0000006e ___dlmopen
+0808d280 g     F .text	00000064 _IO_wsetb
+080e38ec  w    O .data	00000004 .hidden DW.ref.__gcc_personality_v0
+0809ea10 g     F .text	00000064 .hidden __printf_buffer_as_file_init
+08054960  w    F .text	0000003c brk
+0809f8f0 g     F .text	00000068 __GI___strcasecmp
+080e1300 g     O .data.rel.ro	00000034 .hidden _nl_C_LC_MESSAGES
+080916a0 g     F .text	00000007 __pthread_self
+0806c330 g     F .text	0000011e .hidden __wcsmbs_named_conv
+08088090 g     F .text	000000db .hidden __grouping_iterator_init
+08056e20 g     F .text	000001a8 .hidden _dl_aux_init
+080901c0 g     F .text	00000098 __pthread_disable_asynccancel
+080e66d8 g     O .bss	00000008 .hidden _dl_hwcap
+0806cc10 g     F .text	00000016 .hidden __libc_do_syscall
+0808c230 g     F .text	00000065 __libc_printf_freemem
+08095830 g     F .text	00000029 __strcasecmp_ssse3
+080b7840 g     O .rodata	00000089 .hidden _nl_category_names
+0806cc50 g     F .text	00000074 __open64_nocancel
+0809ab30 g     F .text	00000322 __gconv_create_spec
+080b3ef8 g     O .rodata	0000000f .hidden _nl_C_codeset
+080e66ec g     O .bss	00000004 .hidden _dl_initfirst
+08086e90 g     F .text	00000040 __sigprocmask
+08063300 g     F .text	00000047 _IO_str_underflow
+0804c0f0 g     F .text	00000036 .hidden _setjmp
+08090050  w    F .text	000000a7 fgets_unlocked
+08058680 g     F .text	00000018 __ctype_toupper_loc
+08088490 g     F .text	00000156 .hidden __printf_buffer_flush_to_file
+080e3050 g     O .data	00000004 .hidden __x86_rep_movsb_threshold
+08087fe0 g     F .text	00000072 .hidden __funlockfile
+08065ad0 g     F .text	0000146d .hidden __strcmp_ssse3
+080af004 g     O .rodata	00000004 _IO_stdin_used
+080540b0 g     F .text	00000038 .hidden _exit
+080e3578 g     O .data	00000018 .hidden _dl_load_write_lock
+080772b0 g     F .text	00000004 .hidden _dl_tlsdesc_return
+08064980 g     F .text	00000033 __init_sched_fifo_prio
+08053de0 g     F .text	00000043 .hidden __memset_ia32
+08098960 g     F .text	000000ce .hidden __alloc_dir
+0809f8c0 g   i   .text	00000024 strspn
+08090de0 g     F .text	0000001f ___pthread_once
+0806c7a0 g     F .text	00000053 __getdents64
+08090670 g     F .text	0000002b __futex_abstimed_wait_cancelable64
+080aa5c0 g     F .text	0000004a .hidden _Unwind_GetGR
+080b3f2c g     O .rodata	00000009 .hidden _nl_default_default_domain
+0806b570 g     F .text	000002d3 .hidden __memcmp_ia32
+080e68dc g     O .bss	00000004 .hidden __libc_argv
+0804ad90 g     F .text	00000f11 .hidden __libc_start_main
+0804cc50 g     F .text	00000064 __lll_lock_wait_private
+08053e30 g     F .text	000000bb strlen
+0806c910  w    F .text	0000008c lseek64
+08064960 g     F .text	00000012 ___pthread_mutex_unlock
+080618d0 g     F .text	000000c0 .hidden _IO_init_internal
+0806c9a0  w    F .text	000000ea open
+080e3cfc  w    O .data	00000004 program_invocation_name
+0809a0a0 g     F .text	00000079 .hidden __libc_dlsym
+08051250 g     F .text	00000074 .hidden __malloc_fork_unlock_parent
+080a29e0 g     F .text	00000180 .hidden _dl_show_scope
+0806cb50 g     F .text	000000ba __libc_write
+080e2830 g     O .data.rel.ro	00000004 .hidden _dl_vdso_time
+080649c0 g     F .text	000003fd __pthread_tpp_change_priority
+080e3ce8 g     O .data	00000004 __mutex_aconf
+080e17c0 g     O .data.rel.ro	00000004 __rseq_size
+08061990 g     F .text	000000c0 _IO_init
+080a3660 g     F .text	00000034 .hidden _dl_sort_maps_init
+08058d20 g     F .text	00000032 __strtoul
+0806df80 g     F .text	0000002e .hidden _dl_error_free
+0807f4d0 g     F .text	00000be2 __gconv_transform_internal_ucs2reverse
+080b94e0 g     O .rodata	00000048 .hidden _nl_C_LC_CTYPE_class_lower
+080e66f4 g     O .bss	00000004 .hidden _dl_all_dirs
+0809f960 g     F .text	00000120 .hidden __strspn_sse42
+080e66b8 g     O .bss	00000004 .hidden _dl_dso_sort_algo
+08058a50 g     F .text	00000064 .hidden __setenv
+08058bf0 g     F .text	000000a7 .hidden __clearenv
+08065190 g   i   .text	00000034 strchr
+080560e0 g     F .text	000000f0 .hidden _dl_add_to_slotinfo
+08051b90 g     F .text	00000568 __realloc
+080e69cc g     O .bss	00000004 .hidden __gconv_alias_db
+08062c10 g     F .text	00000003 _IO_iter_end
+08052d40 g     F .text	0000018c __mallopt
+08099960 g     F .text	00000035 __mempcpy_chk
+0805d9d0  w    F .text	000001ab fputs
+080aa730 g     F .text	0000000f .hidden _Unwind_GetDataRelBase
+080957d0 g     F .text	00000058 .hidden __strcasecmp_l_ia32
+0805ee30 g     F .text	00000339 _IO_new_file_underflow
+080e3040 g       .data	00000000 __data_start
+080a49c0 g     F .text	000001fd .hidden _dlerror_run
+080a7270 g     F .text	00000021 .hidden _dl_sym
+0804cc30 g     F .text	0000001f .hidden __libc_fatal
+08054e90 g     F .text	00000084 __get_phys_pages
+080550e0 g     F .text	00000079 .hidden __sbrk
+08055080  w    F .text	00000026 mprotect
+08062b90 g     F .text	0000000b _IO_default_seek
+0806d3a0 g     F .text	00000613 __tdelete
+080579f0 g     F .text	00000011 .hidden _dl_get_dl_main_map
+080e6aec g     O .bss	00000004 .hidden __printf_va_arg_table
+080e6650 g     O .bss	00000014 _r_debug
+08052b40 g     F .text	000001ff __malloc_stats
+08098b70  w    F .text	00000048 closedir
+08090e00 g     F .text	00000091 ___pthread_rwlock_init
+0808d2f0 g     F .text	00000182 _IO_wdefault_pbackfail
+0805cf70 g     F .text	00000286 .hidden __vfprintf_internal
+080e3900 g     O .data	00000004 _IO_list_all
+08058ca0 g     F .text	00000037 __libc_setenv_freemem
+08091760 g     F .text	000000bf .hidden __argz_add_sep
+0805f250 g     F .text	000001f7 _IO_new_file_overflow
+08099f70 g     F .text	000000a8 .hidden __libc_dlopen_mode
+08058ac0 g     F .text	00000124 .hidden __unsetenv
+0805f5b0 g     F .text	000006df _IO_new_file_seekoff
+080906a0 g     F .text	00000131 __futex_lock_pi64
+0809f130  w    F .text	0000001a vasprintf
+08073e10 g     F .text	000000a6 .hidden _dl_sysdep_read_whole_file
+08052fe0  w    F .text	0000015f strchrnul
+0805f530 g     F .text	0000007a .hidden _IO_file_sync_mmap
+0808bd60 g     F .text	00000162 .hidden __printf_function_invoke
+080997d0 g     F .text	00000064 __openat_nocancel
+080a1d10 g     F .text	0000055c .hidden _dl_find_object_update
+080a6b60 g     F .text	000003d5 .hidden _dl_addr
+08054f20 g     F .text	00000084 __get_avphys_pages
+0808c140 g     F .text	000000e6 .hidden __handle_registered_modifier_wc
+080e14a0 g     O .data.rel.ro	0000002c .hidden _nl_C_LC_PAPER
+0806df20 g     F .text	00000038 .hidden _dl_catch_error
+08060bc0 g     F .text	00000015 _IO_un_link
+080ad1d0 g     F .text	00000075 .hidden __register_frame_info_table
+0805b440 g     F .text	00001b26 __printf_buffer
+0805e650 g     F .text	0000007c _IO_file_setbuf_mmap
+080e68bc g     O .bss	00000004 .hidden _dl_inhibit_rpath
+08054e50  w    F .text	0000003c get_nprocs_conf
+08052150  w    F .text	0000005f aligned_alloc
+08062a00 g     F .text	00000185 _IO_default_pbackfail
+080e2834 g     O .data.rel.ro	00000004 .hidden _dl_vdso_gettimeofday
+080ad020 g     F .text	0000008b .hidden __register_frame_info
+080772c0 g     F .text	0000000b .hidden _dl_tlsdesc_undefweak
+08052ed0  w    F .text	0000006f posix_memalign
+0806be30  w    F .text	0000001a wcrtomb
+080883a0 g     F .text	000000c0 .hidden __printf_buffer_puts_1
+08055260 g     F .text	00000020 .hidden __sysinfo
+0808cc30 g     F .text	00000016 __new_fopen
+08054810 g     F .text	00000144 .hidden __cp_stat64_t64_stat64
+08055c90 g     F .text	0000012e .hidden _dl_assign_tls_modid
+080e668c g     O .bss	00000004 .hidden _dl_sysinfo
+08098670 g     F .text	00000029 .hidden __wmemcpy
+08062c20 g     F .text	00000008 _IO_iter_next
+080a06a0 g     F .text	00000dce .hidden _dl_close_worker
+08055c00 g     F .text	0000008a .hidden _dl_tls_static_surplus_init
+080e35b4 g     O .data	00000004 .hidden _dl_pagesize
+080521b0 g     F .text	0000003f __valloc
+080e3920 g     O .data	00000098 _IO_2_1_stderr_
+080e3cfc g     O .data	00000004 __progname_full
+08053dd0 g     F .text	0000000e __memset_chk
+08057a20 g     F .text	00000afb .hidden _dl_tunable_set_hwcaps
+08060eb0 g     F .text	00000028 _IO_switch_to_main_get_area
+08053ef0 g     F .text	00000108 __clock_gettime64
+08086c50 g     F .text	00000040 raise
+080638e0 g     F .text	00000079 __libc_cleanup_pop_restore
+0809efe0 g     F .text	00000146 .hidden __vasprintf_internal
+080628f0 g     F .text	0000008f _IO_seekmark
+080b9480 g     O .rodata	00000048 .hidden _nl_C_LC_CTYPE_class_alpha
+08051960 g     F .text	000000e3 free
+08086e90  w    F .text	00000040 sigprocmask
+08061a90 g     F .text	000000ab _IO_old_init
+080a5690 g     F .text	00000ff4 .hidden _dl_map_object_deps
+0806b390 g     F .text	00000034 .hidden __strnlen_ia32
+080e1260 g     O .data.rel.ro	00000060 .hidden _nl_C_LC_IDENTIFICATION
+080e3600 g     O .data	00000058 .hidden _dl_ns
+0809b750 g     F .text	00000b50 .hidden _nl_load_locale_from_archive
+080a5320 g     F .text	000000f6 .hidden __cache_sysconf
+
+

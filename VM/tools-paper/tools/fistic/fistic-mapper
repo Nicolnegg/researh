@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+# ----------------------------------------
+import sys
+import argparse
+from argparse import ArgumentParser
+# ----------------------------------------
+from fistic.mapper import Mapper
+from pulseutils.logging import Logger
+# ----------------------------------------
+def main(args):
+    logger = Logger(level=5 if args.debug else 4, color=args.log_color, log_progress=args.log_progress)
+    Mapper(args.binary, logger, args.mapper_mode).write_config(args.output if args.output else sys.stdout)
+# ----------------------------------------
+ap = ArgumentParser(description='Faulted binary evaluator')
+
+gg = ap.add_argument_group('I/Os options')
+gg.add_argument('-d', '--debug', action='store_true', help='print debug messages')
+gg.add_argument('--no-color', action='store_false', dest='log_color', help='no colors in log')
+gg.add_argument('--no-progress', action='store_false', dest='log_progress', help='no progress in log')
+gg.add_argument('-m', '--mapper-mode', action='store', choices=('legacy', 'pulseutils'), default='pulseutils', help='no progress in log')
+gg.add_argument('-b', '--binary', action='store', required=True, metavar='<file.bin>',
+                help='target binary file')
+gg.add_argument('-o', '--output', action='store', type=argparse.FileType('w'), metavar='<output.yml>',
+                help='output json file, writes to stdout if absent')
+# ----------------------------------------
+if __name__ == '__main__':
+    args = ap.parse_args()
+
+    try:
+        main(args)
+    except Exception as e:
+        raise e
+        sys.exit(1)
+    sys.exit(0)
+# ----------------------------------------
