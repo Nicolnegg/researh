@@ -1,8 +1,8 @@
 
 extern void __attribute__ ((noinline)) c2bc_assert_fail(const char* p1, const char* p2, unsigned int p3, const char* p4);
-extern int c2bc_main(void);
 extern void __attribute__ ((noinline)) c2bc_abort(void);
 extern void reach_error();
+extern int c2bc_main(void);
 void __VERIFIER_error(void)
 {
 }
@@ -20,11 +20,22 @@ int __VERIFIER_nondet_int_b(void)
 }
 
 volatile int public_a;
+volatile int success_flag;
+void reach_success(void)
+{
+  success_flag = 1;
+}
+
 void fun(void)
 {
   if (public_a == 3)
   {
     reach_error();
+  }
+  else
+  {
+    void (* volatile succ)(void) = reach_success;
+    succ();
   }
 }
 

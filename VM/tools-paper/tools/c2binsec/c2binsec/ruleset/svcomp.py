@@ -188,6 +188,10 @@ class SVCompBConfig:
         return res
 
     def detect_alocs(self, asm):
+        # Preferred positive goal: explicit success hook when available.
+        if asm.has_function('reach_success'):
+            for loc, _ in asm.instructions('reach_success'):
+                return [loc]
         cpt = 0
         main_name = 'c2bc_main' if asm.has_function('c2bc_main') else 'main'
         for loc, _ in asm.instructions(main_name):
@@ -440,8 +444,8 @@ class SVCompRuleSet(GenericRuleSet):
                         raise e
 
     def make_assumption_addr_param(self, asm, dba_file=None):
-        # Prefer the address of the first cmp in c2bc_main so that assumptions
-        # are applied after inputs are loaded (eax/ebx set).
+        # Prefer the address of the first cmp so assumptions are injected near
+        # the decision point, not at reach hooks.
         if dba_file and os.path.isfile(dba_file):
             try:
                 with open(dba_file, 'r') as dba:
@@ -452,6 +456,20 @@ class SVCompRuleSet(GenericRuleSet):
                                 return parts[2]
             except OSError:
                 pass
+        # Fallback 1: first cmp in fun/c2bc_main from disassembly.
+        for fname in ('fun', 'c2bc_main', 'main'):
+            if not asm.has_function(fname):
+                continue
+            for loc, inst in asm.instructions(fname):
+                if 'cmp' in inst:
+                    return '0x{:x}'.format(loc)
+        # Fallback 2: function entry before branch execution.
+        for fname in ('fun', 'c2bc_main', 'main'):
+            if not asm.has_function(fname):
+                continue
+            for loc, _ in asm.instructions(fname):
+                return '0x{:x}'.format(loc)
+        # Final fallback: positive reach location.
         alocs = self.brules.detect_alocs(asm)
         return '0x{:x}'.format(alocs[0])
 
@@ -572,6 +590,7 @@ class SVCompRuleSet(GenericRuleSet):
         emitted = set()
         consts_emitted = set()
         max_vars = 12
+        emitted_word = False
 
         def _add_var(name):
             if len(emitted) >= max_vars:
@@ -579,6 +598,16 @@ class SVCompRuleSet(GenericRuleSet):
             if name not in emitted:
                 stream.write('variable:{}\n'.format(name))
                 emitted.add(name)
+
+        def _add_word(addr_hex):
+            nonlocal emitted_word
+            if len(emitted) >= max_vars:
+                return
+            key = 'word:{}'.format(addr_hex)
+            if key not in emitted:
+                stream.write(key + '\n')
+                emitted.add(key)
+                emitted_word = True
 
         def _add_const(value):
             if value not in consts_emitted:
@@ -624,9 +653,13 @@ class SVCompRuleSet(GenericRuleSet):
                     continue
                 if size <= 0:
                     continue
-                # Emit up to 4 bytes per slot to keep the literal set small.
-                for off in range(min(size, 4)):
-                    _add_var('0x{:08x}'.format(addr + off))
+                # Prefer a word-level variable when possible. This makes
+                # conditions like "== 3" expressible with max-depth=1.
+                if size >= 4:
+                    _add_word('0x{:08x}'.format(addr))
+                else:
+                    for off in range(min(size, 4)):
+                        _add_var('0x{:08x}'.format(addr + off))
 
             # Prefer only stub-created symbolic inputs.
             for _, mloc, size in self.brules.symbolic_memlocs(asm, set()):
@@ -655,17 +688,23 @@ class SVCompRuleSet(GenericRuleSet):
                     break
 
         # Seed a couple of constants for useful equalities/inequalities.
-        # Use 1-byte constants so BINSEC can infer sizes against @[addr,1].
-        _add_const('0x00')
-        _add_const('0x01')
+        # If we emitted word-level vars, seed word-sized constants.
+        if emitted_word:
+            _add_const('0x00000003')
+        else:
+            # Use 1-byte constants so BINSEC can infer sizes against @[addr,1].
+            _add_const('0x00')
+            _add_const('0x01')
         # Add 0x03 if it appears in a cmp immediate (common SVCOMP bug shape).
-        try:
-            for _, inst in asm.instructions('fun' if asm.has_function('fun') else 'c2bc_main'):
-                if '$0x3' in inst:
-                    _add_const('0x03')
-                    break
-        except Exception:
-            pass
+        # When using word-level vars, prefer the word-sized constant instead.
+        if not emitted_word:
+            try:
+                for _, inst in asm.instructions('fun' if asm.has_function('fun') else 'c2bc_main'):
+                    if '$0x3' in inst:
+                        _add_const('0x03')
+                        break
+            except Exception:
+                pass
 
     def _extract_dba_vars(self, dba_file):
         # Yield tuples (varname, constval) from DBA comparisons.

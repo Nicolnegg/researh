@@ -38,6 +38,26 @@ class BVarType(enum.Enum):
     MemoryLoc = enum.auto()
     Literal = enum.auto()
 # --------------------
+_MEMLOC_RE = re.compile(r'^(0x[0-9a-fA-F]+)(?:(?::|/)([0-9]+))?$')
+
+def parse_memloc(data: str) -> tuple[str, int]:
+    """
+    Parse a memory location spec used in the inference language.
+
+    Supported:
+      - "0xADDR"   -> (0xADDR, 1) byte
+      - "0xADDR:4" -> (0xADDR, 4) bytes
+      - "0xADDR/4" -> (0xADDR, 4) bytes
+    """
+    m = _MEMLOC_RE.match(data)
+    if not m:
+        raise ValueError(f"invalid memloc spec: {data!r}")
+    addr = m.group(1)
+    nbytes = int(m.group(2) or "1", 10)
+    if nbytes <= 0:
+        raise ValueError(f"invalid memloc size: {data!r}")
+    return addr, nbytes
+
 def detect_bvar_type(data):
     if data.startswith('0x'):
         return BVarType.MemoryLoc
@@ -75,7 +95,8 @@ class BVar(BFormulaCore):
 
     def _compute_size(self):
         if self.type == BVarType.MemoryLoc:
-            return 8
+            _, nbytes = parse_memloc(self.core)
+            return 8 * nbytes
         if self.type == BVarType.Register:
             return 32
         if self.type == BVarType.Literal:
@@ -84,7 +105,8 @@ class BVar(BFormulaCore):
 
     def __str__(self):
         if self.type == BVarType.MemoryLoc:
-            return '@[{},1]'.format(self.core)
+            addr, nbytes = parse_memloc(self.core)
+            return '@[{},{}]'.format(addr, nbytes)
         if self.type == BVarType.Register:
             return '{}<32>'.format(self.core)
         if self.type == BVarType.Literal:
@@ -321,7 +343,10 @@ class Context:
     def build_smt_var(self, vstr, size):
         if not size in self.bvsorts:
             self.bvsorts[size] = self.solver.mkBitVectorSort(size)
-        varname = vstr if not vstr.startswith('0x') else 'mem_{}'.format(vstr)
+        if vstr.startswith('0x'):
+            varname = 'mem_{}'.format(vstr.replace(':', '_').replace('/', '_'))
+        else:
+            varname = vstr
         return self.solver.mkConst(self.bvsorts[size], varname)
 
     def create_binary_term(self, operator, id1, id2):

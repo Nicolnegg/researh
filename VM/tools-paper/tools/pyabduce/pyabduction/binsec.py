@@ -220,14 +220,20 @@ class BinsecAutoCandidateGenerator:
                     vid = self.checkers.context.declare_var(value)
                     self._rvars.add(vid)
                     self.vars.add(vid) # TODO: Might be useful to remove this when non-robust version is run
+                if line.startswith('word:'):
+                    addr = ':'.join(line.strip().split(':')[1:]).strip()
+                    if addr:
+                        vid = self.checkers.context.declare_var(f"{addr}:4")
+                        self._rvars.add(vid)
+                        self.vars.add(vid)
                 if self.args.binsec_robust and line.startswith('controlled:'):
                     value = ':'.join(line.strip().split(':')[1:])
                     vid = self.checkers.context.declare_var(value)
                     self.controlled.add(vid)
         if self.args.with_auto_constants:
-            vid = self.checkers.context.declare_const('0x0')
+            vid = self.checkers.context.declare_const('0x00')
             self.vars.add(vid)
-            vid = self.checkers.context.declare_const('0x1')
+            vid = self.checkers.context.declare_const('0x01')
             self.vars.add(vid)
 
     def _update_vars(self):
@@ -266,6 +272,10 @@ class BinsecAutoCandidateGenerator:
             if op != minibinsec.Operator.Lower:
                 for var1, var2 in itertools.combinations(self._reduce_auto(self.vars), 2):
                     if self.checkers.context.is_const(var1) and self.checkers.context.is_const(var2):
+                        continue
+                    # Avoid mismatched-width comparisons which stringify with
+                    # "::" padding and can make BINSEC choke.
+                    if self.checkers.context.get_size(var1) != self.checkers.context.get_size(var2):
                         continue
                     if self.args.no_variables_binop and (not self.checkers.context.is_const(var1)) and (not self.checkers.context.is_const(var2)):
                         continue

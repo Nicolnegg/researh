@@ -21,16 +21,24 @@ __attribute__((noinline)) int __VERIFIER_nondet_int_b(void) { return __VERIFIER_
 /* a and b are kept in globals so the binary exposes them directly for Binsec.
  * They are public (no control) variables, mirroring the nondet fuel used by fun(). */
 volatile int public_a;
+volatile int success_flag;
+
 
 void reach_error(void) {
     __VERIFIER_error();
 }
 
+__attribute__((noinline)) void reach_success(void) {
+    success_flag = 1;
+}
+
 void fun(void) {
     if (public_a == 3) {
         reach_error();
+    } else {
+        void (*volatile succ)(void) = reach_success;
+        succ();
     }
-    //else{reach_success()} -> variable
 
 }
 int main(void) {
