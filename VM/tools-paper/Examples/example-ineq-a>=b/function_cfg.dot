@@ -1,0 +1,22 @@
+digraph G {
+  node [shape=plaintext, ];
+  598651999 [label=<<table border="0" cellspacing="0">
+<tr><td border="1" bgcolor="#16a085">0x8049908</td><td border="1" bgcolor="#bdc3c7" align="left">sub esp, 0x14</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804990b</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, [0x80e3f58]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049910</td><td border="1" bgcolor="#bdc3c7" align="left">mov edx, [0x80e3f54]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049916</td><td border="1" bgcolor="#bdc3c7" align="left">push edx</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049917</td><td border="1" bgcolor="#bdc3c7" align="left">push eax</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049918</td><td border="1" bgcolor="#bdc3c7" align="left">call 0x80498e6</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804991d</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, 0x0</td></tr>
+</table>>,
+             ];
+  1026807040 [label=<<table border="0" cellspacing="0">
+<tr><td border="1" bgcolor="#16a085">0x8049922</td><td border="1" bgcolor="#bdc3c7" align="left">add esp, 0x1c</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049925</td><td border="1" bgcolor="#bdc3c7" align="left">ret</td></tr>
+</table>>,
+              ];
+  
+  
+  598651999 -> 1026807040 [minlen=1, ];
+  
+  }

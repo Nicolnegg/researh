@@ -1,7 +1,0 @@
-
-esp<32> := 0xfff80000;
-controlled dummy<32>;
-@[0x080e3f4c,4] from_file;
-@[0x080e3f48,4] from_file;
-@[0x080e3f44,4] from_file;
-@[0x080e3f40,4] from_file;

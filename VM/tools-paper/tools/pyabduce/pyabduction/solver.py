@@ -47,6 +47,36 @@ class AbductionSolver:
     def recover_necessary_constants(self):
         self.engine.recover_necessary_constants()
 
+    def _semantic_post_filter_solutions(self, solutions):
+        # Remove semantically redundant sufficient conditions with BINSEC
+        # necessity checks (real semantics, not only syntactic subset checks).
+        solutions = [set(sol) for sol in solutions]
+        if len(solutions) <= 1:
+            return solutions
+
+        changed = True
+        while changed and len(solutions) > 1:
+            changed = False
+            for idx, solution in enumerate(list(solutions)):
+                trial = solutions[:idx] + solutions[idx+1:]
+                if len(trial) == 0:
+                    continue
+                if self.check_necessity(trial):
+                    self.log.debug('semantic post-filter removed: {}'.format(stringify(solution)))
+                    solutions = trial
+                    changed = True
+                    break
+
+        # If one solution alone is already necessary, keep that single formula.
+        if len(solutions) > 1:
+            singleton_necessary = [sol for sol in solutions if self.check_necessity([sol])]
+            if len(singleton_necessary) > 0:
+                best = min(singleton_necessary, key=lambda sol: (len(sol), len(stringify(sol))))
+                self.log.debug('semantic post-filter selected singleton: {}'.format(stringify(best)))
+                solutions = [best]
+
+        return solutions
+
     def solve(self):
         self.stats.start_timers(('solution', 'unsolution', 'counterex', 'example', 'necessaryc'))
         self.get_initital_examples()
@@ -63,8 +93,20 @@ class AbductionSolver:
                 self.store_solution(candidate, gcore)
                 self.engine.add_example(rmodel)
                 if self.check_necessity(self.engine.get_solutions()):
+                    original = [set(sol) for sol in self.engine.get_solutions()]
+                    general = self._semantic_post_filter_solutions(original)
+                    if not self.check_necessity(general):
+                        self.log.warning('semantic post-filter broke necessity; restoring original result set')
+                        general = original
+                    # Keep all NAS conditions in storage/output and print the
+                    # generalized condition separately.
+                    self.engine.storage.solutions = original
                     self.log.info('obtained a necessary result set')
-                    self.log.result('nas condition: {}'.format(self.engine.get_stringified_solutions()))
+                    self.log.result('nas conditions (all): {}'.format(self.engine.get_stringified_solutions()))
+                    if len(general) == 1:
+                        self.log.result('general nas condition: {}'.format(stringify(general[0])))
+                    else:
+                        self.log.result('general nas condition: {}'.format([stringify(sol) for sol in general]))
                     break
                 self.log.result('updated sufficient condition: {}'.format(self.engine.get_stringified_solutions()))
             elif gstatus:

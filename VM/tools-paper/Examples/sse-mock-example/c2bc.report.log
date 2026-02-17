@@ -202,3 +202,36 @@ run objdump -t example.dir/example.bin
 abduction requires at least one controlled variable; rerun with --auto-control-variables
 (TaskException(...), 'no controlled variables detected for abduction')
 
+------------------------------------------------------------
+compiling example.c -> example.dir/example.run.bash
+keep include [<stdint.h>]
+found func def for __VERIFIER_error
+found func decl for __VERIFIER_error
+falg func reach_error for deletion
+flag external id 96 for deletion
+found func def for reach_success
+found func decl for reach_success
+found func def for fail
+found func decl for fail
+found func def for v
+found func def for read_input
+found func decl for read_input
+replace funcid main with c2bc_main
+found func def for c2bc_main
+found func decl for c2bc_main
+found func def for input
+delete external id 96
+add stub dependency c2bc_assert_fail (from reach_error)
+add stub dependency c2bc_abort (from main)
+add stub dependency c2bc_assert_fail (from reach_error)
+add stub dependency c2bc_abort (from main)
+add stub dependency c2bc_assert_fail (from reach_error)
+add stub dependency c2bc_abort (from main)
+run gcc -O1 -static -m32 -no-pie -fno-pic -fno-stack-protector -Werror -Wno-pointer-compare -Wno-aggressive-loop-optimizations -Wno-vla-larger-than -Wno-overflow -Wno-incompatible-pointer-types -Wno-int-conversion -Wno-format-security -o example.dir/example.bin example.dir/example.stub.raw.c example.dir/example.uc.raw.c -lm
+run objdump -D example.dir/example.bin
+trying symbol table supplementation
+run objdump -t example.dir/example.bin
+run binsec -disasm -disasm-functions c2bc_main -disasm-o-dba example.dir/example.dba -file example.dir/example.bin
+warning: binsec not found; continuing without dba literals
+<pulseutils.assembly.x86AsmData object at 0x7056e17f0ec0>
+

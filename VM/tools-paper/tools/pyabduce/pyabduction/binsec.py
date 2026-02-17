@@ -244,6 +244,9 @@ class BinsecAutoCandidateGenerator:
             for model in modelset:
                 for key, val in model.items():
                     if not key in { 'default', '*controlled' }:
+                        # Skip BINSEC-internal symbols (e.g., from_file!1).
+                        if '!' in key:
+                            continue
                     #if (key.startswith('0x') or
                     #    (key != 'default' and int(val, 16) != 0)):
                         # Commented version looks for non null registers only
@@ -290,6 +293,11 @@ class BinsecAutoCandidateGenerator:
             else:
                 for var1, var2 in itertools.permutations(self._reduce_auto(self.vars), 2):
                     if self.checkers.context.is_const(var1) and self.checkers.context.is_const(var2):
+                        continue
+                    # Keep inequalities type-safe too. Mixed-size (<s) terms
+                    # stringify with "::" padding and can trigger BINSEC parse
+                    # errors ("Unable to infer the size of ...").
+                    if self.checkers.context.get_size(var1) != self.checkers.context.get_size(var2):
                         continue
                     if self.args.no_variables_binop and (not self.checkers.context.is_const(var1)) and (not self.checkers.context.is_const(var2)):
                         continue
@@ -510,6 +518,13 @@ class BinsecCheckers(AbstractChecker):
         self.log.debug('vulnerability check')
         return self._check_dgoal_reachable_util(candidate, reject, complete)
 
+    def _sanitize_model(self, model):
+        if not model:
+            return model
+        # Drop BINSEC SSA/internal bindings (e.g., from_file!1) that cannot
+        # be serialized back as valid assumptions in SSE scripts.
+        return {k: v for k, v in model.items() if k != 'default' and '!' not in k}
+
     def _check_dgoal_reachable_util(self, candidate, reject, complete=False):
         directives = [ d for d in self.directives['all'] ]
         directives.extend(self.directives['positive'])
@@ -526,6 +541,7 @@ class BinsecCheckers(AbstractChecker):
         parser = self._run_binsec_command(candidate, directives)
         status = len(parser.models) > 0
         model = parser.models[0]['model'] if len(parser.models) > 0 else None
+        model = self._sanitize_model(model)
         return status, model, None
 
     def _check_dgoal_reachable(self, candidate):
@@ -542,6 +558,7 @@ class BinsecCheckers(AbstractChecker):
         parser = self._run_binsec_command(candidate, directives)
         status = parser.status['goal-unreachable']
         model = parser.models[0]['model'] if len(parser.models) > 0 else None
+        model = self._sanitize_model(model)
         if not status and model is None:
             self.log.warning('binsec test returned neither model nor unreachable')
             # TODO: Handle unknown case (such as timeouts)
@@ -631,10 +648,11 @@ class BinsecCheckers(AbstractChecker):
 
     def check_satisfied(self, candidate, model):
         self.stats.get_oracle('minibinsec').calls += 1
-        if model:
-            model = { k: v for k, v in model.items() if k in self.context.vars }
-            if not model:
-                return False, None, None
+        if not model:
+            return False, None, None
+        model = { k: v for k, v in model.items() if ('!' not in k and k in self.context.vars) }
+        if not model:
+            return False, None, None
         return minibinsec.check_sat_model(candidate, model, self.context), None, None
 
     def _precheck_consequence(self, implicant, implicate):
@@ -790,6 +808,7 @@ class RobustBinsecCheckers(BinsecCheckers):
         parser = self._run_binsec_robust_command(candidate, directives, self.var_engine.get_controlled())
         status = parser.status['goal-unreachable'] or len(parser.models) <= 0
         model = parser.models[0]['model'] if len(parser.models) > 0 else None
+        model = self._sanitize_model(model)
         if not parser.status['goal-unreachable'] and model is None:
             self.log.warning('binsec test returned neither model nor unreachable')
             # TODO: Handle unknown case (such as timeouts)

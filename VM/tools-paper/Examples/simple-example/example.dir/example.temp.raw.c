@@ -6,7 +6,7 @@
 #define __const
 // example.c
 
-// --- stubs para c2bc / Binsec ---
+//  stubs para c2bc / Binsec
 void __VERIFIER_error(void) {
     // Error
 }
@@ -33,7 +33,7 @@ __attribute__((noinline)) void reach_success(void) {
 }
 
 void fun(void) {
-    if (public_a == 3) {
+    if (public_a != 3) {
         reach_error();
     } else {
         void (*volatile succ)(void) = reach_success;

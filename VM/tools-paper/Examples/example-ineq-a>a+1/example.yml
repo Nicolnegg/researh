@@ -1,0 +1,5 @@
+input_files:
+  - example.c
+properties:
+  - property_file: unreach-call.prp
+    expected_verdict: false

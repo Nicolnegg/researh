@@ -1,6 +1,7 @@
 # ----------------------------------------
 import os
 import os.path
+import re
 from pycparser import c_generator
 import yaml
 try:
@@ -188,10 +189,47 @@ class SVCompBConfig:
         return res
 
     def detect_alocs(self, asm):
-        # Preferred positive goal: explicit success hook when available.
+        # Preferred positive goal: explicit success hook when available and
+        # actually referenced from executable code.
         if asm.has_function('reach_success'):
+            succ_loc = None
             for loc, _ in asm.instructions('reach_success'):
-                return [loc]
+                succ_loc = loc
+                break
+            if succ_loc is not None:
+                succ_hex = '0x{:x}'.format(succ_loc)
+                succ_tag = '<reach_success>'
+                for fname in ('c2bc_main', 'main', 'fun'):
+                    if not asm.has_function(fname):
+                        continue
+                    for _, inst in asm.instructions(fname):
+                        if succ_hex in inst or succ_tag in inst:
+                            return [succ_loc]
+                # If the hook exists but is not referenced (e.g., inlined safe
+                # branch), fall through to branch-target heuristics below.
+        # Try to use the first conditional jump target in c2bc_main/fun.
+        for fname in ('c2bc_main', 'fun', 'main'):
+            if not asm.has_function(fname):
+                continue
+            for _, inst in asm.instructions(fname):
+                asm_part = inst.split('\t')[-1].strip()
+                if not asm_part:
+                    continue
+                parts = asm_part.split()
+                if len(parts) < 2:
+                    continue
+                op = parts[0].strip().lower()
+                # Conditional jumps start with j* but exclude plain jmp.
+                if not op.startswith('j') or op == 'jmp':
+                    continue
+                # objdump format is usually "... <tab>jne    804991e <...>".
+                m = re.search(r'\b([0-9a-fA-F]{6,16})\b', asm_part)
+                if m is None:
+                    continue
+                try:
+                    return [int(m.group(1), 16)]
+                except ValueError:
+                    continue
         cpt = 0
         main_name = 'c2bc_main' if asm.has_function('c2bc_main') else 'main'
         for loc, _ in asm.instructions(main_name):
@@ -550,10 +588,16 @@ class SVCompRuleSet(GenericRuleSet):
             stream.write('@[{},{}] := from_file\n'.format(mloc, size))
 
     def write_abduct_directives(self, stream, asm, dba_file=None):
-        # Prefer DBA-derived bug targets (cmp/jz) when available.
+        # Prefer explicit bug hooks for negative reach.
         rlocs = []
         cmp_addr = None
-        if dba_file and os.path.isfile(dba_file):
+        if asm.has_function('reach_error'):
+            rlocs = [asm.address_of('reach_error')]
+        elif asm.has_function('__VERIFIER_error'):
+            rlocs = [asm.address_of('__VERIFIER_error')]
+
+        # DBA-derived targets are used only as fallback when no explicit bug hook exists.
+        if not rlocs and dba_file and os.path.isfile(dba_file):
             rlocs = self._extract_dba_bug_targets(dba_file)
             # Also record the first cmp address to avoid cutting paths before it.
             try:
@@ -566,12 +610,6 @@ class SVCompRuleSet(GenericRuleSet):
                                 break
             except OSError:
                 cmp_addr = None
-        # Fallback to direct reach_error / __VERIFIER_error entrypoints when present.
-        if not rlocs:
-            if asm.has_function('reach_error'):
-                rlocs = [asm.address_of('reach_error')]
-            elif asm.has_function('__VERIFIER_error'):
-                rlocs = [asm.address_of('__VERIFIER_error')]
         if not rlocs:
             rlocs = self.brules.detect_rlocs(asm)
         clocs = self.brules.detect_clocs(asm)
@@ -579,11 +617,162 @@ class SVCompRuleSet(GenericRuleSet):
             # With DBA-driven targets, avoid cuts: they can mask reachability.
             clocs = []
         alocs = self.brules.detect_alocs(asm)
+        # Guard against degenerate directives (+reach == -reach), which make
+        # abduction unsatisfiable by construction.
+        if alocs:
+            rset = set(rlocs)
+            aset = set(alocs)
+            if rset == aset:
+                if asm.has_function('reach_error'):
+                    rlocs = [asm.address_of('reach_error')]
+                elif asm.has_function('__VERIFIER_error'):
+                    rlocs = [asm.address_of('__VERIFIER_error')]
         nrlocs = self.brules.detect_nrlocs(asm)
         directives = self.brules.abduction_directives(rlocs, nrlocs, clocs, alocs)
         for directive in directives:
             stream.write(directive)
             stream.write('\n')
+
+    def _entry_function_name(self, asm):
+        for fname in ('c2bc_main', 'fun', 'main'):
+            if asm.has_function(fname):
+                return fname
+        return None
+
+    def _data_symbol_sizes(self, asm):
+        sizes = {}
+        for label in asm.labels(sections=('.bss', '.data')):
+            try:
+                addr = asm.address_of(label)
+                size = asm.bytesize_of(label)
+            except KeyError:
+                continue
+            if size > 0 and addr not in sizes:
+                sizes[addr] = size
+        return sizes
+
+    def _reg_to_32(self, reg):
+        r = reg.lower()
+        alias = {
+            'al': 'eax', 'ah': 'eax', 'ax': 'eax', 'eax': 'eax',
+            'bl': 'ebx', 'bh': 'ebx', 'bx': 'ebx', 'ebx': 'ebx',
+            'cl': 'ecx', 'ch': 'ecx', 'cx': 'ecx', 'ecx': 'ecx',
+            'dl': 'edx', 'dh': 'edx', 'dx': 'edx', 'edx': 'edx',
+            'si': 'esi', 'esi': 'esi',
+            'di': 'edi', 'edi': 'edi',
+            'bp': 'ebp', 'ebp': 'ebp',
+            'sp': 'esp', 'esp': 'esp',
+        }
+        return alias.get(r)
+
+    def _infer_entry_memref_widths(self, asm):
+        # Infer whether an entry memref is used as byte or word in branch logic.
+        fname = self._entry_function_name(asm)
+        if fname is None:
+            return {}
+        hints = {}
+        reg_sources = {}
+        byte_regs = {'al', 'ah', 'bl', 'bh', 'cl', 'ch', 'dl', 'dh'}
+        word_regs = {'eax', 'ebx', 'ecx', 'edx', 'esi', 'edi', 'ebp', 'esp'}
+        instr_re = re.compile(r'^(?:[0-9a-f]{2}(?:\s+[0-9a-f]{2})*)\s+([a-z.]+)\s*(.*)$')
+
+        def _set_hint(addr_hex, hint):
+            prev = hints.get(addr_hex)
+            if prev == 'byte' and hint == 'word':
+                return
+            hints[addr_hex] = hint
+
+        def _extract_reg(op):
+            token = op.lower().strip().replace('%', '').replace('*', '')
+            token = re.sub(r'\b(?:byte|word|dword|qword|ptr|ds|ss|cs|es|fs|gs)\b', '', token)
+            token = token.replace(':', '').replace('[', '').replace(']', '').strip()
+            if re.fullmatch(r'(eax|ebx|ecx|edx|esi|edi|ebp|esp|ax|bx|cx|dx|si|di|bp|sp|al|ah|bl|bh|cl|ch|dl|dh)', token):
+                return token
+            return None
+
+        def _extract_addr(op):
+            match = re.search(r'0x([0-9a-f]{7,16})', op.lower())
+            if not match:
+                return None
+            return '0x{:08x}'.format(int(match.group(1), 16))
+
+        for _, inst in asm.instructions(fname):
+            text = ' '.join(inst.lower().replace('\t', ' ').split(';')[0].split())
+            imatch = instr_re.match(text)
+            if imatch:
+                mnem = imatch.group(1)
+                operands = imatch.group(2)
+            else:
+                parts = text.split(None, 1)
+                mnem = parts[0] if parts else ''
+                operands = parts[1] if len(parts) > 1 else ''
+            ops = [op.strip() for op in operands.split(',')] if operands else []
+
+            if mnem.startswith('mov') and len(ops) >= 2:
+                src = ops[0]
+                dst = ops[1]
+                src_addr = _extract_addr(src)
+                dst_addr = _extract_addr(dst)
+                src_reg = _extract_reg(src)
+                dst_reg = _extract_reg(dst)
+                # AT&T load: mov 0xADDR,%eax
+                if src_addr is not None and dst_reg is not None:
+                    reg32 = self._reg_to_32(dst_reg)
+                    if reg32 is not None:
+                        reg_sources[reg32] = src_addr
+                # Intel load: mov eax,[0xADDR]
+                elif src_reg is not None and dst_addr is not None:
+                    reg32 = self._reg_to_32(src_reg)
+                    if reg32 is not None:
+                        reg_sources[reg32] = dst_addr
+
+            if mnem.startswith('cmp') or mnem.startswith('test'):
+                if mnem.startswith('cmpb') or mnem.startswith('testb'):
+                    default_hint = 'byte'
+                elif mnem.startswith('cmpl') or mnem.startswith('testl'):
+                    default_hint = 'word'
+                else:
+                    default_hint = None
+
+                regs = []
+                addrs = []
+                for op in ops:
+                    op_addr = _extract_addr(op)
+                    op_reg = _extract_reg(op)
+                    if op_addr is not None:
+                        addrs.append(op_addr)
+                    if op_reg is not None:
+                        regs.append(op_reg)
+
+                for addr_hex in addrs:
+                    if default_hint is not None:
+                        _set_hint(addr_hex, default_hint)
+
+                for reg in regs:
+                    reg32 = self._reg_to_32(reg)
+                    if reg32 is None:
+                        continue
+                    addr_hex = reg_sources.get(reg32)
+                    if addr_hex is None:
+                        continue
+                    if reg in byte_regs:
+                        _set_hint(addr_hex, 'byte')
+                    elif reg in word_regs:
+                        _set_hint(addr_hex, 'word')
+
+            # Legacy fallback for odd objdump formats with `%` registers in raw text.
+            for reg in re.findall(r'%([a-z0-9]+)\b', text):
+                reg32 = self._reg_to_32(reg)
+                if reg32 is not None:
+                    addr_hex = reg_sources.get(reg32)
+                    if addr_hex is None:
+                        continue
+                    if reg in byte_regs:
+                        _set_hint(addr_hex, 'byte')
+                    elif reg in word_regs:
+                        _set_hint(addr_hex, 'word')
+
+        return hints
 
     def write_abduct_literals(self, stream, asm, controlled, dba_file=None):
         # Emit a non-empty literal grammar even when no controlled vars exist.
@@ -614,6 +803,55 @@ class SVCompRuleSet(GenericRuleSet):
                 stream.write('constant:{}\n'.format(value))
                 consts_emitted.add(value)
 
+        def _add_from_entry_memrefs():
+            # Recover data addresses directly referenced by entry code
+            # (typically c2bc_main) to capture true decision variables such as
+            # user globals, even when auto-controlled vars only expose stubs.
+            fname = self._entry_function_name(asm)
+            if fname is None:
+                return
+            width_hints = self._infer_entry_memref_widths(asm)
+            symbol_sizes = self._data_symbol_sizes(asm)
+            seen = set()
+            ordered = []
+            for _, inst in asm.instructions(fname):
+                for m in re.findall(r'0x[0-9a-fA-F]{7,16}', inst):
+                    mh = m.lower()
+                    # Keep only likely data-segment addresses (x86 static bins
+                    # used in this pipeline place data around 0x080e....).
+                    if not (mh.startswith('0x080e') or mh.startswith('0x80e')):
+                        continue
+                    try:
+                        norm = '0x{:08x}'.format(int(mh, 16))
+                    except ValueError:
+                        continue
+                    if norm in seen:
+                        continue
+                    seen.add(norm)
+                    ordered.append(norm)
+
+            # If branch-width inference succeeded, keep only addresses that
+            # actually influence compare/test conditions.
+            if width_hints:
+                ordered = [addr for addr in ordered if addr in width_hints]
+
+            emitted_entry = 0
+            for norm in ordered:
+                hint = width_hints.get(norm)
+                if hint == 'byte':
+                    _add_var(norm)
+                elif hint == 'word':
+                    _add_word(norm)
+                else:
+                    size = symbol_sizes.get(int(norm, 16))
+                    if size is not None and size < 4:
+                        _add_var(norm)
+                    else:
+                        _add_word(norm)
+                emitted_entry += 1
+                if len(emitted) >= max_vars or emitted_entry >= 3:
+                    return
+
         def _add_from_dba():
             if not dba_file or not os.path.isfile(dba_file):
                 return False
@@ -639,6 +877,9 @@ class SVCompRuleSet(GenericRuleSet):
             for ctrlv in controlled:
                 _add_var(ctrlv)
                 stream.write('controlled:{}\n'.format(ctrlv))
+            # Also include direct data memrefs from the main function so
+            # global decision vars are not lost when controlled vars are stub-only.
+            _add_from_entry_memrefs()
         else:
             # Prefer user-visible nondet/public globals when present, as they
             # usually represent the actual program inputs in SVCOMP-style
@@ -656,10 +897,14 @@ class SVCompRuleSet(GenericRuleSet):
                 # Prefer a word-level variable when possible. This makes
                 # conditions like "== 3" expressible with max-depth=1.
                 if size >= 4:
-                    _add_word('0x{:08x}'.format(addr))
+                        _add_word('0x{:08x}'.format(addr))
                 else:
                     for off in range(min(size, 4)):
                         _add_var('0x{:08x}'.format(addr + off))
+
+            # Also mine direct memory references in entry code to recover
+            # globals used in branch predicates (e.g., input mirrors).
+            _add_from_entry_memrefs()
 
             # Prefer only stub-created symbolic inputs.
             for _, mloc, size in self.brules.symbolic_memlocs(asm, set()):
@@ -690,6 +935,8 @@ class SVCompRuleSet(GenericRuleSet):
         # Seed a couple of constants for useful equalities/inequalities.
         # If we emitted word-level vars, seed word-sized constants.
         if emitted_word:
+            _add_const('0x00000000')
+            _add_const('0x00000001')
             _add_const('0x00000003')
         else:
             # Use 1-byte constants so BINSEC can infer sizes against @[addr,1].

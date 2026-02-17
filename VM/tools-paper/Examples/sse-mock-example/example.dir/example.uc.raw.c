@@ -1,8 +1,8 @@
 
+extern void __attribute__ ((noinline)) c2bc_assert_fail(const char* p1, const char* p2, unsigned int p3, const char* p4);
 extern void reach_error();
 extern void __attribute__ ((noinline)) c2bc_abort(void);
 extern int c2bc_main(void);
-extern void __attribute__ ((noinline)) c2bc_assert_fail(const char* p1, const char* p2, unsigned int p3, const char* p4);
 typedef unsigned char __u_char;
 typedef unsigned short int __u_short;
 typedef unsigned int __u_int;
@@ -99,9 +99,15 @@ typedef __intmax_t intmax_t;
 typedef __uintmax_t uintmax_t;
 volatile int elm = 0;
 volatile int errc = 0;
+volatile int success_flag = 0;
 static char safety = 0x01;
 void __VERIFIER_error(void)
 {
+}
+
+void reach_success(void)
+{
+  success_flag = 1;
 }
 
 int fail(int v)
@@ -118,11 +124,15 @@ char read_input(void)
 
 int c2bc_main(void)
 {
-  char input;
+  unsigned char input;
   input = read_input();
   if (input == 0)
   {
     fail(1);
+  }
+  else
+  {
+    reach_success();
   }
   return 0;
 }
