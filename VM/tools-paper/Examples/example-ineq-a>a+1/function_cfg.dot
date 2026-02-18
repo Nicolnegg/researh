@@ -2,7 +2,7 @@ digraph G {
   node [shape=plaintext, ];
   784405453 [label=<<table border="0" cellspacing="0">
 <tr><td border="1" bgcolor="#16a085">0x8049924</td><td border="1" bgcolor="#bdc3c7" align="left">sub esp, 0xc</td></tr>
-<tr><td border="1" bgcolor="#16a085">0x8049927</td><td border="1" bgcolor="#bdc3c7" align="left">call 0x80498ad</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049927</td><td border="1" bgcolor="#bdc3c7" align="left">call 0x8049884</td></tr>
 <tr><td border="1" bgcolor="#16a085">0x804992c</td><td border="1" bgcolor="#bdc3c7" align="left">sub esp, 0x8</td></tr>
 <tr><td border="1" bgcolor="#16a085">0x804992f</td><td border="1" bgcolor="#bdc3c7" align="left">lea edx, [eax + 0x1]</td></tr>
 <tr><td border="1" bgcolor="#16a085">0x8049932</td><td border="1" bgcolor="#bdc3c7" align="left">push edx</td></tr>

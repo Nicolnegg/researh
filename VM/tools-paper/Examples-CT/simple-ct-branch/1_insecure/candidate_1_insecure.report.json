@@ -1,0 +1,87 @@
+{
+  "alternatives": [],
+  "ct_validation": {
+    "baseline": {
+      "leaks": [
+        {
+          "instruction": "0x080498d9",
+          "kind": "control flow",
+          "raw": "Instruction 0x080498d9 has control flow leak (0.045s)"
+        }
+      ],
+      "status": "insecure"
+    },
+    "selected": {
+      "leaks": [],
+      "status": "secure"
+    }
+  },
+  "nas_conditions_all": [
+    "{(@[0x080e3f48,4] = @[0x080e3f4c,4])}"
+  ],
+  "selected_policy": "{(@[0x080e3f48,4] = @[0x080e3f4c,4])}",
+  "stats": {
+    "core": {
+      "counterexamples": 3,
+      "examples": 3,
+      "necessary_literals": 0,
+      "solutions": 1,
+      "unsolutions": 0
+    },
+    "generation": {
+      "considered": 3,
+      "evaluated": 4,
+      "literals": 12,
+      "pruned": {},
+      "restarts": 1,
+      "variables": 3
+    },
+    "oracles": {
+      "binsec": {
+        "calls": 10,
+        "crashes": 0,
+        "timeouts": 0,
+        "times": [
+          0.04638385772705078,
+          0.05381631851196289,
+          0.04688286781311035,
+          0.05066347122192383,
+          0.05000925064086914,
+          0.05355548858642578,
+          0.04769420623779297,
+          0.04742550849914551,
+          0.06228137016296387,
+          0.05645751953125
+        ]
+      },
+      "minibinsec": {
+        "calls": 33,
+        "crashes": 0,
+        "timeouts": 0,
+        "times": []
+      }
+    },
+    "timers": {
+      "counterex": {
+        "first": 0.14812755584716797,
+        "last": 0.25076889991760254
+      },
+      "example": {
+        "first": 0.046915292739868164,
+        "last": 0.30482983589172363
+      },
+      "necessaryc": {
+        "first": 0,
+        "last": 0
+      },
+      "solution": {
+        "first": 0.3048264980316162,
+        "last": 0.3048264980316162
+      },
+      "unsolution": {
+        "first": 0,
+        "last": 0
+      }
+    }
+  }
+}

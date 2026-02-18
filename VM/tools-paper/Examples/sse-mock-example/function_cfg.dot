@@ -4,7 +4,7 @@ digraph G {
 <tr><td border="1" bgcolor="#16a085">0x8049901</td><td border="1" bgcolor="#bdc3c7" align="left">jnz 0x804991e</td></tr>
 <tr><td border="1" bgcolor="#16a085">0x8049903</td><td border="1" bgcolor="#bdc3c7" align="left">sub esp, 0xc</td></tr>
 <tr><td border="1" bgcolor="#16a085">0x8049906</td><td border="1" bgcolor="#bdc3c7" align="left">mov [0x80e3f54], 0x1</td></tr>
-<tr><td border="1" bgcolor="#16a085">0x8049910</td><td border="1" bgcolor="#bdc3c7" align="left">call 0x8049884</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049910</td><td border="1" bgcolor="#bdc3c7" align="left">call 0x80498b4</td></tr>
 <tr><td border="1" bgcolor="#16a085">0x8049915</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, 0x0</td></tr>
 <tr><td border="1" bgcolor="#16a085">0x804991a</td><td border="1" bgcolor="#bdc3c7" align="left">add esp, 0xc</td></tr>
 <tr><td border="1" bgcolor="#16a085">0x804991d</td><td border="1" bgcolor="#bdc3c7" align="left">ret</td></tr>

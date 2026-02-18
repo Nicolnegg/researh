@@ -36,6 +36,8 @@ class BinsecLogParser:
 
         self.status = {
             'goal-unreachable': False,
+            'checkct-program-status': None,
+            'checkct-leaks': [],
         }
 
         self._parse(data)
@@ -77,6 +79,22 @@ class BinsecLogParser:
         handler = '_handle_sse_{}'.format(handler_core)
         if hasattr(self, handler):
             getattr(self, handler)(chunk)
+
+    def _parse_checkct_chunk(self, chunk):
+        for line in chunk.data.split('\n'):
+            ldata = line.strip()
+            if not ldata:
+                continue
+            smatch = re.search(r'Program status is\s*:\s*(secure|insecure|unknown)', ldata, re.IGNORECASE)
+            if smatch is not None:
+                self.status['checkct-program-status'] = smatch[1].lower()
+            lmatch = re.search(r'Instruction\s+([0-9a-fx]+)\s+has\s+(.+?)\s+leak', ldata, re.IGNORECASE)
+            if lmatch is not None:
+                self.status['checkct-leaks'].append({
+                    'instruction': lmatch[1],
+                    'kind': lmatch[2].strip(),
+                    'raw': ldata,
+                })
 
     def _parse_fml_chunk(self, chunk):
         if chunk.data.startswith('Will open'):
@@ -237,6 +255,34 @@ class BinsecAutoCandidateGenerator:
             self.vars.add(vid)
 
     def _update_vars(self):
+        def _is_covered_by_input_word(vname):
+            if not isinstance(vname, str):
+                return False
+            if not re.fullmatch(r'0x[0-9a-fA-F]+', vname):
+                return False
+            try:
+                addr = int(vname, 16)
+            except ValueError:
+                return False
+            for ivar in self._rvars:
+                if not isinstance(ivar, str):
+                    continue
+                if not ivar.startswith('0x') or ':' not in ivar:
+                    continue
+                base_s, size_s = ivar.split(':', 1)
+                if not size_s.isdigit():
+                    continue
+                try:
+                    base = int(base_s, 16)
+                    size = int(size_s)
+                except ValueError:
+                    continue
+                if size <= 1:
+                    continue
+                if base <= addr < base + size:
+                    return True
+            return False
+
         if self.args.input_variables_only:
             self.vars = self._rvars
             return
@@ -247,10 +293,19 @@ class BinsecAutoCandidateGenerator:
                         # Skip BINSEC-internal symbols (e.g., from_file!1).
                         if '!' in key:
                             continue
+                        # Skip BINSEC pseudo source symbol used by memory
+                        # initializers; it's not a real program variable.
+                        if key == 'from_file':
+                            continue
                     #if (key.startswith('0x') or
                     #    (key != 'default' and int(val, 16) != 0)):
                         # Commented version looks for non null registers only
                         if not self.checkers.fully_assumed(key):
+                            # Avoid exploding the search space with byte vars
+                            # when the same memory is already tracked as an
+                            # input word variable (e.g. 0xADDR:4).
+                            if _is_covered_by_input_word(key):
+                                continue
                             self.checkers.context.declare_var(key)
                             self.vars.add(key)
 
@@ -270,14 +325,51 @@ class BinsecAutoCandidateGenerator:
         return { v for v in varset if not v in self.controlled }
 
     def _generate_literals(self):
+        def _resized_const(const_id, target_size):
+            # Build a same-width constant to avoid mixed-size pretty-printing
+            # ("0x..::...") that BINSEC may reject in assume clauses.
+            if target_size <= 0:
+                return None
+            cstr = self.checkers.context.vars[const_id][0].core
+            try:
+                ival = int(cstr, 0)
+            except ValueError:
+                return None
+            mask = (1 << target_size) - 1 if target_size < 1024 else None
+            if mask is not None:
+                ival &= mask
+            if target_size % 4 == 0:
+                width = max(1, target_size // 4)
+                nstr = '0x{:0{}x}'.format(ival, width)
+            else:
+                nstr = '0b{:b}'.format(ival)
+            nid = self.checkers.context.declare_const(nstr)
+            self.vars.add(nid)
+            return nid
+
+        def _normalize_pair(v1, v2):
+            s1, s2 = self.checkers.context.get_size(v1), self.checkers.context.get_size(v2)
+            if s1 == s2:
+                return v1, v2
+            c1, c2 = self.checkers.context.is_const(v1), self.checkers.context.is_const(v2)
+            if c1 and not c2:
+                nv1 = _resized_const(v1, s2)
+                return (nv1, v2) if nv1 is not None else (None, None)
+            if c2 and not c1:
+                nv2 = _resized_const(v2, s1)
+                return (v1, nv2) if nv2 is not None else (None, None)
+            return None, None
+
         lits = []
         for op in self.operators:
             if op != minibinsec.Operator.Lower:
                 for var1, var2 in itertools.combinations(self._reduce_auto(self.vars), 2):
+                    var1, var2 = _normalize_pair(var1, var2)
+                    if var1 is None or var2 is None:
+                        continue
                     if self.checkers.context.is_const(var1) and self.checkers.context.is_const(var2):
                         continue
-                    # Avoid mismatched-width comparisons which stringify with
-                    # "::" padding and can make BINSEC choke.
+                    # Keep only width-safe comparisons after normalization.
                     if self.checkers.context.get_size(var1) != self.checkers.context.get_size(var2):
                         continue
                     if self.args.no_variables_binop and (not self.checkers.context.is_const(var1)) and (not self.checkers.context.is_const(var2)):
@@ -292,11 +384,12 @@ class BinsecAutoCandidateGenerator:
                         lits.extend(self._generate_bit_literals(op, var1, var2))
             else:
                 for var1, var2 in itertools.permutations(self._reduce_auto(self.vars), 2):
+                    var1, var2 = _normalize_pair(var1, var2)
+                    if var1 is None or var2 is None:
+                        continue
                     if self.checkers.context.is_const(var1) and self.checkers.context.is_const(var2):
                         continue
-                    # Keep inequalities type-safe too. Mixed-size (<s) terms
-                    # stringify with "::" padding and can trigger BINSEC parse
-                    # errors ("Unable to infer the size of ...").
+                    # Keep inequalities type-safe too.
                     if self.checkers.context.get_size(var1) != self.checkers.context.get_size(var2):
                         continue
                     if self.args.no_variables_binop and (not self.checkers.context.is_const(var1)) and (not self.checkers.context.is_const(var2)):
@@ -402,6 +495,8 @@ class BinsecCheckers(AbstractChecker):
         create_directory(self.configdir)
         self.context = minibinsec.Context(self.log)
         self.var_engine = None
+        self.ct_history = []
+        self.ct_last = None
 
     def _load_config(self):
         # Strip reach/cut/assume directives from the base config so abduction
@@ -418,6 +513,8 @@ class BinsecCheckers(AbstractChecker):
     def _normalize_directive(self, line):
         ldata = line.strip()
         if not ldata:
+            return None
+        if ldata.startswith('#'):
             return None
         # legacy formats
         if ldata.startswith('0x') and ' reach' in ldata:
@@ -458,6 +555,10 @@ class BinsecCheckers(AbstractChecker):
         return '\n'.join(l for l in lines if l).strip() + '\n'
 
     def _load_directives(self):
+        if self.args.binsec_directives is None:
+            directives = { 'all': [], 'negative': [], 'positive': [] }
+            self.log.debug('loaded binsec directives: {}'.format(directives))
+            return directives
         with open(self.args.binsec_directives, 'r') as stream:
             result = []
             result_u = []
@@ -497,6 +598,8 @@ class BinsecCheckers(AbstractChecker):
                     return True
 
     def check_goals(self, candidate):
+        if getattr(self.args, 'ct_mode', False):
+            return self._check_ct_goals(candidate)
         '''True when forall neg -> unreachable but exists not neg -> reachable'''
         status, model, gcore = self._check_ngoal_unreachable(candidate)
         statusr, modelr, rcore = True, None, None
@@ -506,6 +609,18 @@ class BinsecCheckers(AbstractChecker):
         return status, statusr, model, modelr, gcore, rcore
 
     def check_necessity(self, solutions):
+        if getattr(self.args, 'ct_mode', False):
+            self.log.debug('necessary condition check (ct mode)')
+            if any(len(sol) == 0 for sol in solutions):
+                # "true" policy already covers all inputs.
+                return True
+            constraint = self._format_solution_set(solutions)
+            status, leaks, _ = self._check_ct_candidate(constraint, [], formatted=False)
+            if status == 'unknown':
+                self.log.warning('ct necessity check is unknown; treating as non-necessary')
+                return False
+            # Necessary when the complement of current solutions is insecure.
+            return status == 'insecure'
         self.log.debug('necessary condition check')
         directives = [ d for d in self.directives['all'] ]
         directives.extend(self.directives['positive'])
@@ -515,6 +630,14 @@ class BinsecCheckers(AbstractChecker):
         return status
 
     def check_vulnerability(self, candidate, reject, complete=False):
+        if getattr(self.args, 'ct_mode', False):
+            self.log.debug('vulnerability check (ct mode)')
+            status, leaks, _ = self._check_ct_candidate(candidate, reject, complete=complete)
+            if status == 'insecure':
+                return True, {}, None
+            if status == 'unknown':
+                self.log.warning('ct vulnerability check returned unknown')
+            return False, None, None
         self.log.debug('vulnerability check')
         return self._check_dgoal_reachable_util(candidate, reject, complete)
 
@@ -556,7 +679,7 @@ class BinsecCheckers(AbstractChecker):
             for d in directives
         ]
         parser = self._run_binsec_command(candidate, directives)
-        status = parser.status['goal-unreachable']
+        status = parser.status['goal-unreachable'] or len(parser.models) <= 0
         model = parser.models[0]['model'] if len(parser.models) > 0 else None
         model = self._sanitize_model(model)
         if not status and model is None:
@@ -589,7 +712,76 @@ class BinsecCheckers(AbstractChecker):
             return None
         return 'at {} assume {}'.format(self.addr, lit)
 
-    def _run_binsec_command(self, candidate, directives, formatted=False):
+    def _ct_directives(self):
+        # Keep only non-goal directives for CHECKCT mode.
+        directives = []
+        for directive in self.directives.get('all', []):
+            if directive.startswith('reach ') or directive.startswith('cut '):
+                continue
+            directives.append(directive)
+        return directives
+
+    def _record_ct_result(self, status, leaks, timeout, attempt):
+        data = {
+            'status': status,
+            'leaks': list(leaks),
+            'timeout': timeout,
+            'attempt': attempt,
+            'timestamp': datetime.now().isoformat(),
+        }
+        self.ct_last = data
+        self.ct_history.append(data)
+
+    def _check_ct_candidate(self, candidate, reject, complete=False, formatted=False):
+        directives = self._ct_directives()
+        for example in reject:
+            directive_op = minibinsec.Operator.And if complete else minibinsec.Operator.Or
+            rdir = self._generate_rejection_directive(example, op=directive_op)
+            if rdir:
+                directives.append(rdir)
+
+        retries = max(0, getattr(self.args, 'ct_unknown_retries', 1))
+        timeout = self.args.binsec_timeout
+        factor = max(1.0, float(getattr(self.args, 'ct_unknown_timeout_factor', 2.0)))
+
+        parser = None
+        status = 'unknown'
+        leaks = []
+        for attempt in range(retries + 1):
+            parser = self._run_binsec_command(candidate, [d for d in directives], formatted=formatted, checkct=True, timeout_override=timeout)
+            status = parser.status.get('checkct-program-status') or 'unknown'
+            leaks = parser.status.get('checkct-leaks', [])
+            self._record_ct_result(status, leaks, timeout, attempt)
+            if status != 'unknown' or attempt >= retries:
+                break
+            if timeout is not None:
+                timeout = max(timeout + 1, int(timeout * factor))
+            self.log.warning('checkct status is unknown; retrying with timeout {}'.format(timeout))
+
+        self.log.info('checkct status: {}'.format(status))
+        for leak in leaks:
+            self.log.result('checkct leak: {}'.format(leak.get('raw', 'unknown leak')))
+
+        return status, leaks, parser
+
+    def _check_ct_goals(self, candidate):
+        status, leaks, _ = self._check_ct_candidate(candidate, [])
+        if status == 'secure':
+            return True, True, {}, {}, None, None
+        if status == 'insecure':
+            return False, False, {}, None, None, None
+        # unknown: non-conclusive
+        return False, False, None, None, None, None
+
+    def evaluate_ct_policy(self, candidate):
+        # Public helper for final validation/reporting.
+        status, leaks, _ = self._check_ct_candidate(candidate, [])
+        return {
+            'status': status,
+            'leaks': list(leaks),
+        }
+
+    def _run_binsec_command(self, candidate, directives, formatted=False, checkct=False, timeout_override=None):
         self.stats.get_oracle('binsec').calls += 1
         # Normalize/guard assumption lines to avoid generating invalid BINSEC scripts.
         def _append_assumption(expr):
@@ -623,11 +815,15 @@ class BinsecCheckers(AbstractChecker):
         with open(local_config_file, 'w') as stream:
             stream.write(script)
         binsec = os.environ.get('BINSEC', 'binsec')
-        command = [binsec, '-sse', '-sse-script', local_config_file, self.binary]
-        if self.args.binsec_timeout is not None:
-            command += ['-sse-timeout', str(self.args.binsec_timeout)]
+        run_timeout = self.args.binsec_timeout if timeout_override is None else timeout_override
+        command = [binsec, '-sse']
+        if checkct or getattr(self.args, 'ct_mode', False):
+            command.append('-checkct')
+        command += ['-sse-script', local_config_file, self.binary]
+        if run_timeout is not None:
+            command += ['-sse-timeout', str(run_timeout)]
         btime = time.time()
-        rc, to, out, err = execute_command(command, self.log, timeout=self.args.binsec_timeout)
+        rc, to, out, err = execute_command(command, self.log, timeout=run_timeout)
         atime = time.time()
         if to:
             self.log.warning('command timeouted')
@@ -646,12 +842,49 @@ class BinsecCheckers(AbstractChecker):
         self.stats.get_oracle('minibinsec').calls += 1
         return minibinsec.check_sat(candidate, self.context), None, None
 
+    def _collect_candidate_vars(self, term, out):
+        # Walk minibinsec term trees and collect base variable ids.
+        if hasattr(term, 'terms'):
+            for sub in term.terms:
+                self._collect_candidate_vars(sub, out)
+            return
+        if hasattr(term, 'var1') and hasattr(term, 'var2'):
+            self._collect_candidate_vars(term.var1, out)
+            self._collect_candidate_vars(term.var2, out)
+            return
+        if hasattr(term, 'var'):
+            self._collect_candidate_vars(term.var, out)
+            return
+        core = getattr(term, 'core', None)
+        if isinstance(core, str):
+            out.add(core)
+
+    def _model_covers_candidate(self, candidate, model):
+        # Reject pre-checks based on partial models (e.g. {"from_file": ...})
+        # that do not bind variables used by the candidate.
+        if 'default' in model:
+            return True
+        cvars = set()
+        for lit in candidate:
+            self._collect_candidate_vars(lit, cvars)
+        cvars = {
+            v for v in cvars
+            if not self.context.is_const(v)
+            and not self.context.is_byte_restriction(v)
+            and not self.context.is_bit_restriction(v)
+        }
+        if not cvars:
+            return True
+        return all(v in model for v in cvars)
+
     def check_satisfied(self, candidate, model):
         self.stats.get_oracle('minibinsec').calls += 1
         if not model:
             return False, None, None
         model = { k: v for k, v in model.items() if ('!' not in k and k in self.context.vars) }
         if not model:
+            return False, None, None
+        if not self._model_covers_candidate(candidate, model):
             return False, None, None
         return minibinsec.check_sat_model(candidate, model, self.context), None, None
 
@@ -809,7 +1042,7 @@ class RobustBinsecCheckers(BinsecCheckers):
         status = parser.status['goal-unreachable'] or len(parser.models) <= 0
         model = parser.models[0]['model'] if len(parser.models) > 0 else None
         model = self._sanitize_model(model)
-        if not parser.status['goal-unreachable'] and model is None:
+        if not status and model is None:
             self.log.warning('binsec test returned neither model nor unreachable')
             # TODO: Handle unknown case (such as timeouts)
         if model is not None:

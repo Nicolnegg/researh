@@ -82,18 +82,41 @@ if __name__ == '__main__':
     g4.add_argument('--forward-to-runner', action='append', default=[], type=lambda s : f'--{s}', help='forward option to runners')
 
     g4ct = ap.add_argument_group('binsec-ct')
+    g4ct.add_argument('--ct', action='store_true', help='enable constant-time mode (generate CHECKCT-oriented SSE script)')
     g4ct.add_argument('--ct-concrete-sp', action='store_true', help='emit "with concrete stack pointer" in SSE script')
     g4ct.add_argument('--ct-secret', action='append', default=[], metavar='<sym[,sym...]>', help='declare secret globals (comma-separated)')
     g4ct.add_argument('--ct-public', action='append', default=[], metavar='<sym[,sym...]>', help='declare public globals (comma-separated)')
     g4ct.add_argument('--ct-assume', action='append', default=[], metavar='<expr>', help='emit assume <expr> in SSE script')
     g4ct.add_argument('--ct-halt-at', action='append', default=[], metavar='<loc>', help='emit halt at <loc> in SSE script')
     g4ct.add_argument('--ct-explore-all', action='store_true', help='emit explore all in SSE script')
+    g4ct.add_argument('--ct-no-concrete-sp', action='store_true', help='disable default "with concrete stack pointer" in CT mode')
+    g4ct.add_argument('--ct-no-explore-all', action='store_true', help='disable default "explore all" in CT mode')
+    g4ct.add_argument('--ct-no-halt-default', action='store_true', help='disable default "halt at <exit>" in CT mode')
 
     g5 = ap.add_argument_group('output')
     g5.add_argument('-o', '--output-dir', action='store', metavar='<output-dir>', default=None, help='output super directory')
     
     args = ap.parse_args()
-    
+
+    # CT defaults are enabled in explicit --ct mode. For compatibility,
+    # legacy invocations that only pass --ct-secret/--ct-public also enable CT.
+    legacy_ct_hint = bool(args.ct_secret or args.ct_public)
+    if legacy_ct_hint and not args.ct:
+        print('[warning]: enabling CT mode from --ct-secret/--ct-public; use --ct explicitly')
+    ct_mode = bool(args.ct or legacy_ct_hint)
+    args.ct = ct_mode
+
+    if args.ct and not legacy_ct_hint:
+        print('[warning]: --ct enabled without --ct-secret/--ct-public; CHECKCT policy may be incomplete')
+
+    if ct_mode:
+        if not args.ct_no_concrete_sp:
+            args.ct_concrete_sp = True
+        if not args.ct_no_explore_all:
+            args.ct_explore_all = True
+        if not args.ct_no_halt_default and not args.ct_halt_at:
+            args.ct_halt_at = ['<exit>']
+
     sys.setrecursionlimit(args.recursion_limit)
 
     try:

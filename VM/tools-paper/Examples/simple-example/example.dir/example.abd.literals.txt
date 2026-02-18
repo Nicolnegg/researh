@@ -1,6 +1,4 @@
 word:0x080e3f58
 word:0x080e3f5c
 word:0x080e3f54
-constant:0x00000000
-constant:0x00000001
 constant:0x00000003

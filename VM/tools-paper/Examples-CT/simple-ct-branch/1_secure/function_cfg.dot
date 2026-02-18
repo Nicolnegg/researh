@@ -1,0 +1,30 @@
+digraph G {
+  node [shape=plaintext, ];
+  972702518 [label=<<table border="0" cellspacing="0">
+<tr><td border="1" bgcolor="#16a085">0x80498bf</td><td border="1" bgcolor="#bdc3c7" align="left">push ebp</td></tr>
+</table>>,
+             ];
+  549441437 [label=<<table border="0" cellspacing="0">
+<tr><td border="1" bgcolor="#16a085">0x80498c0</td><td border="1" bgcolor="#bdc3c7" align="left">mov ebp, esp</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498c2</td><td border="1" bgcolor="#bdc3c7" align="left">sub esp, 0x10</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498c5</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, [0x80e3f48]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498ca</td><td border="1" bgcolor="#bdc3c7" align="left">mov [ebp + 0xfffffffc], eax</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498cd</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, [0x80e3f4c]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498d2</td><td border="1" bgcolor="#bdc3c7" align="left">mov [ebp + 0xfffffff8], eax</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498d5</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, [ebp + 0xfffffff8]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498d8</td><td border="1" bgcolor="#bdc3c7" align="left">mov [ebp + 0xfffffff4], eax</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498db</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, [ebp + 0xfffffff4]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498de</td><td border="1" bgcolor="#bdc3c7" align="left">sar eax, 0x1f</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498e1</td><td border="1" bgcolor="#bdc3c7" align="left">mov [ebp + 0xfffffff0], eax</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498e4</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, [ebp + 0xfffffff0]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498e7</td><td border="1" bgcolor="#bdc3c7" align="left">not eax</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498e9</td><td border="1" bgcolor="#bdc3c7" align="left">and eax, [ebp + 0xfffffffc]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498ec</td><td border="1" bgcolor="#bdc3c7" align="left">leave</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498ed</td><td border="1" bgcolor="#bdc3c7" align="left">ret</td></tr>
+</table>>,
+             ];
+  
+  
+  972702518 -> 549441437 [minlen=1, ];
+  
+  }

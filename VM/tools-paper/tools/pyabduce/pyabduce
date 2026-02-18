@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # ----------------------------------------
 import sys
+import os
+import json
 import argparse
 import traceback
 import signal
@@ -20,12 +22,22 @@ def main(args):
     try:
         stats = Stats()
         signal.signal(signal.SIGTERM, termination_handler)
+        if args.ct_mode and args.binsec_robust:
+            raise ValueError('--ct-mode is currently incompatible with --binsec-robust')
         checkers = RobustBinsecCheckers(args, stats, logger) if args.binsec_robust else BinsecCheckers(args, stats, logger)
         #generator = SimpleCandidateGenerator(args, args.literals, stats, logger)
         generator = BinsecAutoCandidateGenerator(args, checkers, stats, logger)
         engine = SimpleCandidateEngine(args, checkers, generator, stats, logger)
         solver = AbductionSolver(args, engine, checkers, stats, logger)
-        solver.solve()
+        summary = solver.solve()
+        if args.policy_report:
+            rpath = os.path.abspath(args.policy_report)
+            rdir = os.path.dirname(rpath)
+            if rdir:
+                os.makedirs(rdir, exist_ok=True)
+            with open(rpath, 'w') as rstream:
+                json.dump(summary, rstream, indent=2, sort_keys=True)
+            logger.result('policy report written: {}'.format(rpath))
         if args.log_stats:
             stats.log(logger)
     except TopLevelTermination as e:
@@ -75,6 +87,13 @@ if __name__ == '__main__':
     bg.add_argument('--solver-timeout', action='store', metavar='<seconds>', type=int, default=15, help='timeout for solver calls')
     bg.add_argument('--binsec-robust', action='store_true', help='use variable control from robustness')
     bg.add_argument('--robust-config', action='store', metavar='<robust.conf>', help='binsec robustness core configuration')
+    bg.add_argument('--ct-mode', action='store_true', help='use BINSEC CHECKCT contract (secure/insecure/unknown)')
+    bg.add_argument('--ct-unknown-retries', action='store', metavar='<int>', type=int, default=1,
+                    help='number of extra retries when CHECKCT returns unknown')
+    bg.add_argument('--ct-unknown-timeout-factor', action='store', metavar='<factor>', type=float, default=2.0,
+                    help='multiplier applied to timeout on each unknown CHECKCT retry')
+    bg.add_argument('--policy-report', action='store', metavar='<report.json>',
+                    help='write policy selection/validation report as JSON')
 
     cg = ap.add_argument_group('Candidate generation options')
     cg.add_argument('--literals', action='store', metavar='<grammar>', help='candidates generation rules')

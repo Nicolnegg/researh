@@ -1,8 +1,11 @@
+extern void reach_error();
 extern void __attribute__ ((noinline)) c2bc_abort(void);
 extern int c2bc_main(void);
-extern void reach_error();
 extern void __attribute__ ((noinline)) c2bc_assert_fail(const char* p1, const char* p2, unsigned int p3, const char* p4);
 extern int c2bc_bss_exhibiter_keystring;
+
+extern void reach_error() { c2bc_assert_fail("stub-induced", "stub-induced", 3, "reach_error"); }
+
 
 static unsigned int _stub_abort_counter = 0;
 static unsigned int _stub_abort_cut_counter = 0;
@@ -22,9 +25,6 @@ int main(void) {
     _main_hook += 7;
     return res;
 }
-
-
-extern void reach_error() { c2bc_assert_fail("stub-induced", "stub-induced", 3, "reach_error"); }
 
 
 static unsigned int _stub_failure_counter = 0;

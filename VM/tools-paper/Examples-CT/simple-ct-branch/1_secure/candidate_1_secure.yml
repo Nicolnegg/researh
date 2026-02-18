@@ -1,0 +1,5 @@
+input_files:
+- candidate_1_secure.c
+properties:
+- property_file: reach.prp
+  expected_verdict: true

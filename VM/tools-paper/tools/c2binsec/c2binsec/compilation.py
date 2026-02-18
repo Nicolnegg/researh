@@ -84,6 +84,10 @@ class CompilationTask:
 
     def _compile_code(self):
         command = self.ruleset.make_compilation_command((self.files.stub, self.files.output), self.files.binary)
+        if self._is_ct_mode():
+            # Preserve branch structure for CHECKCT analyses.
+            filtered = [c for c in command if not (c.startswith('-O') and len(c) >= 2)]
+            command = [filtered[0], '-O0'] + filtered[1:]
         self.debug_stack.append('run {}'.format(' '.join(command)))
         ret, to, out, err = execute_command(command)
         if ret != 0:
@@ -132,34 +136,44 @@ class CompilationTask:
         if os.path.isfile(self.files.dumptbl):
             with open(self.files.dumptbl) as istr:
                 asm.read_symbol_table(istr)
-        extra_lines = self._ct_script_lines()
+        extra_lines = self._ct_script_lines(asm=asm)
+        ct_mode = self._is_ct_mode()
         with open(self.files.bconfig, 'w') as ostr:
-            self.ruleset.write_binsec_config(ostr, asm, extra_lines=extra_lines)
+            self.ruleset.write_binsec_config(ostr, asm, extra_lines=extra_lines, include_safety_directives=(not ct_mode))
         with open(self.files.bmemory, 'w') as ostr:
-            self.ruleset.write_binsec_memory(ostr, asm, self.context['symbols'])
+            self.ruleset.write_binsec_memory(ostr, asm, self.context['symbols'], include_from_file=(not ct_mode))
         with open(self.files.bscript, 'w') as ostr:
             with open(self.files.bconfig) as cstr:
                 ostr.write(cstr.read())
             with open(self.files.bmemory) as mstr:
                 ostr.write(mstr.read())
         with open(self.files.rconfig, 'w') as ostr:
-            self.ruleset.write_robust_config(ostr, asm, extra_lines=extra_lines)
+            self.ruleset.write_robust_config(ostr, asm, extra_lines=extra_lines, include_safety_directives=(not ct_mode))
         self.context['controlled'] = set()
         with open(self.files.rmemory, 'w') as ostr:
-            self.ruleset.write_robust_memory(ostr, asm, self.context['symbols'], self.args.auto_control_variables, ctrlout=self.context['controlled'])
+            self.ruleset.write_robust_memory(ostr, asm, self.context['symbols'], self.args.auto_control_variables,
+                                             ctrlout=self.context['controlled'], include_from_file=(not ct_mode))
         with open(self.files.rscript, 'w') as ostr:
             with open(self.files.rconfig) as cstr:
                 ostr.write(cstr.read())
             with open(self.files.rmemory) as mstr:
                 ostr.write(mstr.read())
-        with open(self.files.adirectives, 'w') as ostr:
-            self.ruleset.write_abduct_directives(ostr, asm, dba_file=self.files.dba)
-        with open(self.files.aliterals, 'w') as ostr:
-            self.ruleset.write_abduct_literals(ostr, asm, self.context['controlled'], dba_file=self.files.dba)
-        if (not self.args.auto_control_variables and
-                os.path.isfile(self.files.aliterals) and
-                os.path.getsize(self.files.aliterals) == 0):
-            self.debug_stack.append('warning: no controlled variables detected for abduction; use --auto-control-variables for robust abduction')
+        if ct_mode:
+            # In CT mode we do not rely on SV-COMP reach/cut hooks; keep
+            # abduction directives empty but still export literal candidates.
+            with open(self.files.adirectives, 'w') as ostr:
+                ostr.write('# ct mode: no abduction directives generated\n')
+            with open(self.files.aliterals, 'w') as ostr:
+                self.ruleset.write_abduct_literals(ostr, asm, self.context['controlled'], dba_file=self.files.dba)
+        else:
+            with open(self.files.adirectives, 'w') as ostr:
+                self.ruleset.write_abduct_directives(ostr, asm, dba_file=self.files.dba)
+            with open(self.files.aliterals, 'w') as ostr:
+                self.ruleset.write_abduct_literals(ostr, asm, self.context['controlled'], dba_file=self.files.dba)
+            if (not self.args.auto_control_variables and
+                    os.path.isfile(self.files.aliterals) and
+                    os.path.getsize(self.files.aliterals) == 0):
+                self.debug_stack.append('warning: no controlled variables detected for abduction; use --auto-control-variables for robust abduction')
         self.context['assume-addr'] = self.ruleset.make_assumption_addr_param(asm, dba_file=self.files.dba)
 
     def _build_runner(self):
@@ -171,12 +185,13 @@ class CompilationTask:
             abduce_memory = self.files.rmemory if self.args.auto_control_variables else self.files.bmemory
             self.ruleset.write_abduction_runner(ostr, self.files.bconfig, self.files.rconfig, abduce_memory, self.files.binary,
                                                 self.files.aliterals, self.files.adirectives, self.context['assume-addr'],
-                                                self.args.binsec_timeout, autocontrol=self.args.auto_control_variables, stack=self.debug_stack)
+                                                self.args.binsec_timeout, autocontrol=self.args.auto_control_variables,
+                                                ct_mode=self._is_ct_mode(), stack=self.debug_stack)
         os.chmod(self.files.runner, 0o750)
         os.chmod(self.files.rrunner, 0o750)
         os.chmod(self.files.arunner, 0o750)
 
-    def _ct_script_lines(self):
+    def _ct_script_lines(self, asm=None):
         lines = []
         # Optional constant-time / policy directives for new BINSEC scripts.
         if getattr(self.args, 'ct_concrete_sp', False):
@@ -203,7 +218,41 @@ class CompilationTask:
             lines.append('explore all')
 
         for halt in getattr(self.args, 'ct_halt_at', []) or []:
-            lines.append('halt at {}'.format(halt))
+            lines.append('halt at {}'.format(self._resolve_ct_halt(halt, asm)))
 
         return lines
+
+    def _is_ct_mode(self):
+        return bool(getattr(self.args, 'ct', False) or
+                    getattr(self.args, 'ct_secret', None) or
+                    getattr(self.args, 'ct_public', None))
+
+    def _resolve_ct_halt(self, halt, asm):
+        if halt != '<exit>' or asm is None:
+            return halt
+        # In c2bc-generated binaries, starting from c2bc_main makes "<exit>"
+        # often too late; stopping at the last return of the entry function is
+        # a safer default for complete CHECKCT exploration.
+        loc = self._entry_last_ret(asm)
+        if loc is None:
+            return halt
+        return '0x{:x}'.format(loc)
+
+    def _entry_last_ret(self, asm):
+        for fname in ('c2bc_main', 'main', 'fun'):
+            if not asm.has_function(fname):
+                continue
+            entry = None
+            last_ret = None
+            for loc, inst in asm.instructions(fname):
+                if entry is None:
+                    entry = loc
+                i = inst.strip().lower()
+                if i.startswith('ret') or '\tret' in i or ' ret' in i:
+                    last_ret = loc
+            if last_ret is not None:
+                return last_ret
+            if entry is not None:
+                return entry
+        return None
 # ----------------------------------------

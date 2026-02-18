@@ -1,8 +1,8 @@
 
-extern void __attribute__ ((noinline)) c2bc_abort(void);
-extern void __attribute__ ((noinline)) c2bc_assert_fail(const char* p1, const char* p2, unsigned int p3, const char* p4);
 extern int c2bc_main(void);
+extern void __attribute__ ((noinline)) c2bc_assert_fail(const char* p1, const char* p2, unsigned int p3, const char* p4);
 extern void reach_error();
+extern void __attribute__ ((noinline)) c2bc_abort(void);
 void __VERIFIER_error(void)
 {
 }

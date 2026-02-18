@@ -42,6 +42,7 @@ c2bc -i example.c
 cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/sse-mock-example
 c2bc -i example.c
 ./example.dir/example.abduce-run.bash --with-inequalities
+
 ```
 
 ## 3. Run all examples automatically
@@ -80,3 +81,23 @@ done
 - Folder names containing `>` or `<` must be run with --with-inequalities.
 - If you want stronger search for inequalities, you can pass extra flags, for example:
   `./example.dir/example.abduce-run.bash --with-inequalities --max-depth 2`
+
+## Examples-CT
+
+Constant-time examples are now available in:
+
+- `VM/tools-paper/Examples-CT`
+
+Quick start:
+
+```bash
+cd ~/Documentos/M2-Cyber/RESEARCH
+eval $(opam env)
+
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper
+source venv/bin/activate
+export PATH=/home/nicol/Documentos/M2-Cyber/RESEARCH/binsec/_opam/bin:$PATH
+
+cd Examples-CT/simple-ct-branch
+./run_checkct.sh
+```

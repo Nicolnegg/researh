@@ -432,12 +432,13 @@ class SVCompRuleSet(GenericRuleSet):
         stream.write('cat "{}" "{}" > "$tmp_script"\n'.format(config, memory))
         stream.write('exec "${{BINSEC:-binsec}}" -sse -sse-script "$tmp_script" "{}" "$@"\n'.format(binary))
 
-    def write_abduction_runner(self, stream, config, rconfig, memory, binary, literals, directives, asmaddr, timeout, autocontrol=False, stack=[]):
+    def write_abduction_runner(self, stream, config, rconfig, memory, binary, literals, directives, asmaddr, timeout, autocontrol=False, ct_mode=False, stack=[]):
         stream.write('#!/usr/bin/env bash\n')
+        ctarg = '--ct-mode ' if ct_mode else ''
         if autocontrol:
-            stream.write('exec "${{PYABDUCE:-pyabduce}}" --binsec-config {} --binsec-memory {} --binsec-binary {} --binsec-addr {} --literals {} --binsec-directives {} --binsec-timeout {} --binsec-robust --robust-config {} $@\n'.format(config, memory, binary, asmaddr, literals, directives, timeout, rconfig))
+            stream.write('exec "${{PYABDUCE:-pyabduce}}" --binsec-config {} --binsec-memory {} --binsec-binary {} --binsec-addr {} --literals {} --binsec-directives {} --binsec-timeout {} --binsec-robust --robust-config {} {}$@\n'.format(config, memory, binary, asmaddr, literals, directives, timeout, rconfig, ctarg))
         else:
-            stream.write('exec "${{PYABDUCE:-pyabduce}}" --binsec-config {} --binsec-memory {} --binsec-binary {} --binsec-addr {} --literals {} --binsec-directives {} --binsec-timeout {} $@\n'.format(config, memory, binary, asmaddr, literals, directives, timeout))
+            stream.write('exec "${{PYABDUCE:-pyabduce}}" --binsec-config {} --binsec-memory {} --binsec-binary {} --binsec-addr {} --literals {} --binsec-directives {} --binsec-timeout {} {}$@\n'.format(config, memory, binary, asmaddr, literals, directives, timeout, ctarg))
 
     def build_c_prepatch(self, fdata):
         patch = []
@@ -511,11 +512,13 @@ class SVCompRuleSet(GenericRuleSet):
         alocs = self.brules.detect_alocs(asm)
         return '0x{:x}'.format(alocs[0])
 
-    def write_binsec_config(self, stream, asm, extra_lines=None):
-        rlocs = self.brules.detect_rlocs(asm)
-        clocs = self.brules.detect_clocs(asm)
-        alocs = self.brules.detect_alocs(asm)
-        directives = self.brules.directives(rlocs, clocs, alocs)
+    def write_binsec_config(self, stream, asm, extra_lines=None, include_safety_directives=True):
+        directives = []
+        if include_safety_directives:
+            rlocs = self.brules.detect_rlocs(asm)
+            clocs = self.brules.detect_clocs(asm)
+            alocs = self.brules.detect_alocs(asm)
+            directives = self.brules.directives(rlocs, clocs, alocs)
         lines = ['starting from <c2bc_main>']
         for line in extra_lines or []:
             if line.strip():
@@ -525,11 +528,13 @@ class SVCompRuleSet(GenericRuleSet):
             lines.extend(directives)
         stream.write('\n'.join(lines) + '\n')
 
-    def write_robust_config(self, stream, asm, extra_lines=None):
-        rlocs = self.brules.detect_rlocs(asm)
-        clocs = self.brules.detect_clocs(asm)
-        alocs = self.brules.detect_alocs(asm)
-        directives = self.brules.directives(rlocs, clocs, alocs)
+    def write_robust_config(self, stream, asm, extra_lines=None, include_safety_directives=True):
+        directives = []
+        if include_safety_directives:
+            rlocs = self.brules.detect_rlocs(asm)
+            clocs = self.brules.detect_clocs(asm)
+            alocs = self.brules.detect_alocs(asm)
+            directives = self.brules.directives(rlocs, clocs, alocs)
         lines = ['starting from <c2bc_main>']
         for line in extra_lines or []:
             if line.strip():
@@ -539,15 +544,16 @@ class SVCompRuleSet(GenericRuleSet):
             lines.extend(directives)
         stream.write('\n'.join(lines) + '\n')
 
-    def write_binsec_memory(self, stream, asm, symbols):
+    def write_binsec_memory(self, stream, asm, symbols, include_from_file=True):
         stream.write(self.brules.memory_template)
-        #for mloc in self.brules.initable_memlocs(asm):
-        #    stream.write('{} from_file;\n'.format(mloc))
-        for label, mloc, size in self.brules.non_symbolic_memlocs(asm, symbols):
-            #stream.write('@[{},{}] := {}<{}>;\n'.format(mloc, size, label, size*8))
-            stream.write('@[{},{}] := from_file\n'.format(mloc, size))
+        if include_from_file:
+            #for mloc in self.brules.initable_memlocs(asm):
+            #    stream.write('{} from_file;\n'.format(mloc))
+            for label, mloc, size in self.brules.non_symbolic_memlocs(asm, symbols):
+                #stream.write('@[{},{}] := {}<{}>;\n'.format(mloc, size, label, size*8))
+                stream.write('@[{},{}] := from_file\n'.format(mloc, size))
 
-    def write_robust_memory(self, stream, asm, symbols, autocontrol=False, ctrlout=set()):
+    def write_robust_memory(self, stream, asm, symbols, autocontrol=False, ctrlout=set(), include_from_file=True):
         stream.write(self.brules.robust_memory_template)
         if autocontrol:
             ctrlid = 0
@@ -581,11 +587,12 @@ class SVCompRuleSet(GenericRuleSet):
                         ctrlout.add('0x{:08x}'.format(offaddr))
                         stream.write('{}<8> := nondet\n'.format(cvarid))
                         stream.write('@[0x{:08x},1] := {}\n'.format(offaddr, cvarid))
-        #for mloc in self.brules.initable_memlocs(asm):
-        #    stream.write('{} from_file;\n'.format(mloc))
-        for label, mloc, size in self.brules.non_symbolic_memlocs(asm, symbols):
-            #stream.write('@[{},{}] := {}<{}>;\n'.format(mloc, size, label, size*8))
-            stream.write('@[{},{}] := from_file\n'.format(mloc, size))
+        if include_from_file:
+            #for mloc in self.brules.initable_memlocs(asm):
+            #    stream.write('{} from_file;\n'.format(mloc))
+            for label, mloc, size in self.brules.non_symbolic_memlocs(asm, symbols):
+                #stream.write('@[{},{}] := {}<{}>;\n'.format(mloc, size, label, size*8))
+                stream.write('@[{},{}] := from_file\n'.format(mloc, size))
 
     def write_abduct_directives(self, stream, asm, dba_file=None):
         # Prefer explicit bug hooks for negative reach.
@@ -638,6 +645,63 @@ class SVCompRuleSet(GenericRuleSet):
             if asm.has_function(fname):
                 return fname
         return None
+
+    def _literal_source_functions(self, asm):
+        # Use the entry and one-hop direct callees as sources for constants.
+        # This keeps literals focused on program logic and avoids libc noise.
+        entry = self._entry_function_name(asm)
+        if entry is None:
+            return []
+
+        res = [entry]
+        seen = set(res)
+        addr_to_name = {}
+
+        try:
+            for lbl in asm.labels(sections=('.text',)):
+                try:
+                    addr_to_name[int(asm.address_of(lbl), 16)] = lbl
+                except Exception:
+                    continue
+        except Exception:
+            pass
+
+        instr_re = re.compile(r'^(?:[0-9a-f]{2}(?:\s+[0-9a-f]{2})*)\s+([a-z.]+)\s*(.*)$')
+
+        try:
+            for _, inst in asm.instructions(entry):
+                text = ' '.join(inst.lower().replace('\t', ' ').split(';')[0].split())
+                imatch = instr_re.match(text)
+                if imatch:
+                    mnem = imatch.group(1)
+                else:
+                    mnem = text.split(None, 1)[0] if text else ''
+                if not mnem.startswith('call'):
+                    continue
+
+                mname = re.search(r'<([^>]+)>', inst)
+                if mname:
+                    raw = mname.group(1).split('+', 1)[0].strip()
+                    if raw not in seen and asm.has_function(raw):
+                        seen.add(raw)
+                        res.append(raw)
+                    continue
+
+                maddr = re.search(r'\b0x[0-9a-fA-F]+\b', inst)
+                if not maddr:
+                    continue
+                try:
+                    tgt = int(maddr.group(0), 16)
+                except ValueError:
+                    continue
+                tname = addr_to_name.get(tgt)
+                if tname and tname not in seen and asm.has_function(tname):
+                    seen.add(tname)
+                    res.append(tname)
+        except Exception:
+            pass
+
+        return res
 
     def _data_symbol_sizes(self, asm):
         sizes = {}
@@ -779,7 +843,6 @@ class SVCompRuleSet(GenericRuleSet):
         emitted = set()
         consts_emitted = set()
         max_vars = 12
-        emitted_word = False
 
         def _add_var(name):
             if len(emitted) >= max_vars:
@@ -789,19 +852,88 @@ class SVCompRuleSet(GenericRuleSet):
                 emitted.add(name)
 
         def _add_word(addr_hex):
-            nonlocal emitted_word
             if len(emitted) >= max_vars:
                 return
             key = 'word:{}'.format(addr_hex)
             if key not in emitted:
                 stream.write(key + '\n')
                 emitted.add(key)
-                emitted_word = True
 
         def _add_const(value):
-            if value not in consts_emitted:
-                stream.write('constant:{}\n'.format(value))
-                consts_emitted.add(value)
+            sval = str(value).strip()
+            try:
+                ival = int(sval, 0) if (sval.startswith('0x') or sval.startswith('0b') or re.fullmatch(r'-?\d+', sval)) else None
+            except ValueError:
+                ival = None
+
+            vals = []
+            if ival is None:
+                vals.append(sval)
+            else:
+                # Emit a single canonical word-sized form (32-bit).
+                # Constants are still extracted from this binary, not hardcoded.
+                vals.append('0x{:08x}'.format(ival & 0xffffffff))
+
+            for outv in vals:
+                if outv not in consts_emitted:
+                    stream.write('constant:{}\n'.format(outv))
+                    consts_emitted.add(outv)
+
+        def _add_consts_from_entry_immediates():
+            # Extract numeric immediates from relevant program functions so
+            # constants come from this binary, not hardcoded seeds.
+            fnames = self._literal_source_functions(asm)
+            if not fnames:
+                return
+            instr_re = re.compile(r'^(?:[0-9a-f]{2}(?:\s+[0-9a-f]{2})*)\s+([a-z.]+)\s*(.*)$')
+
+            def _norm_test_operand(op):
+                op = op.strip().lower().replace('%', '')
+                op = re.sub(r'\b(?:byte|word|dword|qword|ptr)\b', '', op)
+                return ' '.join(op.split())
+
+            for fname in fnames:
+                try:
+                    insns = asm.instructions(fname)
+                except Exception:
+                    continue
+                for _, inst in insns:
+                    text = ' '.join(inst.lower().replace('\t', ' ').split(';')[0].split())
+                    imatch = instr_re.match(text)
+                    if imatch:
+                        mnem = imatch.group(1)
+                        operands = imatch.group(2)
+                    else:
+                        parts = text.split(None, 1)
+                        mnem = parts[0] if parts else ''
+                        operands = parts[1] if len(parts) > 1 else ''
+                    # Keep only comparison-like instructions to avoid
+                    # stack/frame immediates (e.g., 0x14, 0x1c) unrelated to policy.
+                    if not re.match(r'^(cmp|test|ucomi|comi)\b', mnem):
+                        continue
+                    # Common compiler lowering for "x == 0" is "test x, x"
+                    # (no immediate), so add 0 explicitly for this pattern.
+                    ops = [o.strip() for o in operands.split(',')] if operands else []
+                    if mnem.startswith('test') and len(ops) == 2:
+                        lhs = _norm_test_operand(ops[0])
+                        rhs = _norm_test_operand(ops[1])
+                        if lhs and lhs == rhs and '0x' not in lhs and '(' not in lhs and '[' not in lhs:
+                            _add_const('0x0')
+                    # Prefer AT&T immediates ($0xNN); also support Intel-like
+                    # operand forms ending with ", 0xNN".
+                    matches = re.findall(r'\$(-?(?:0x[0-9a-fA-F]+|\d+))', operands)
+                    if not matches:
+                        mm = re.search(r'(?:,|\s)(-?(?:0x[0-9a-fA-F]+|\d+))\s*$', operands)
+                        if mm:
+                            matches = [mm.group(1)]
+                    for m in matches:
+                        try:
+                            val = int(m, 0)
+                        except ValueError:
+                            continue
+                        if val < 0:
+                            continue
+                        _add_const('0x{:x}'.format(val))
 
         def _add_from_entry_memrefs():
             # Recover data addresses directly referenced by entry code
@@ -853,6 +985,7 @@ class SVCompRuleSet(GenericRuleSet):
                     return
 
         def _add_from_dba():
+            before_vars = len(emitted)
             if not dba_file or not os.path.isfile(dba_file):
                 return False
             for varname, constval in self._extract_dba_vars(dba_file):
@@ -860,7 +993,7 @@ class SVCompRuleSet(GenericRuleSet):
                     _add_var(varname)
                 if constval is not None:
                     _add_const(constval)
-            return len(emitted) > 0
+            return len(emitted) > before_vars
 
         # Prefer literals extracted from DBA conditions when available.
         dba_emitted = _add_from_dba()
@@ -868,9 +1001,8 @@ class SVCompRuleSet(GenericRuleSet):
         # If DBA gave us real predicates (e.g., eax/ebx), keep the literal
         # set small and avoid flooding with stub-array controlled bytes.
         if dba_emitted:
-            # Use 1-byte constants so BINSEC can infer sizes against @[addr,1].
-            _add_const('0x00')
-            _add_const('0x01')
+            if not consts_emitted:
+                _add_consts_from_entry_immediates()
             return
 
         if controlled:
@@ -932,26 +1064,9 @@ class SVCompRuleSet(GenericRuleSet):
                         _add_var(offaddr)
                     break
 
-        # Seed a couple of constants for useful equalities/inequalities.
-        # If we emitted word-level vars, seed word-sized constants.
-        if emitted_word:
-            _add_const('0x00000000')
-            _add_const('0x00000001')
-            _add_const('0x00000003')
-        else:
-            # Use 1-byte constants so BINSEC can infer sizes against @[addr,1].
-            _add_const('0x00')
-            _add_const('0x01')
-        # Add 0x03 if it appears in a cmp immediate (common SVCOMP bug shape).
-        # When using word-level vars, prefer the word-sized constant instead.
-        if not emitted_word:
-            try:
-                for _, inst in asm.instructions('fun' if asm.has_function('fun') else 'c2bc_main'):
-                    if '$0x3' in inst:
-                        _add_const('0x03')
-                        break
-            except Exception:
-                pass
+        # No hardcoded constants: extract only constants observed in code.
+        if not consts_emitted:
+            _add_consts_from_entry_immediates()
 
     def _extract_dba_vars(self, dba_file):
         # Yield tuples (varname, constval) from DBA comparisons.
