@@ -1,10 +1,17 @@
-extern void reach_error();
-extern void __attribute__ ((noinline)) c2bc_abort(void);
 extern int c2bc_main(void);
+extern void __attribute__ ((noinline)) c2bc_abort(void);
 extern void __attribute__ ((noinline)) c2bc_assert_fail(const char* p1, const char* p2, unsigned int p3, const char* p4);
+extern void reach_error();
 extern int c2bc_bss_exhibiter_keystring;
 
-extern void reach_error() { c2bc_assert_fail("stub-induced", "stub-induced", 3, "reach_error"); }
+static int _main_hook = 0;
+extern int _main_hook;
+int main(void) {
+    int res = c2bc_main();
+    c2bc_abort();
+    _main_hook += 7;
+    return res;
+}
 
 
 static unsigned int _stub_abort_counter = 0;
@@ -17,16 +24,6 @@ extern void __attribute__ ((noinline)) c2bc_abort(void) {
 }
 
 
-static int _main_hook = 0;
-extern int _main_hook;
-int main(void) {
-    int res = c2bc_main();
-    c2bc_abort();
-    _main_hook += 7;
-    return res;
-}
-
-
 static unsigned int _stub_failure_counter = 0;
 extern unsigned int _stub_failure_counter;
 static unsigned int _stub_failure_cut_counter = 0;
@@ -35,6 +32,9 @@ extern void __attribute__ ((noinline)) c2bc_assert_fail(const char* p1, const ch
     _stub_failure_counter += 3;
     _stub_failure_cut_counter += 7;
 }
+
+
+extern void reach_error() { c2bc_assert_fail("stub-induced", "stub-induced", 3, "reach_error"); }
 
 
 int c2bc_bss_exhibiter_keystring = 0x3f412216a;

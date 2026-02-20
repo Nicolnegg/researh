@@ -1,0 +1,58 @@
+digraph G {
+  node [shape=plaintext, ];
+  972702518 [label=<<table border="0" cellspacing="0">
+<tr><td border="1" bgcolor="#16a085">0x80498bf</td><td border="1" bgcolor="#bdc3c7" align="left">push ebp</td></tr>
+</table>>,
+             ];
+  549441437 [label=<<table border="0" cellspacing="0">
+<tr><td border="1" bgcolor="#16a085">0x80498c0</td><td border="1" bgcolor="#bdc3c7" align="left">mov ebp, esp</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498c2</td><td border="1" bgcolor="#bdc3c7" align="left">sub esp, 0x10</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498c5</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, [0x80e3f48]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498ca</td><td border="1" bgcolor="#bdc3c7" align="left">mov [ebp + 0xfffffff8], eax</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498cd</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, [0x80e3f4c]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498d2</td><td border="1" bgcolor="#bdc3c7" align="left">and eax, 0xf</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498d5</td><td border="1" bgcolor="#bdc3c7" align="left">mov [ebp + 0xfffffff4], eax</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498d8</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, [ebp + 0xfffffff8]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498db</td><td border="1" bgcolor="#bdc3c7" align="left">movzx eax, al</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498de</td><td border="1" bgcolor="#bdc3c7" align="left">mov [ebp + 0xfffffffc], eax</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498e1</td><td border="1" bgcolor="#bdc3c7" align="left">cmp [ebp + 0xfffffff4], 0x7</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498e5</td><td border="1" bgcolor="#bdc3c7" align="left">jbe 0x80498fa</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498e7</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, [ebp + 0xfffffff4]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498ea</td><td border="1" bgcolor="#bdc3c7" align="left">add eax, 0x80e304c</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498ef</td><td border="1" bgcolor="#bdc3c7" align="left">movzx eax, [eax]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498f2</td><td border="1" bgcolor="#bdc3c7" align="left">movzx eax, al</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498f5</td><td border="1" bgcolor="#bdc3c7" align="left">add [ebp + 0xfffffffc], eax</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498f8</td><td border="1" bgcolor="#bdc3c7" align="left">jmp 0x804990f</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498fa</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, 0xf</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498ff</td><td border="1" bgcolor="#bdc3c7" align="left">sub eax, [ebp + 0xfffffff4]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049902</td><td border="1" bgcolor="#bdc3c7" align="left">movzx eax, [eax + 0x80e304c]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049909</td><td border="1" bgcolor="#bdc3c7" align="left">movzx eax, al</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804990c</td><td border="1" bgcolor="#bdc3c7" align="left">add [ebp + 0xfffffffc], eax</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804990f</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, [ebp + 0xfffffff4]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049912</td><td border="1" bgcolor="#bdc3c7" align="left">and eax, 0x1</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049915</td><td border="1" bgcolor="#bdc3c7" align="left">test eax, eax</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049917</td><td border="1" bgcolor="#bdc3c7" align="left">jnz 0x8049931</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049919</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, [ebp + 0xfffffff4]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804991c</td><td border="1" bgcolor="#bdc3c7" align="left">add eax, 0x3</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804991f</td><td border="1" bgcolor="#bdc3c7" align="left">and eax, 0xf</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049922</td><td border="1" bgcolor="#bdc3c7" align="left">movzx eax, [eax + 0x80e304c]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049929</td><td border="1" bgcolor="#bdc3c7" align="left">movzx eax, al</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804992c</td><td border="1" bgcolor="#bdc3c7" align="left">xor [ebp + 0xfffffffc], eax</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804992f</td><td border="1" bgcolor="#bdc3c7" align="left">jmp 0x8049947</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049931</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, [ebp + 0xfffffff4]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049934</td><td border="1" bgcolor="#bdc3c7" align="left">add eax, 0x5</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049937</td><td border="1" bgcolor="#bdc3c7" align="left">and eax, 0xf</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804993a</td><td border="1" bgcolor="#bdc3c7" align="left">movzx eax, [eax + 0x80e304c]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049941</td><td border="1" bgcolor="#bdc3c7" align="left">movzx eax, al</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049944</td><td border="1" bgcolor="#bdc3c7" align="left">xor [ebp + 0xfffffffc], eax</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049947</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, [ebp + 0xfffffffc]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804994a</td><td border="1" bgcolor="#bdc3c7" align="left">movzx eax, al</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804994d</td><td border="1" bgcolor="#bdc3c7" align="left">leave</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804994e</td><td border="1" bgcolor="#bdc3c7" align="left">ret</td></tr>
+</table>>,
+             ];
+  
+  
+  972702518 -> 549441437 [minlen=1, ];
+  
+  }

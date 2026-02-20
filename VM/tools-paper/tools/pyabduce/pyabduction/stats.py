@@ -62,6 +62,10 @@ class Stats:
 
     def __init__(self):
         self.solutions    = 0
+        # Number of clauses kept in the final NAS condition (OR components).
+        self.solution_clauses = 0
+        # Number of final selected constraints (usually 1 when NAS exists).
+        self.final_constraints = 0
         self.unsolutions  = 0
         self.examples     = 0
         self.counterex    = 0
@@ -90,7 +94,9 @@ class Stats:
         logger.result('execution statistics:')
 
         logger.result('  core counters:')
-        logger.result('    number of solutions:          {}'.format(self.solutions))
+        scount = self.solution_clauses if self.solution_clauses > 0 else self.solutions
+        logger.result('    number of solution clauses:   {}'.format(scount))
+        logger.result('    number of final constraints:  {}'.format(self.final_constraints))
         logger.result('    number of unsolutions:        {}'.format(self.unsolutions))
         logger.result('    number of examples:           {}'.format(self.examples))
         logger.result('    number of counter-examples:   {}'.format(self.counterex))

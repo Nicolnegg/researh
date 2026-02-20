@@ -1,8 +1,9 @@
-# Examples-CT
+# Examples-CT: Usage Guide (c2bc + pyabduce in Constant-Time mode)
 
-This folder contains constant-time (CT) examples validated with BINSEC `-checkct`.
+This directory contains examples to infer constraints that turn a CHECKCT
+`insecure` program into `secure`.
 
-## Environment setup
+## 1) Environment setup
 
 ```bash
 cd ~/Documentos/M2-Cyber/RESEARCH
@@ -13,65 +14,55 @@ source venv/bin/activate
 export PATH=/home/nicol/Documentos/M2-Cyber/RESEARCH/binsec/_opam/bin:$PATH
 ```
 
-## Available CT examples
+## 2) How to mark public and secret in c2bc
 
-- `simple-ct-branch`: minimal demo with one insecure candidate and one secure candidate.
-  - `1_insecure/candidate_1_insecure.c`
-  - `1_secure/candidate_1_secure.c`
+`c2bc` provides explicit CT options:
 
-## Run with BINSEC CHECKCT
+- `--ct`: enables the CHECKCT pipeline.
+- `--ct-secret <sym[,sym...]>`: declares secret variables.
+- `--ct-public <sym[,sym...]>`: declares public variables.
 
-```bash
-# insecure case
-cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples-CT/simple-ct-branch/1_insecure
-c2bc -i candidate_1_insecure.c --ct --ct-secret secret_b --ct-public public_a
-binsec -sse -checkct -sse-script candidate_1_insecure.dir/candidate_1_insecure.binsec.sse \
-  candidate_1_insecure.dir/candidate_1_insecure.bin
-
-# secure case
-cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples-CT/simple-ct-branch/1_secure
-c2bc -i candidate_1_secure.c --ct --ct-secret secret_b --ct-public public_a
-binsec -sse -checkct -sse-script candidate_1_secure.dir/candidate_1_secure.binsec.sse \
-  candidate_1_secure.dir/candidate_1_secure.bin
-```
-
-Expected CHECKCT summary:
-
-- `candidate_1_insecure`: `Program status is : insecure`
-- `candidate_1_secure`: `Program status is : secure`
-
-## Run with pyabduce (CT mode)
-
-The generated `*.abduce-run.bash` already forwards `--ct-mode` automatically when built with `c2bc --ct`.
+Example:
 
 ```bash
-# insecure case
-cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples-CT/simple-ct-branch/1_insecure
 c2bc -i candidate_1_insecure.c --ct --ct-secret secret_b --ct-public public_a
-./candidate_1_insecure.dir/candidate_1_insecure.abduce-run.bash \
-  --max-depth 1 --no-constant-detection --vexamples-init-count 0
-
-# secure case
-cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples-CT/simple-ct-branch/1_secure
-c2bc -i candidate_1_secure.c --ct --ct-secret secret_b --ct-public public_a
-./candidate_1_secure.dir/candidate_1_secure.abduce-run.bash \
-  --max-depth 1 --no-constant-detection --vexamples-init-count 0
 ```
 
-Expected pyabduce behavior:
+For multiple variables:
 
-- insecure case:
-  - logs `checkct status: insecure`
-  - logs leaks as `checkct leak: Instruction ... has ... leak`
-  - finds at least one non-trivial sufficient condition
-- secure case:
-  - candidate `set()` is accepted as solution
-  - final NAS condition is `set()`
+```bash
+c2bc -i prog.c --ct --ct-secret secret_k,secret_m --ct-public public_x,public_y
+```
 
-## Deterministic Policy Selection + JSON report
+Notes:
 
-`pyabduce` now computes a deterministic selected policy (then alternatives), runs
-final CT validation (`baseline` vs `selected`), and can export a JSON report.
+- Names must match global symbols in the program.
+- `secret` defines what must not leak via control-flow or memory access.
+- `public` defines allowed observable inputs.
+
+## 3) What c2bc generates for CT abduction
+
+Inside `*.dir/` you will see files such as:
+
+- `*.abduce-run.bash`: runner script to launch `pyabduce`.
+- `*.abd.literals.txt`: candidate literal universe.
+- `*.abd.directives.txt`: reach/cut goals for BINSEC.
+- `*.binsec.sse` and temporary configs in `.binsec-config/`.
+
+## 4) How pyabduce works in CT mode
+
+High-level flow:
+
+1. Evaluates baseline with CHECKCT (`secure/insecure` + leaks).
+2. Generates and tests candidates (BINSEC + pre-pruning).
+3. Stores sufficient solutions.
+4. Checks necessity (NAS).
+5. Selects main policy according to ranking mode.
+6. Re-validates baseline vs selected and exports `report.json` (if requested).
+
+## 5) Base commands
+
+### Simple case
 
 ```bash
 cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples-CT/simple-ct-branch/1_insecure
@@ -79,24 +70,81 @@ cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples-CT/simple-ct-branch/1_
 c2bc -i candidate_1_insecure.c --ct --ct-secret secret_b --ct-public public_a
 
 ./candidate_1_insecure.dir/candidate_1_insecure.abduce-run.bash \
+  --with-inequalities \
+  --selection-mode branch-first \
   --policy-report candidate_1_insecure.report.json
 ```
 
-Expected terminal lines:
-
-- `selected policy: {...}`
-- `policy report written: .../candidate_1_insecure.report.json`
-
-Inspect report:
+### Harder case (multi-leak)
 
 ```bash
-cat candidate_1_insecure.report.json
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples-CT/ct-multi-leak/1_insecure
+
+c2bc -i candidate_2_insecure.c --ct --ct-secret secret_k --ct-public public_x
+
+./candidate_2_insecure.dir/candidate_2_insecure.abduce-run.bash \
+  --with-inequalities \
+  --collect-until-timeout \
+  --solver-timeout 15 \
+  --selection-mode branch-first \
+  --policy-report candidate_2_insecure.collect.report.json
 ```
 
-Minimal fields:
+## 6) Useful pyabduce options (CT)
 
-- `ct_validation.baseline.status` (expected `insecure`)
-- `ct_validation.selected.status` (expected `secure`)
+- `--ct-mode`: uses CHECKCT contract (`secure/insecure/unknown`).
+- `--with-inequalities`: enables `<s` literals (important for branch constraints).
+- `--without-disequalities`: removes `<>` operator to reduce search space.
+- `--collect-until-timeout`: keeps searching for more NAS until global timeout.
+- `--solver-timeout <s>`: total search budget.
+- `--selection-mode branch-first|size-complexity`:
+  - `branch-first`: prioritizes branch-pivot policies when robustly detected.
+  - `size-complexity`: prioritizes fewer literals + lower syntax complexity.
+- `--policy-report <file.json>`: writes structured JSON report.
+- `-d`: detailed debug logs.
+
+## 7) How to read output
+
+Key lines:
+
+- `checkct status: insecure|secure`
+- `checkct leak: Instruction ... has ... leak`
+- `satisfying solution: {...}` (sufficient)
+- `nas conditions (all): [...]` (detected necessary policies)
+- `selected policy: {...}` (main policy)
+- `alternative policies: [...]` (alternatives)
+- `policy report written: ...json`
+
+Semantics:
+
+- Policies `P1`, `P2`, ... are alternatives (OR across policies).
+- Inside one policy, literals are conjunctive (AND).
+
+## 8) Recommended reproducibility settings
+
+For stable research runs:
+
+- fix Python hash seed:
+
+```bash
+PYTHONHASHSEED=0 ./candidate_1_insecure.dir/candidate_1_insecure.abduce-run.bash \
+  --paper-mode --with-inequalities --policy-report run.paper.report.json
+```
+
+- same machine, same BINSEC/opam commit, same timeouts.
+
+## 9) Minimal expected report.json structure
+
+- `ct_validation.baseline.status`
+- `ct_validation.selected.status`
 - `selected_policy`
 - `alternatives`
+- `selection_mode`
 - `stats`
+- `run_profile`
+
+## 10) Available examples
+
+- `simple-ct-branch/1_insecure`
+- `simple-ct-branch/1_secure`
+- `ct-multi-leak/1_insecure`

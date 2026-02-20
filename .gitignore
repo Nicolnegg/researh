@@ -12,6 +12,7 @@ tools-paper.tgz
 *.log
 *.bak
 __pycache__/
+**/__pycache__/
 *.pyc
 .vscode/
 .DS_Store
@@ -31,3 +32,7 @@ env/
 .pytest_cache/
 *.egg-info/
 dist/
+
+# Research/generated artifacts
+*.report.json
+temp.binsec.*

@@ -434,6 +434,10 @@ class SVCompRuleSet(GenericRuleSet):
 
     def write_abduction_runner(self, stream, config, rconfig, memory, binary, literals, directives, asmaddr, timeout, autocontrol=False, ct_mode=False, stack=[]):
         stream.write('#!/usr/bin/env bash\n')
+        stream.write('export PYTHONHASHSEED="${PYTHONHASHSEED:-0}"\n')
+        stream.write('if [[ "${ABDUCE_PAPER_MODE:-0}" = "1" ]]; then\n')
+        stream.write('  set -- --paper-mode "$@"\n')
+        stream.write('fi\n')
         ctarg = '--ct-mode ' if ct_mode else ''
         if autocontrol:
             stream.write('exec "${{PYABDUCE:-pyabduce}}" --binsec-config {} --binsec-memory {} --binsec-binary {} --binsec-addr {} --literals {} --binsec-directives {} --binsec-timeout {} --binsec-robust --robust-config {} {}$@\n'.format(config, memory, binary, asmaddr, literals, directives, timeout, rconfig, ctarg))

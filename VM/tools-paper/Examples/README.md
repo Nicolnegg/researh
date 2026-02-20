@@ -29,7 +29,11 @@ cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/'example-ineq-a>a+1'
 c2bc -i example.c
 timeout 20s ./example.dir/example.abduce-run.bash --with-inequalities
 ->error imposible
+->voir
 
+->intentar cadenas de if a>b :
+if b>c:
+error
 
 cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/'example-minus-a<b'
 c2bc -i example.c

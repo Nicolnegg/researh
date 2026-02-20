@@ -622,12 +622,13 @@ class BinsecCheckers(AbstractChecker):
             # Necessary when the complement of current solutions is insecure.
             return status == 'insecure'
         self.log.debug('necessary condition check')
-        directives = [ d for d in self.directives['all'] ]
-        directives.extend(self.directives['positive'])
+        # In classic mode, necessity means: outside current solutions
+        # (i.e. under the negated disjunction), the positive goal is unreachable.
+        # Reuse the reachability helper so "reach ... then print model" is
+        # enforced; otherwise parser.models may stay empty even when reachable.
         constraint = self._format_solution_set(solutions)
-        parser = self._run_binsec_command(constraint, directives, formatted=False)
-        status = len(parser.models) == 0
-        return status
+        reachable, _model, _core = self._check_dgoal_reachable_util(constraint, [])
+        return not reachable
 
     def check_vulnerability(self, candidate, reject, complete=False):
         if getattr(self.args, 'ct_mode', False):

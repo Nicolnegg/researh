@@ -1,12 +1,35 @@
 {
   "alternatives": [],
+  "branch_guided_policies": [
+    {
+      "false_branch": {
+        "ct": {
+          "leaks": [],
+          "status": "secure"
+        },
+        "formula": "{(@[0x080e3f4c,4] <s 0x00000007) | (@[0x080e3f4c,4] = 0x00000007)}",
+        "meaning": "@[0x080e3f4c,4] <=s 0x00000007"
+      },
+      "pivot_constant": "0x00000007",
+      "recommended_split": true,
+      "true_branch": {
+        "ct": {
+          "leaks": [],
+          "status": "secure"
+        },
+        "formula": "{(0x00000007 <s @[0x080e3f4c,4])}",
+        "meaning": "@[0x080e3f4c,4] >s 0x00000007"
+      },
+      "variable": "@[0x080e3f4c,4]"
+    }
+  ],
   "ct_validation": {
     "baseline": {
       "leaks": [
         {
           "instruction": "0x080498d9",
           "kind": "control flow",
-          "raw": "Instruction 0x080498d9 has control flow leak (0.045s)"
+          "raw": "Instruction 0x080498d9 has control flow leak (0.035s)"
         }
       ],
       "status": "insecure"
@@ -17,20 +40,69 @@
     }
   },
   "nas_conditions_all": [
-    "{(@[0x080e3f48,4] = @[0x080e3f4c,4])}"
+    "{(@[0x080e3f4c,4] <s 0x00000007)}"
   ],
-  "selected_policy": "{(@[0x080e3f48,4] = @[0x080e3f4c,4])}",
+  "policy_semantics": {
+    "branch_partitions": [
+      {
+        "can_merge_to_geq": false,
+        "can_merge_to_leq": false,
+        "equal": [],
+        "greater_than": [],
+        "less_than": [
+          "P1"
+        ],
+        "pivot_constant": "0x00000007",
+        "variable": "@[0x080e3f4c,4]"
+      }
+    ],
+    "note": "Each policy is an alternative path constraint. Do not AND all policies together.",
+    "operator_between_policies": "OR",
+    "or_expression": "P1",
+    "pairwise_compatibility": [],
+    "policies": [
+      {
+        "complexity": 1,
+        "formula": "{(@[0x080e3f4c,4] <s 0x00000007)}",
+        "id": "P1",
+        "literals": [
+          "(@[0x080e3f4c,4] <s 0x00000007)"
+        ],
+        "literals_count": 1
+      }
+    ],
+    "policy_ids": [
+      "P1"
+    ],
+    "selected_policy_id": "P1"
+  },
+  "run_profile": {
+    "binsec_env": "binsec",
+    "collect_until_timeout": false,
+    "host": "nicol-Katana-15-B13VFK",
+    "paper_mode": false,
+    "pythonhashseed": "0",
+    "selection_mode": "branch-first",
+    "solver_timeout": 15
+  },
+  "selected_policy": "{(@[0x080e3f4c,4] <s 0x00000007)}",
+  "selection_mode": "size-complexity",
+  "selection_reason": {
+    "branch_key": null,
+    "mode": "size-complexity",
+    "reason": "fallback ranking by literals count and complexity (branch pivot not robustly identified)"
+  },
   "stats": {
     "core": {
-      "counterexamples": 3,
+      "counterexamples": 6,
       "examples": 3,
       "necessary_literals": 0,
       "solutions": 1,
       "unsolutions": 0
     },
     "generation": {
-      "considered": 3,
-      "evaluated": 4,
+      "considered": 6,
+      "evaluated": 7,
       "literals": 12,
       "pruned": {},
       "restarts": 1,
@@ -38,24 +110,32 @@
     },
     "oracles": {
       "binsec": {
-        "calls": 10,
+        "calls": 18,
         "crashes": 0,
         "timeouts": 0,
         "times": [
-          0.04638385772705078,
-          0.05381631851196289,
-          0.04688286781311035,
-          0.05066347122192383,
-          0.05000925064086914,
-          0.05355548858642578,
-          0.04769420623779297,
-          0.04742550849914551,
-          0.06228137016296387,
-          0.05645751953125
+          0.0465853214263916,
+          0.0511171817779541,
+          0.04725956916809082,
+          0.05253028869628906,
+          0.05515861511230469,
+          0.051711320877075195,
+          0.04881691932678223,
+          0.05447268486022949,
+          0.05133533477783203,
+          0.05443406105041504,
+          0.05008363723754883,
+          0.04911637306213379,
+          0.05598711967468262,
+          0.04811978340148926,
+          0.05117297172546387,
+          0.048429250717163086,
+          0.04701566696166992,
+          0.047750234603881836
         ]
       },
       "minibinsec": {
-        "calls": 33,
+        "calls": 51,
         "crashes": 0,
         "timeouts": 0,
         "times": []
@@ -63,20 +143,20 @@
     },
     "timers": {
       "counterex": {
-        "first": 0.14812755584716797,
-        "last": 0.25076889991760254
+        "first": 0.1461501121520996,
+        "last": 0.5198559761047363
       },
       "example": {
-        "first": 0.046915292739868164,
-        "last": 0.30482983589172363
+        "first": 0.04718470573425293,
+        "last": 0.6201000213623047
       },
       "necessaryc": {
         "first": 0,
         "last": 0
       },
       "solution": {
-        "first": 0.3048264980316162,
-        "last": 0.3048264980316162
+        "first": 0.6200954914093018,
+        "last": 0.6200954914093018
       },
       "unsolution": {
         "first": 0,
