@@ -25,6 +25,8 @@ def main(args):
                 logger.warning('--paper-mode: disabling --collect-until-timeout (no early cutoff)')
             args.collect_until_timeout = False
             args.solver_timeout = None
+        if args.collect_until_timeout and args.solver_timeout is None:
+            logger.warning('--collect-until-timeout set without --solver-timeout; search may run until completion')
         seed = os.environ.get('PYTHONHASHSEED')
         if seed is None:
             logger.warning('PYTHONHASHSEED is not set (recommended: 0 for reproducible runs)')
@@ -104,8 +106,8 @@ if __name__ == '__main__':
                     help='directory for logging binsec configurations')
     bg.add_argument('--binsec-delete-configs', action='store_true', help='delete local binsec configs')
     bg.add_argument('--binsec-timeout', action='store', metavar='<seconds>', type=int, default=30, help='timeout for binsec calls')
-    bg.add_argument('--solver-timeout', action='store', metavar='<seconds>', type=int, default=15,
-                    help='global timeout budget for abduction search (used with --collect-until-timeout)')
+    bg.add_argument('--solver-timeout', action='store', metavar='<seconds>', type=int, default=None,
+                    help='global timeout budget for abduction search (disabled by default)')
     bg.add_argument('--binsec-robust', action='store_true', help='use variable control from robustness')
     bg.add_argument('--robust-config', action='store', metavar='<robust.conf>', help='binsec robustness core configuration')
     bg.add_argument('--ct-mode', action='store_true', help='use BINSEC CHECKCT contract (secure/insecure/unknown)')
@@ -137,7 +139,7 @@ if __name__ == '__main__':
     cg.add_argument('--no-prune-necessary', action='store_false', dest='prune_necessary', help='do not prune with necessary constraints')
     cg.add_argument('--force-on-model-resorting', action='store_true', help='resort literals after each new found example model')
     cg.add_argument('--collect-until-timeout', action='store_true',
-                    help='continue searching after first NAS and stop at --solver-timeout')
+                    help='continue searching after first NAS (if --solver-timeout is set, stop at timeout)')
     cg.add_argument('--paper-mode', action='store_true',
                     help='repro profile: no early cutoff (disables --collect-until-timeout)')
     cg.add_argument('--selection-mode', action='store',

@@ -196,6 +196,8 @@ class BinsecAutoCandidateGenerator:
         self.ncoreset = None
         self.restart = False
         self._rvars = set()
+        self._dyn_consts = {}
+        self._max_dyn_consts_per_var = max(1, int(getattr(self.args, 'dynamic_constants_per_var', 3)))
         self._init_vars()
         self._init_varengine()
 
@@ -220,7 +222,67 @@ class BinsecAutoCandidateGenerator:
     def is_significant(self, elem):
         return True # TODO Check if this returned result is correct
 
+    def _format_const_for_size(self, value, bits):
+        if bits <= 0:
+            return None
+        mask = (1 << bits) - 1 if bits < 1024 else None
+        if mask is not None:
+            value &= mask
+        if bits % 4 == 0:
+            width = max(1, bits // 4)
+            return '0x{:0{}x}'.format(value, width)
+        return '0b{:b}'.format(value)
+
+    def _seed_base_constants(self):
+        sizes = set()
+        for vid in self._rvars:
+            if self.checkers.context.is_const(vid):
+                continue
+            try:
+                sizes.add(self.checkers.context.get_size(vid))
+            except KeyError:
+                continue
+        for bits in sizes:
+            if bits <= 0:
+                continue
+            vals = [0, 1, -1]
+            if bits > 1:
+                vals.append((1 << (bits - 1)) - 1)   # signed max
+                vals.append(-(1 << (bits - 1)))      # signed min
+            for v in vals:
+                cfmt = self._format_const_for_size(v, bits)
+                if cfmt is None:
+                    continue
+                cid = self.checkers.context.declare_const(cfmt)
+                self.vars.add(cid)
+                self._rvars.add(cid)
+
+    def _add_dynamic_const_from_model(self, varid, value):
+        if self.checkers.context.is_const(varid):
+            return
+        if not isinstance(value, str):
+            return
+        try:
+            ival = int(value, 0)
+        except ValueError:
+            return
+        bits = self.checkers.context.get_size(varid)
+        cfmt = self._format_const_for_size(ival, bits)
+        if cfmt is None:
+            return
+        seen = self._dyn_consts.setdefault(varid, set())
+        if cfmt in seen:
+            return
+        if len(seen) >= self._max_dyn_consts_per_var:
+            return
+        seen.add(cfmt)
+        cid = self.checkers.context.declare_const(cfmt)
+        self.vars.add(cid)
+
     def _init_vars(self):
+        canonical_regions = list(getattr(self.checkers, 'input_regions', []))
+        has_explicit_var = False
+
         with open(self.args.literals, 'r') as stream:
             for line in stream:
                 if line.startswith('constant:'):
@@ -238,16 +300,24 @@ class BinsecAutoCandidateGenerator:
                     vid = self.checkers.context.declare_var(value)
                     self._rvars.add(vid)
                     self.vars.add(vid) # TODO: Might be useful to remove this when non-robust version is run
+                    has_explicit_var = True
                 if line.startswith('word:'):
                     addr = ':'.join(line.strip().split(':')[1:]).strip()
                     if addr:
                         vid = self.checkers.context.declare_var(f"{addr}:4")
                         self._rvars.add(vid)
                         self.vars.add(vid)
+                        has_explicit_var = True
                 if self.args.binsec_robust and line.startswith('controlled:'):
                     value = ':'.join(line.strip().split(':')[1:])
                     vid = self.checkers.context.declare_var(value)
                     self.controlled.add(vid)
+        if not has_explicit_var:
+            for base, size in canonical_regions:
+                vid = self.checkers.context.declare_var('0x{:08x}:{}'.format(base, size))
+                self._rvars.add(vid)
+                self.vars.add(vid)
+        self._seed_base_constants()
         if self.args.with_auto_constants:
             vid = self.checkers.context.declare_const('0x00')
             self.vars.add(vid)
@@ -308,6 +378,8 @@ class BinsecAutoCandidateGenerator:
                                 continue
                             self.checkers.context.declare_var(key)
                             self.vars.add(key)
+                    if key in self.checkers.context.vars:
+                        self._add_dynamic_const_from_model(key, val)
 
     def _update_operators(self):
         # TODO : Use a config file instead
@@ -360,10 +432,23 @@ class BinsecAutoCandidateGenerator:
                 return (v1, nv2) if nv2 is not None else (None, None)
             return None, None
 
+        def _var_sort_key(varid):
+            try:
+                sz = self.checkers.context.get_size(varid)
+            except Exception:
+                sz = 0
+            if self.checkers.context.is_const(varid):
+                return (2, -sz, str(varid))
+            # Prefer wider (word-level) variables first.
+            if sz >= 32:
+                return (0, -sz, str(varid))
+            return (1, -sz, str(varid))
+
         lits = []
+        ordered_vars = sorted(self._reduce_auto(self.vars), key=_var_sort_key)
         for op in self.operators:
             if op != minibinsec.Operator.Lower:
-                for var1, var2 in itertools.combinations(self._reduce_auto(self.vars), 2):
+                for var1, var2 in itertools.combinations(ordered_vars, 2):
                     var1, var2 = _normalize_pair(var1, var2)
                     if var1 is None or var2 is None:
                         continue
@@ -383,7 +468,7 @@ class BinsecAutoCandidateGenerator:
                     if self.args.separate_bits:
                         lits.extend(self._generate_bit_literals(op, var1, var2))
             else:
-                for var1, var2 in itertools.permutations(self._reduce_auto(self.vars), 2):
+                for var1, var2 in itertools.permutations(ordered_vars, 2):
                     var1, var2 = _normalize_pair(var1, var2)
                     if var1 is None or var2 is None:
                         continue
@@ -497,6 +582,9 @@ class BinsecCheckers(AbstractChecker):
         self.var_engine = None
         self.ct_history = []
         self.ct_last = None
+        self.input_regions = self._load_input_regions()
+        if self.input_regions:
+            self.log.debug('canonical input regions: {}'.format(self.input_regions))
 
     def _load_config(self):
         # Strip reach/cut/assume directives from the base config so abduction
@@ -545,6 +633,127 @@ class BinsecCheckers(AbstractChecker):
             # Keep BINSEC-native syntax for file-backed memory initialization.
             return ldata
         return ldata
+
+    def _load_memory_input_regions(self):
+        regions = []
+        memfile = getattr(self.args, 'binsec_memory', None)
+        if not memfile or not os.path.isfile(memfile):
+            return regions
+        pat = re.compile(r'^@\[(0x[0-9a-fA-F]+),([0-9]+)\]\s*:=\s*from_file\b')
+        with open(memfile, 'r') as stream:
+            for line in stream:
+                norm = self._normalize_memory_line(line)
+                if not norm:
+                    continue
+                m = pat.match(norm.strip())
+                if m is None:
+                    continue
+                try:
+                    base = int(m.group(1), 16)
+                    size = int(m.group(2))
+                except ValueError:
+                    continue
+                if size > 0:
+                    regions.append((base, size))
+        return regions
+
+    def _load_symbol_input_regions(self):
+        regions = []
+        if not self.binary or not os.path.isfile(self.binary):
+            return regions
+        try:
+            proc = subprocess.run(
+                ['objdump', '-t', self.binary],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.DEVNULL,
+                text=True,
+                check=False,
+            )
+        except Exception:
+            return regions
+        if proc.returncode != 0:
+            return regions
+        for line in proc.stdout.splitlines():
+            parts = line.split()
+            if len(parts) < 6:
+                continue
+            addr_s, size_s, name = parts[0], parts[4], parts[5]
+            if not re.fullmatch(r'[0-9a-fA-F]{8}', addr_s):
+                continue
+            if not re.fullmatch(r'[0-9a-fA-F]{8}', size_s):
+                continue
+            if not (
+                name.startswith('__VERIFIER_nondet_slot')
+                or name.startswith('public_')
+                or name == '_stub_int_array'
+                or re.match(r'^_stub_.*_index$', name)
+            ):
+                continue
+            base = int(addr_s, 16)
+            size = int(size_s, 16)
+            if size > 0:
+                regions.append((base, size))
+        return regions
+
+    def _chunk_input_regions(self, regions):
+        # Keep the model small and word-centric.
+        max_bytes = max(4, int(getattr(self.args, 'input_region_max_bytes', 32)))
+        seen = set()
+        out = []
+        for base, size in sorted(regions):
+            if size <= 0:
+                continue
+            size = min(size, max_bytes)
+            nwords = size // 4
+            for idx in range(nwords):
+                key = (base + 4 * idx, 4)
+                if key not in seen:
+                    seen.add(key)
+                    out.append(key)
+            rem = size % 4
+            if rem:
+                key = (base + (size - rem), rem)
+                if key not in seen:
+                    seen.add(key)
+                    out.append(key)
+        return out
+
+    def _load_input_regions(self):
+        # Merge symbolic/user-facing regions and from_file regions so index
+        # controls are not dropped when symbols are present.
+        sym_regions = self._load_symbol_input_regions()
+        mem_regions = self._load_memory_input_regions()
+        base = sym_regions + mem_regions
+        if not base:
+            return []
+        return self._chunk_input_regions(base)
+
+    def _var_to_addr_size(self, varid):
+        if not isinstance(varid, str):
+            return None, None
+        m = re.match(r'^(0x[0-9a-fA-F]+):([0-9]+)$', varid)
+        if m is None:
+            return None, None
+        try:
+            return int(m.group(1), 16), int(m.group(2))
+        except ValueError:
+            return None, None
+
+    def _compose_word_from_bytes(self, model, base, size):
+        if size <= 0:
+            return None
+        acc = 0
+        for off in range(size):
+            bkey = '0x{:08x}'.format(base + off)
+            if bkey not in model:
+                return None
+            try:
+                bval = int(str(model[bkey]), 0) & 0xff
+            except ValueError:
+                return None
+            acc |= (bval << (8 * off))
+        width = max(1, size * 2)
+        return '0x{:0{}x}'.format(acc, width)
 
     def _build_script(self, directives, memory_rules=None):
         lines = []
@@ -622,6 +831,10 @@ class BinsecCheckers(AbstractChecker):
             # Necessary when the complement of current solutions is insecure.
             return status == 'insecure'
         self.log.debug('necessary condition check')
+        if any(len(sol) == 0 for sol in solutions):
+            # In classic mode too: once "true" is in the solution set, the
+            # policy is trivially necessary and sufficient.
+            return True
         # In classic mode, necessity means: outside current solutions
         # (i.e. under the negated disjunction), the positive goal is unreachable.
         # Reuse the reachability helper so "reach ... then print model" is
@@ -647,7 +860,18 @@ class BinsecCheckers(AbstractChecker):
             return model
         # Drop BINSEC SSA/internal bindings (e.g., from_file!1) that cannot
         # be serialized back as valid assumptions in SSE scripts.
-        return {k: v for k, v in model.items() if k != 'default' and '!' not in k}
+        cmodel = {k: v for k, v in model.items() if k != 'default' and '!' not in k}
+        # Canonicalize byte models to word-level vars when possible.
+        for varid in list(self.context.vars.keys()):
+            base, size = self._var_to_addr_size(varid)
+            if base is None or size is None:
+                continue
+            if varid in cmodel:
+                continue
+            wval = self._compose_word_from_bytes(cmodel, base, size)
+            if wval is not None:
+                cmodel[varid] = wval
+        return cmodel
 
     def _check_dgoal_reachable_util(self, candidate, reject, complete=False):
         directives = [ d for d in self.directives['all'] ]

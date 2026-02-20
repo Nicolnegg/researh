@@ -402,9 +402,9 @@ SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 example.stub.raw.c
 080e3f4c l     O .bss	00000004 _stub_abort_counter
 080e3f48 l     O .bss	00000004 _stub_abort_cut_counter
-080e3f44 l     O .bss	00000004 _stub_failure_counter
-080e3f40 l     O .bss	00000004 _stub_failure_cut_counter
-080e3f3c l     O .bss	00000004 _main_hook
+080e3f44 l     O .bss	00000004 _main_hook
+080e3f40 l     O .bss	00000004 _stub_failure_counter
+080e3f3c l     O .bss	00000004 _stub_failure_cut_counter
 00000000 l    df *ABS*	00000000 example.uc.raw.c
 00000000 l    df *ABS*	00000000 libc-start.o
 08049930 l     F .text	0000003e call_fini
@@ -1249,7 +1249,7 @@ SYMBOL TABLE:
 0809d7b0 g     F .text	00000130 .hidden __mpn_impn_mul_n_basecase
 0808d780 g     F .text	000000a9 _IO_wdoallocbuf
 080a4d20  w    F .text	00000068 dlinfo
-08049893 g     F .text	0000001a reach_error
+080498b4 g     F .text	0000001a reach_error
 08098cf0 g     F .text	0000000d .hidden __getpid
 0808bf00 g     F .text	00000165 __register_printf_modifier
 08062c70 g     F .text	00000094 _IO_list_lock
@@ -1857,7 +1857,7 @@ SYMBOL TABLE:
 08062bd0 g     F .text	00000006 _IO_default_stat
 0805f480 g     F .text	000000df _IO_new_file_sync
 08065180 g   i   .text	00000035 memcmp
-08049884 g     F .text	0000000f c2bc_assert_fail
+080498a5 g     F .text	0000000f c2bc_assert_fail
 0806c910 g     F .text	00000026 __sched_setscheduler
 0808c6c0 g     F .text	00000032 .hidden __wprintf_buffer_to_file_done
 0806c8f0  w    F .text	00000020 sched_get_priority_min
@@ -1932,7 +1932,7 @@ SYMBOL TABLE:
 08098700 g     F .text	00000029 .hidden __wmempcpy
 08087fd0  w    F .text	00000020 __strtol_l
 08063760 g     F .text	00000017 _dl_tunable_set_elision_skip_lock_busy
-080498ad g     F .text	00000021 main
+08049884 g     F .text	00000021 main
 080a55e0 g     F .text	00000092 .hidden _dl_call_fini
 080e68b4 g     O .bss	00000004 .hidden _dl_origin_path
 080985c0 g     F .text	00000039 __wcsnlen

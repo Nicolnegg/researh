@@ -847,6 +847,8 @@ class SVCompRuleSet(GenericRuleSet):
         emitted = set()
         consts_emitted = set()
         max_vars = 12
+        width_hints = self._infer_entry_memref_widths(asm)
+        symbol_sizes = self._data_symbol_sizes(asm)
 
         def _add_var(name):
             if len(emitted) >= max_vars:
@@ -862,6 +864,41 @@ class SVCompRuleSet(GenericRuleSet):
             if key not in emitted:
                 stream.write(key + '\n')
                 emitted.add(key)
+
+        def _normalize_addr(addr):
+            if not isinstance(addr, str):
+                return None
+            text = addr.strip().lower()
+            if not text.startswith('0x'):
+                return None
+            try:
+                return '0x{:08x}'.format(int(text, 16))
+            except ValueError:
+                return None
+
+        def _addr_kind(addr_hex):
+            # Prefer branch-width hints recovered from cmp/test in entry code.
+            hint = width_hints.get(addr_hex)
+            if hint in ('byte', 'word'):
+                return hint
+            # Fallback to symbol size when available.
+            try:
+                ssize = symbol_sizes.get(int(addr_hex, 16))
+            except ValueError:
+                ssize = None
+            if ssize is not None and ssize < 4:
+                return 'byte'
+            return 'word'
+
+        def _add_auto_addr(addr):
+            norm = _normalize_addr(addr)
+            if norm is None:
+                return False
+            if _addr_kind(norm) == 'byte':
+                _add_var(norm)
+            else:
+                _add_word(norm)
+            return True
 
         def _add_const(value):
             sval = str(value).strip()
@@ -882,6 +919,11 @@ class SVCompRuleSet(GenericRuleSet):
                 if outv not in consts_emitted:
                     stream.write('constant:{}\n'.format(outv))
                     consts_emitted.add(outv)
+
+        def _emit_default_word_constants():
+            # Guided base bank for signed word comparisons.
+            for cval in ('0x00000000', '0x00000001', '0xffffffff', '0x80000000', '0x7fffffff'):
+                _add_const(cval)
 
         def _add_consts_from_entry_immediates():
             # Extract numeric immediates from relevant program functions so
@@ -946,8 +988,6 @@ class SVCompRuleSet(GenericRuleSet):
             fname = self._entry_function_name(asm)
             if fname is None:
                 return
-            width_hints = self._infer_entry_memref_widths(asm)
-            symbol_sizes = self._data_symbol_sizes(asm)
             seen = set()
             ordered = []
             for _, inst in asm.instructions(fname):
@@ -973,17 +1013,7 @@ class SVCompRuleSet(GenericRuleSet):
 
             emitted_entry = 0
             for norm in ordered:
-                hint = width_hints.get(norm)
-                if hint == 'byte':
-                    _add_var(norm)
-                elif hint == 'word':
-                    _add_word(norm)
-                else:
-                    size = symbol_sizes.get(int(norm, 16))
-                    if size is not None and size < 4:
-                        _add_var(norm)
-                    else:
-                        _add_word(norm)
+                _add_auto_addr(norm)
                 emitted_entry += 1
                 if len(emitted) >= max_vars or emitted_entry >= 3:
                     return
@@ -994,10 +1024,28 @@ class SVCompRuleSet(GenericRuleSet):
                 return False
             for varname, constval in self._extract_dba_vars(dba_file):
                 if varname is not None:
-                    _add_var(varname)
+                    if not _add_auto_addr(varname):
+                        _add_var(varname)
                 if constval is not None:
                     _add_const(constval)
             return len(emitted) > before_vars
+
+        def _add_stub_index_symbols():
+            # Indexed stub arrays require the index to be explicit in literals;
+            # otherwise constants on array cells alone are often insufficient.
+            for label in asm.labels(sections=('.bss', '.data')):
+                if not re.match(r'^_stub_.*_index$', label):
+                    continue
+                try:
+                    addr = asm.address_of(label)
+                    size = asm.bytesize_of(label)
+                except KeyError:
+                    continue
+                if size >= 4:
+                    _add_word('0x{:08x}'.format(addr))
+                elif size > 0:
+                    for off in range(size):
+                        _add_var('0x{:08x}'.format(addr + off))
 
         # Prefer literals extracted from DBA conditions when available.
         dba_emitted = _add_from_dba()
@@ -1005,13 +1053,16 @@ class SVCompRuleSet(GenericRuleSet):
         # If DBA gave us real predicates (e.g., eax/ebx), keep the literal
         # set small and avoid flooding with stub-array controlled bytes.
         if dba_emitted:
+            _add_stub_index_symbols()
+            _add_from_entry_memrefs()
             if not consts_emitted:
                 _add_consts_from_entry_immediates()
             return
 
         if controlled:
             for ctrlv in controlled:
-                _add_var(ctrlv)
+                if not _add_auto_addr(ctrlv):
+                    _add_var(ctrlv)
                 stream.write('controlled:{}\n'.format(ctrlv))
             # Also include direct data memrefs from the main function so
             # global decision vars are not lost when controlled vars are stub-only.
@@ -1046,12 +1097,16 @@ class SVCompRuleSet(GenericRuleSet):
             for _, mloc, size in self.brules.symbolic_memlocs(asm, set()):
                 base = int(mloc, 16)
                 size = self.brules._limit_ctrl_bytes('stub_int_array', size)
-                # Use a small set of byte-level variables per word.
+                # Prefer word-level variables; keep byte-level only as fallback.
                 if size >= 4:
                     for offset in range(0, min(size, 8), 4):
-                        for b in range(4):
-                            offaddr = '0x{:08x}'.format(base + offset + b)
-                            _add_var(offaddr)
+                        offaddr = '0x{:08x}'.format(base + offset)
+                        _add_auto_addr(offaddr)
+                    rem = min(size, 8) % 4
+                    if rem:
+                        start = base + (min(size, 8) - rem)
+                        for b in range(rem):
+                            _add_var('0x{:08x}'.format(start + b))
                 else:
                     for offset in range(min(size, 4)):
                         offaddr = '0x{:08x}'.format(base + offset)
@@ -1068,9 +1123,11 @@ class SVCompRuleSet(GenericRuleSet):
                         _add_var(offaddr)
                     break
 
-        # No hardcoded constants: extract only constants observed in code.
-        if not consts_emitted:
-            _add_consts_from_entry_immediates()
+        # Emit a compact default bank when word-level predicates are present.
+        if any(str(v).startswith('word:') for v in emitted):
+            _emit_default_word_constants()
+        # Also keep constants observed in the binary code.
+        _add_consts_from_entry_immediates()
 
     def _extract_dba_vars(self, dba_file):
         # Yield tuples (varname, constval) from DBA comparisons.

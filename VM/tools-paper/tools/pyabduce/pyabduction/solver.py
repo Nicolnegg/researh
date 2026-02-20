@@ -75,6 +75,8 @@ class AbductionSolver:
 
     def _stable_solution_string(self, solution):
         lits = self._stable_solution_literals(solution)
+        if len(lits) == 0:
+            return '{true}'
         return '{' + ', '.join(lits) + '}'
 
     def _stable_clause_string(self, solution):
@@ -105,37 +107,150 @@ class AbductionSolver:
         text = lit_text.strip()
         if text.startswith('(') and text.endswith(')'):
             text = text[1:-1].strip()
-        m = re.match(r'^(.*?)\s(<s|=)\s(.*?)$', text)
+        m = re.match(r'^(.*?)\s(<s|<=s|>=s|=|<>)\s(.*?)$', text)
         if m is None:
             return None
         return m.group(1).strip(), m.group(2).strip(), m.group(3).strip()
 
+    def _mem_token_bits(self, tok):
+        m = re.match(r'^@\[(0x[0-9a-fA-F]+),([0-9]+)\]$', tok.strip())
+        if m is None:
+            return None
+        try:
+            return int(m.group(2)) * 8
+        except ValueError:
+            return None
+
+    def _signed_const_value(self, tok, bits):
+        if bits is None or bits <= 0:
+            return None
+        try:
+            raw = int(tok, 0)
+        except ValueError:
+            return None
+        mask = (1 << bits) - 1
+        raw &= mask
+        sign = 1 << (bits - 1)
+        if raw & sign:
+            raw -= (1 << bits)
+        return raw
+
+    def _single_clause_atom(self, solution):
+        if len(solution) != 1:
+            return None
+        lit = next(iter(solution))
+        atom = self._extract_branch_atom(lit)
+        if atom is not None:
+            var, cst, rel = atom
+            bits = self._mem_token_bits(var)
+            sval = self._signed_const_value(cst, bits)
+            return {'var': var, 'const': cst, 'rel': rel, 'bits': bits, 'sval': sval}
+
+        parsed = self._parse_simple_relation(str(lit))
+        if parsed is None:
+            return None
+        left, op, right = parsed
+        if op == '<>':
+            if self._is_const_token(left) and self._is_mem_token(right):
+                var, cst = right, left
+            elif self._is_mem_token(left) and self._is_const_token(right):
+                var, cst = left, right
+            else:
+                return None
+            bits = self._mem_token_bits(var)
+            sval = self._signed_const_value(cst, bits)
+            return {'var': var, 'const': cst, 'rel': '!=', 'bits': bits, 'sval': sval}
+        return None
+
     def _compact_policy_condition(self, solutions):
         # Return a compact single-formula view when OR policies are a classic
         # partition such as (x < y) OR (x = y) -> (x <= y).
-        if len(solutions) != 2:
-            return None
-        if any(len(sol) != 1 for sol in solutions):
+        if len(solutions) == 0:
             return None
 
-        l1 = str(next(iter(solutions[0])))
-        l2 = str(next(iter(solutions[1])))
-        p1 = self._parse_simple_relation(l1)
-        p2 = self._parse_simple_relation(l2)
-        if p1 is None or p2 is None:
+        atoms = []
+        for sol in solutions:
+            atom = self._single_clause_atom(sol)
+            if atom is None:
+                return None
+            atoms.append(atom)
+
+        # Only compact single-variable OR families.
+        vars_seen = {a['var'] for a in atoms}
+        if len(vars_seen) != 1:
+            return None
+        vtok = atoms[0]['var']
+
+        # Drop exact duplicates.
+        uniq = {}
+        for a in atoms:
+            uniq[(a['rel'], a['const'])] = a
+        atoms = list(uniq.values())
+
+        if len(atoms) == 1:
+            a = atoms[0]
+            if a['rel'] == '<':
+                return '{(' + vtok + ' <s ' + a['const'] + ')}'
+            if a['rel'] == '>':
+                return '{(' + a['const'] + ' <s ' + vtok + ')}'
+            if a['rel'] == '=':
+                return '{(' + vtok + ' = ' + a['const'] + ')}'
+            if a['rel'] == '!=':
+                return '{(' + vtok + ' <> ' + a['const'] + ')}'
             return None
 
-        # Normalize equality orientation.
-        def _norm_eq(lhs, rhs):
-            return tuple(sorted((lhs, rhs)))
+        rels = {a['rel'] for a in atoms}
+        by_rel = {}
+        for a in atoms:
+            by_rel.setdefault(a['rel'], []).append(a)
 
-        # Case A: (<s) OR (=) with same operand pair => <=s
-        if p1[1] == '<s' and p2[1] == '=':
-            if _norm_eq(p1[0], p1[2]) == _norm_eq(p2[0], p2[2]):
-                return '{(' + p1[0] + ' <=s ' + p1[2] + ')}'
-        if p2[1] == '<s' and p1[1] == '=':
-            if _norm_eq(p2[0], p2[2]) == _norm_eq(p1[0], p1[2]):
-                return '{(' + p2[0] + ' <=s ' + p2[2] + ')}'
+        # Single-sided OR simplification on thresholds.
+        if rels == {'<'}:
+            best = max(by_rel['<'], key=lambda a: (a['sval'] is not None, a['sval']))
+            return '{(' + vtok + ' <s ' + best['const'] + ')}'
+        if rels == {'>'}:
+            best = min(by_rel['>'], key=lambda a: (a['sval'] is None, a['sval']))
+            return '{(' + best['const'] + ' <s ' + vtok + ')}'
+        if rels == {'='}:
+            if len(by_rel['=']) == 1:
+                return '{(' + vtok + ' = ' + by_rel['='][0]['const'] + ')}'
+            return None
+        if rels == {'!='}:
+            if len(by_rel['!=']) == 1:
+                return '{(' + vtok + ' <> ' + by_rel['!='][0]['const'] + ')}'
+            return None
+
+        # Pairwise same-pivot merges.
+        if rels == {'<', '='} and len(by_rel['<']) == 1 and len(by_rel['=']) == 1:
+            if by_rel['<'][0]['const'] == by_rel['='][0]['const']:
+                return '{(' + vtok + ' <=s ' + by_rel['<'][0]['const'] + ')}'
+        if rels == {'>', '='} and len(by_rel['>']) == 1 and len(by_rel['=']) == 1:
+            if by_rel['>'][0]['const'] == by_rel['='][0]['const']:
+                return '{(' + vtok + ' >=s ' + by_rel['>'][0]['const'] + ')}'
+        if rels == {'<', '>'} and len(by_rel['<']) == 1 and len(by_rel['>']) == 1:
+            if by_rel['<'][0]['const'] == by_rel['>'][0]['const']:
+                return '{(' + vtok + ' <> ' + by_rel['<'][0]['const'] + ')}'
+
+        # Generic fallback for var-vs-var formulas where _extract_branch_atom
+        # is intentionally not used (it focuses on var-vs-constant pivots).
+        if len(solutions) == 2 and all(len(sol) == 1 for sol in solutions):
+            l1 = str(next(iter(solutions[0])))
+            l2 = str(next(iter(solutions[1])))
+            p1 = self._parse_simple_relation(l1)
+            p2 = self._parse_simple_relation(l2)
+            if p1 is not None and p2 is not None:
+                def _norm_pair(a, b):
+                    return tuple(sorted((a, b)))
+
+                # (<s) OR (=) on same pair => <=s
+                if p1[1] == '<s' and p2[1] == '=' and _norm_pair(p1[0], p1[2]) == _norm_pair(p2[0], p2[2]):
+                    return '{(' + p1[0] + ' <=s ' + p1[2] + ')}'
+                if p2[1] == '<s' and p1[1] == '=' and _norm_pair(p2[0], p2[2]) == _norm_pair(p1[0], p1[2]):
+                    return '{(' + p2[0] + ' <=s ' + p2[2] + ')}'
+
+                # (x < y) OR (y < x) => x <> y
+                if p1[1] == '<s' and p2[1] == '<s' and p1[0] == p2[2] and p1[2] == p2[0]:
+                    return '{(' + p1[0] + ' <> ' + p1[2] + ')}'
 
         return None
 
@@ -497,10 +612,11 @@ class AbductionSolver:
         general_expr = self._stable_policies_or_string(ordered)
         unified_expr = self._stable_unified_condition_string(ordered)
         compact_expr = self._compact_policy_condition(ordered)
+        display_expr = compact_expr if compact_expr is not None else unified_expr
         final_condition = compact_expr if compact_expr is not None else general_expr
 
         self.log.info('obtained a necessary result set')
-        self.log.result('nas conditions (all): {}'.format(unified_expr))
+        self.log.result('nas conditions (all): {}'.format(display_expr))
         if selected is not None:
             self.log.result('selected constraint (necessary & sufficient): {}'.format(final_condition))
         else:
@@ -521,7 +637,7 @@ class AbductionSolver:
         self.result_summary['selected_constraint'] = final_condition if selected is not None else None
         self.result_summary['selected_constraint_representative'] = self._stable_solution_string(selected) if selected is not None else None
         self.result_summary['policy_condition'] = general_expr
-        self.result_summary['policy_condition_unified'] = unified_expr
+        self.result_summary['policy_condition_unified'] = display_expr
         self.result_summary['policy_condition_compact'] = compact_expr
         self.result_summary['general_nas_condition'] = general_expr
         self.result_summary['alternatives'] = [self._stable_solution_string(sol) for sol in alternatives]
@@ -540,11 +656,26 @@ class AbductionSolver:
         start_time = time.time()
         nas_found = False
 
+        # Fast path: if the empty constraint already makes negative goals
+        # unreachable while keeping a positive witness reachable, abduction is
+        # unnecessary and the final policy is simply "true".
+        self.log.debug('pre-checking empty candidate goals')
+        gstatus0, rstatus0, _gmodel0, rmodel0, gcore0, _rcore0 = self.check_goals(set())
+        if gstatus0 and rstatus0:
+            self.log.result('satisfying solution: {}'.format(stringify(set())))
+            self.store_solution(set(), gcore0)
+            if rmodel0 is not None:
+                self.engine.add_example(rmodel0)
+            self.log.info('empty candidate already satisfies goals; skipping candidate search')
+            self._finalize_nas_result()
+            self.result_summary['stats'] = self._stats_to_dict()
+            return self.result_summary
+
         self.get_initital_examples()
         if self.args.const_detect:
             self.recover_necessary_constants()
         for candidate, core_candidate in self.next_candidate():
-            if collect_until_timeout and has_timeout and (time.time() - start_time) >= solver_timeout:
+            if has_timeout and (time.time() - start_time) >= solver_timeout:
                 self.log.warning('solver timeout reached ({}s), stopping search'.format(solver_timeout))
                 break
             self.log.debug('trying candidate: {}'.format(candidate))

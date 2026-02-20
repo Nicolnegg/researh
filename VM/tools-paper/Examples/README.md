@@ -35,11 +35,20 @@ timeout 20s ./example.dir/example.abduce-run.bash --with-inequalities
 if b>c:
 error
 
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-empty-default
+c2bc -i example.c
+./example.dir/example.abduce-run.bash --with-inequalities
+# expected: selected constraint (necessary & sufficient): {true}
+
 cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/'example-minus-a<b'
 c2bc -i example.c
 ./example.dir/example.abduce-run.bash --with-inequalities
 
 cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/'example-plus-a>b'
+c2bc -i example.c
+./example.dir/example.abduce-run.bash --with-inequalities
+
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-chain-if-error
 c2bc -i example.c
 ./example.dir/example.abduce-run.bash --with-inequalities
 
@@ -49,59 +58,8 @@ c2bc -i example.c
 
 ```
 
-## 3. Run all examples automatically
+Look value a and b
 
 ```bash
-cd ~/Documentos/M2-Cyber/RESEARCH
-
-eval $(opam env)
-
-cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper
-source venv/bin/activate
-export PATH=/home/nicol/Documentos/M2-Cyber/RESEARCH/binsec/_opam/bin:$PATH
-
-ROOT=~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples
-EXAMPLES=(
-  "simple-example"
-  "example-ineq-a>=b"
-  "example-ineq-a>a+1"
-  "example-minus-a<b"
-  "example-plus-a>b"
-  "sse-mock-example"
-)
-
-for ex in "${EXAMPLES[@]}"; do
-  echo "== Running $ex =="
-  cd "$ROOT/$ex"
-  c2bc -i example.c
-  ./example.dir/example.abduce-run.bash --with-inequalities --max-depth 3
-  echo
-  cd "$ROOT"
-done
-```
-
-## Notes
-
-- Folder names containing `>` or `<` must be run with --with-inequalities.
-- If you want stronger search for inequalities, you can pass extra flags, for example:
-  `./example.dir/example.abduce-run.bash --with-inequalities --max-depth 2`
-
-## Examples-CT
-
-Constant-time examples are now available in:
-
-- `VM/tools-paper/Examples-CT`
-
-Quick start:
-
-```bash
-cd ~/Documentos/M2-Cyber/RESEARCH
-eval $(opam env)
-
-cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper
-source venv/bin/activate
-export PATH=/home/nicol/Documentos/M2-Cyber/RESEARCH/binsec/_opam/bin:$PATH
-
-cd Examples-CT/simple-ct-branch
-./run_checkct.sh
+objdump -t example.dir/example.bin | egrep '<addr>|<addr>|nondet_slot'
 ```

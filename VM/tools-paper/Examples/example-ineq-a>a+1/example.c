@@ -1,16 +1,11 @@
 void __VERIFIER_error(void) {}
 
-/* Provide two independent symbolic slots and advance an index so the two calls
- * in main use different symbolic values. This prevents the compiler from
- * folding them into a single load. */
-static volatile int __VERIFIER_nondet_slots[2];
-static int __VERIFIER_nondet_idx = 0;
-__attribute__((noinline))
-int __VERIFIER_nondet_int(void) {
-    int v = __VERIFIER_nondet_slots[__VERIFIER_nondet_idx & 1];
-    __VERIFIER_nondet_idx++;
-    return v;
-}
+/* Keep explicit symbolic slots so inputs are exposed as direct word variables
+ * in the generated BINSEC literals. */
+volatile int __VERIFIER_nondet_slot_a;
+volatile int __VERIFIER_nondet_slot_b;
+__attribute__((noinline)) int __VERIFIER_nondet_int_a(void) { return __VERIFIER_nondet_slot_a; }
+__attribute__((noinline)) int __VERIFIER_nondet_int_b(void) { return __VERIFIER_nondet_slot_b; }
 volatile int success_flag;
 
 void reach_error(void) { __VERIFIER_error(); }
@@ -25,9 +20,11 @@ void fun(int a, int b) {
 }
 
 int main(void) {
-    int a = __VERIFIER_nondet_int();
-    /* Force b > a to make reach_error reachable deterministically. */
+    int a = __VERIFIER_nondet_int_a();
+    /* Keep deterministic relation; overflow edge remains intentional. */
     int b = a + 1;
+    /* Touch second symbolic source so both inputs stay visible in the binary. */
+    b += (__VERIFIER_nondet_int_b() & 0);
     fun(a, b);
     return 0;
 }
