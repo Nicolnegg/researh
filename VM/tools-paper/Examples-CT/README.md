@@ -70,9 +70,7 @@ cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples-CT/simple-ct-branch/1_
 c2bc -i candidate_1_insecure.c --ct --ct-secret secret_b --ct-public public_a
 
 ./candidate_1_insecure.dir/candidate_1_insecure.abduce-run.bash \
-  --with-inequalities \
-  --selection-mode branch-first \
-  --policy-report candidate_1_insecure.report.json
+  --with-inequalities 
 ```
 
 ### Harder case (multi-leak)

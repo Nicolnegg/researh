@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 void __VERIFIER_error(void) {}
 
 volatile int __VERIFIER_nondet_slot_a;
@@ -16,15 +18,14 @@ void reach_error(void) { __VERIFIER_error(); }
 __attribute__((noinline)) void reach_success(void) { success_flag = 1; }
 
 void fun(int a, int b, int c, int d) {
-    if (a >= b) {
-        if (b >= c) {
-            if (c >= d) {
-                reach_error();
-                return;
-            }
-        }
+    /* Keep only 3 simple branch conditions to speed up abduction search. */
+    if ((a >= b) &&
+        (b >= c) &&
+        (c >= d)) {
+        reach_error();
+    } else {
+        reach_success();
     }
-    reach_success();
 }
 
 int main(void) {

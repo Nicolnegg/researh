@@ -419,11 +419,19 @@ class BinsecAutoCandidateGenerator:
             self.vars.add(nid)
             return nid
 
+        def _term_size(ref):
+            if isinstance(ref, str):
+                return self.checkers.context.get_size(ref)
+            return ref.bvsize()
+
+        def _is_const_ref(ref):
+            return isinstance(ref, str) and self.checkers.context.is_const(ref)
+
         def _normalize_pair(v1, v2):
-            s1, s2 = self.checkers.context.get_size(v1), self.checkers.context.get_size(v2)
+            s1, s2 = _term_size(v1), _term_size(v2)
             if s1 == s2:
                 return v1, v2
-            c1, c2 = self.checkers.context.is_const(v1), self.checkers.context.is_const(v2)
+            c1, c2 = _is_const_ref(v1), _is_const_ref(v2)
             if c1 and not c2:
                 nv1 = _resized_const(v1, s2)
                 return (nv1, v2) if nv1 is not None else (None, None)
@@ -431,6 +439,65 @@ class BinsecAutoCandidateGenerator:
                 nv2 = _resized_const(v2, s1)
                 return (v1, nv2) if nv2 is not None else (None, None)
             return None, None
+
+        def _append_literal(op, lhs, rhs, out):
+            lhs, rhs = _normalize_pair(lhs, rhs)
+            if lhs is None or rhs is None:
+                return
+            if _is_const_ref(lhs) and _is_const_ref(rhs):
+                return
+            if _term_size(lhs) != _term_size(rhs):
+                return
+            if self.args.no_variables_binop and (not _is_const_ref(lhs)) and (not _is_const_ref(rhs)):
+                return
+            literal = self.checkers.context.create_binary_term(op, lhs, rhs)
+            if not literal in self.ncoreset:
+                out.append(literal)
+
+        def _generate_arith_terms(var_ids, include_mul=False):
+            # Build arithmetic expressions directly in the SMT term graph.
+            # This avoids depending on compiler temporaries (e.g., eax).
+            limit = max(0, int(getattr(self.args, 'arith_term_limit', 32)))
+            if limit == 0:
+                return []
+            terms = []
+            seen = set()
+            for var1, var2 in itertools.combinations(var_ids, 2):
+                if _term_size(var1) != _term_size(var2):
+                    continue
+                tadd = self.checkers.context.create_binary_term(minibinsec.Operator.Add, var1, var2)
+                kadd = ('+', str(tadd))
+                if kadd not in seen:
+                    seen.add(kadd)
+                    terms.append(tadd)
+                    if len(terms) >= limit:
+                        break
+
+                tsub = self.checkers.context.create_binary_term(minibinsec.Operator.Sub, var1, var2)
+                ksub = ('-', str(tsub))
+                if ksub not in seen:
+                    seen.add(ksub)
+                    terms.append(tsub)
+                    if len(terms) >= limit:
+                        break
+
+                trsub = self.checkers.context.create_binary_term(minibinsec.Operator.Sub, var2, var1)
+                krsub = ('-', str(trsub))
+                if krsub not in seen:
+                    seen.add(krsub)
+                    terms.append(trsub)
+                    if len(terms) >= limit:
+                        break
+
+                if include_mul:
+                    tmul = self.checkers.context.create_binary_term(minibinsec.Operator.Mul, var1, var2)
+                    kmul = ('*', str(tmul))
+                    if kmul not in seen:
+                        seen.add(kmul)
+                        terms.append(tmul)
+                        if len(terms) >= limit:
+                            break
+            return terms
 
         def _var_sort_key(varid):
             try:
@@ -449,41 +516,35 @@ class BinsecAutoCandidateGenerator:
         for op in self.operators:
             if op != minibinsec.Operator.Lower:
                 for var1, var2 in itertools.combinations(ordered_vars, 2):
-                    var1, var2 = _normalize_pair(var1, var2)
-                    if var1 is None or var2 is None:
-                        continue
-                    if self.checkers.context.is_const(var1) and self.checkers.context.is_const(var2):
-                        continue
-                    # Keep only width-safe comparisons after normalization.
-                    if self.checkers.context.get_size(var1) != self.checkers.context.get_size(var2):
-                        continue
-                    if self.args.no_variables_binop and (not self.checkers.context.is_const(var1)) and (not self.checkers.context.is_const(var2)):
-                        continue
                     if self.args.core_literals:
-                        literal = self.checkers.context.create_binary_term(op, var1, var2)
-                        if not literal in self.ncoreset:
-                            lits.append(literal)
+                        _append_literal(op, var1, var2, lits)
                     if self.args.separate_bytes:
                         lits.extend(self._generate_byte_literals(op, var1, var2))
                     if self.args.separate_bits:
                         lits.extend(self._generate_bit_literals(op, var1, var2))
             else:
                 for var1, var2 in itertools.permutations(ordered_vars, 2):
-                    var1, var2 = _normalize_pair(var1, var2)
-                    if var1 is None or var2 is None:
-                        continue
-                    if self.checkers.context.is_const(var1) and self.checkers.context.is_const(var2):
-                        continue
-                    # Keep inequalities type-safe too.
-                    if self.checkers.context.get_size(var1) != self.checkers.context.get_size(var2):
-                        continue
-                    if self.args.no_variables_binop and (not self.checkers.context.is_const(var1)) and (not self.checkers.context.is_const(var2)):
-                        continue
                     if self.args.core_literals:
-                        literal = self.checkers.context.create_binary_term(op, var1, var2)
-                        if not literal in self.ncoreset:
-                            lits.append(literal)
+                        _append_literal(op, var1, var2, lits)
                     # TODO: byte and bit separation for inequalities
+
+        use_arith_terms = bool(getattr(self.args, 'with_arith_terms', False) or self.args.with_inequalities)
+        if use_arith_terms and self.args.core_literals:
+            base_vars = [v for v in ordered_vars if not _is_const_ref(v)]
+            use_mul_terms = bool(getattr(self.args, 'with_mul_terms', False))
+            arith_terms = _generate_arith_terms(base_vars, include_mul=use_mul_terms)
+            if arith_terms:
+                self.log.debug('generated {} arithmetic terms'.format(len(arith_terms)))
+                for op in self.operators:
+                    if op != minibinsec.Operator.Lower:
+                        for t in arith_terms:
+                            for v in ordered_vars:
+                                _append_literal(op, t, v, lits)
+                    else:
+                        for t in arith_terms:
+                            for v in ordered_vars:
+                                _append_literal(op, t, v, lits)
+                                _append_literal(op, v, t, lits)
         return lits
 
     def _generate_byte_literals(self, op, var1, var2):

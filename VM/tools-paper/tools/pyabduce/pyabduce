@@ -132,6 +132,12 @@ if __name__ == '__main__':
     cg.add_argument('--with-inequalities', action='store_true', help='use lt operator in litgen')
     cg.add_argument('--without-disequalities', action='store_false', dest='with_disequalities', help='do not use distinct operator in litgen')
     cg.add_argument('--with-auto-constants', action='store_true', help='add default basic constants 0, 1 to varset')
+    cg.add_argument('--with-arith-terms', action='store_true',
+                    help='generate arithmetic expression terms (x+y, x-y) and compare them in literals')
+    cg.add_argument('--with-mul-terms', action='store_true',
+                    help='also generate multiplication terms (x*y) in arithmetic literals')
+    cg.add_argument('--arith-term-limit', action='store', metavar='<int>', type=int, default=32,
+                    help='maximum number of generated arithmetic expression terms')
     cg.add_argument('--no-variables-binop', action='store_true', help='never apply binary operators to variable pairs')
     cg.add_argument('--input-variables-only', action='store_true', help='only use the user-given input variables')
     cg.add_argument('--no-literal-ordering', action='store_false', dest='lit_ordering', help='do not reorder literals via heuristic')

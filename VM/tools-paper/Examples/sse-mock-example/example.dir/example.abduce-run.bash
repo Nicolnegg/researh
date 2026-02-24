@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 export PYTHONHASHSEED="${PYTHONHASHSEED:-0}"
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+local_pyabduce="${script_dir}/../../../tools/pyabduce/pyabduce"
+if [[ -z "${PYABDUCE:-}" && -x "$local_pyabduce" ]]; then
+  PYABDUCE="$local_pyabduce"
+fi
 if [[ "${ABDUCE_PAPER_MODE:-0}" = "1" ]]; then
   set -- --paper-mode "$@"
 fi

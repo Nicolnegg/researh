@@ -400,11 +400,11 @@ SYMBOL TABLE:
 080e3f24 l     O .bss	00000018 object.0
 080e09d4 l     O .init_array	00000000 __frame_dummy_init_array_entry
 00000000 l    df *ABS*	00000000 example.stub.raw.c
-080e3f48 l     O .bss	00000004 _stub_failure_counter
-080e3f44 l     O .bss	00000004 _stub_failure_cut_counter
-080e3f40 l     O .bss	00000004 _stub_abort_counter
-080e3f3c l     O .bss	00000004 _stub_abort_cut_counter
-080e3f4c l     O .bss	00000004 _main_hook
+080e3f4c l     O .bss	00000004 _stub_abort_counter
+080e3f48 l     O .bss	00000004 _stub_abort_cut_counter
+080e3f44 l     O .bss	00000004 _main_hook
+080e3f40 l     O .bss	00000004 _stub_failure_counter
+080e3f3c l     O .bss	00000004 _stub_failure_cut_counter
 00000000 l    df *ABS*	00000000 example.uc.raw.c
 00000000 l    df *ABS*	00000000 libc-start.o
 08049930 l     F .text	0000003e call_fini
@@ -1215,7 +1215,7 @@ SYMBOL TABLE:
 080a4640  w    F .text	00000037 secure_getenv
 08098500 g     F .text	0000008b .hidden __stpcpy_ia32
 08086d30 g     F .text	00000187 __libc_sigaction
-08049884 g     F .text	0000000f c2bc_abort
+08049875 g     F .text	0000000f c2bc_abort
 080919b0 g   i   .text	0000003a strcpy
 0808dc30 g     F .text	000000d8 _IO_wdefault_xsgetn
 08076940 g     F .text	000001a0 .hidden __thread_gscope_wait
@@ -1859,7 +1859,7 @@ SYMBOL TABLE:
 08062bd0 g     F .text	00000006 _IO_default_stat
 0805f480 g     F .text	000000df _IO_new_file_sync
 08065180 g   i   .text	00000035 memcmp
-08049875 g     F .text	0000000f c2bc_assert_fail
+080498a5 g     F .text	0000000f c2bc_assert_fail
 0806c910 g     F .text	00000026 __sched_setscheduler
 0808c6c0 g     F .text	00000032 .hidden __wprintf_buffer_to_file_done
 0806c8f0  w    F .text	00000020 sched_get_priority_min
@@ -1933,7 +1933,7 @@ SYMBOL TABLE:
 08098700 g     F .text	00000029 .hidden __wmempcpy
 08087fd0  w    F .text	00000020 __strtol_l
 08063760 g     F .text	00000017 _dl_tunable_set_elision_skip_lock_busy
-08049893 g     F .text	00000021 main
+08049884 g     F .text	00000021 main
 080a55e0 g     F .text	00000092 .hidden _dl_call_fini
 080e68b4 g     O .bss	00000004 .hidden _dl_origin_path
 080985c0 g     F .text	00000039 __wcsnlen

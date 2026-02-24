@@ -116,8 +116,24 @@ class CompilationTask:
 
     def _build_dba(self):
         # DBA extraction is optional; if binsec isn't available, continue without it.
+        dba_function = 'c2bc_main'
         try:
-            command = self.ruleset.make_dba_command(self.files.binary, self.files.dba, function='c2bc_main')
+            with open(self.files.dump) as istr:
+                asm = x86AsmData(self.files.dump, istr)
+            if os.path.isfile(self.files.dumptbl):
+                with open(self.files.dumptbl) as istr:
+                    asm.read_symbol_table(istr)
+            # Prefer user logic function when present so arithmetic predicates
+            # (e.g. a-b > 100) are visible in the generated DBA.
+            for fname in ('fun', 'c2bc_main', 'main'):
+                if asm.has_function(fname):
+                    dba_function = fname
+                    break
+        except Exception:
+            dba_function = 'c2bc_main'
+
+        try:
+            command = self.ruleset.make_dba_command(self.files.binary, self.files.dba, function=dba_function)
         except AttributeError:
             return
         if not command:

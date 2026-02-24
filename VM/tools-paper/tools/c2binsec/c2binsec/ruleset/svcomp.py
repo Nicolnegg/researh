@@ -435,6 +435,11 @@ class SVCompRuleSet(GenericRuleSet):
     def write_abduction_runner(self, stream, config, rconfig, memory, binary, literals, directives, asmaddr, timeout, autocontrol=False, ct_mode=False, stack=[]):
         stream.write('#!/usr/bin/env bash\n')
         stream.write('export PYTHONHASHSEED="${PYTHONHASHSEED:-0}"\n')
+        stream.write('script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"\n')
+        stream.write('local_pyabduce="${script_dir}/../../../tools/pyabduce/pyabduce"\n')
+        stream.write('if [[ -z "${PYABDUCE:-}" && -x "$local_pyabduce" ]]; then\n')
+        stream.write('  PYABDUCE="$local_pyabduce"\n')
+        stream.write('fi\n')
         stream.write('if [[ "${ABDUCE_PAPER_MODE:-0}" = "1" ]]; then\n')
         stream.write('  set -- --paper-mode "$@"\n')
         stream.write('fi\n')
@@ -1025,7 +1030,11 @@ class SVCompRuleSet(GenericRuleSet):
             for varname, constval in self._extract_dba_vars(dba_file):
                 if varname is not None:
                     if not _add_auto_addr(varname):
-                        _add_var(varname)
+                        # Do not expose transient CPU registers (e.g., eax).
+                        # Keep only memory-like identifiers for stable,
+                        # source-level interpretable constraints.
+                        if re.fullmatch(r'0x[0-9a-fA-F]+(?::\d+)?', varname):
+                            _add_var(varname)
                 if constval is not None:
                     _add_const(constval)
             return len(emitted) > before_vars
@@ -1050,7 +1059,7 @@ class SVCompRuleSet(GenericRuleSet):
         # Prefer literals extracted from DBA conditions when available.
         dba_emitted = _add_from_dba()
 
-        # If DBA gave us real predicates (e.g., eax/ebx), keep the literal
+        # If DBA gave us real predicates, keep the literal
         # set small and avoid flooding with stub-array controlled bytes.
         if dba_emitted:
             _add_stub_index_symbols()
@@ -1133,35 +1142,59 @@ class SVCompRuleSet(GenericRuleSet):
         # Yield tuples (varname, constval) from DBA comparisons.
         import re
         results = []
-        last_sub = {}
+        last_arith = {}
 
         def _strip_suffix(tok):
             return re.sub(r'<\d+>$', '', tok)
 
-        def _normalize_operand(tok):
-            tok = tok.strip()
-            tok = tok.strip('()')
-            tok = tok.replace('%', '')
-            tok = _strip_suffix(tok)
-            if tok.startswith('@[') and tok.endswith(']'):
-                inner = tok[2:-1].split(',')[0].strip()
-                if inner.startswith('0x'):
-                    return inner, None
-                return None, None
-            if tok.startswith('0x') or tok.isdigit():
-                return None, tok
-            if re.match(r'^[a-zA-Z][a-zA-Z0-9_]*$', tok):
-                return tok, None
-            return None, None
+        def _extract_expr_items(expr):
+            # Best-effort extraction of variables/constants from DBA expressions,
+            # including arithmetic forms like "(x + 0x64)" and "(x - y)".
+            if expr is None:
+                return []
+            text = expr.strip()
+            if not text:
+                return []
+
+            found = []
+
+            def _push(varname=None, constval=None):
+                if varname is None and constval is None:
+                    return
+                item = (varname, constval)
+                if item not in found:
+                    found.append(item)
+
+            # First, decode explicit memory refs: @[0xADDR,SZ]
+            for mm in re.finditer(r'@\[\s*(0x[0-9a-fA-F]+)\s*(?:,\s*\d+)?\s*\]', text):
+                _push(mm.group(1).lower(), None)
+
+            # Remove memory refs from the residual token stream so we don't
+            # double-count internal punctuation.
+            residual = re.sub(r'@\[[^\]]+\]', ' ', text)
+            residual = residual.replace('%', ' ')
+
+            # Extract constants/identifiers, including signed decimal immediates.
+            token_re = re.compile(r'0x[0-9a-fA-F]+|-?\d+|[A-Za-z_][A-Za-z0-9_]*(?:<\d+>)?')
+            for raw in token_re.findall(residual):
+                tok = _strip_suffix(raw.strip())
+                if not tok:
+                    continue
+                if tok.startswith('0x') or re.fullmatch(r'-?\d+', tok):
+                    _push(None, tok)
+                    continue
+                if re.match(r'^[A-Za-z_][A-Za-z0-9_]*$', tok):
+                    _push(tok, None)
+
+            return found
 
         def _add_pair(op1, op2):
-            v1, c1 = _normalize_operand(op1)
-            v2, c2 = _normalize_operand(op2)
-            if v1 or c1 or v2 or c2:
-                results.append((v1, c1))
-                results.append((v2, c2))
+            for item in _extract_expr_items(op1):
+                results.append(item)
+            for item in _extract_expr_items(op2):
+                results.append(item)
 
-        sub_re = re.compile(r'^([A-Za-z0-9_]+)(?:<\d+>)?\s*:=\s*\(([^)]+?)\s-\s([^)]+?)\)$')
+        arith_re = re.compile(r'^([A-Za-z0-9_]+)(?:<\d+>)?\s*:=\s*\(([^)]+?)\s*([+-])\s*([^)]+?)\)$')
         zf_re = re.compile(r'^ZF(?:<\d+>)?\s*:=\s*\(([^)]+)\)$')
         eq_re = re.compile(r'^(0x[0-9a-fA-F]+|[A-Za-z0-9_]+)\s*=\s*(0x[0-9a-fA-F]+|[A-Za-z0-9_]+)$')
         if_re = re.compile(r'^if\s+(.+)\s+goto', re.IGNORECASE)
@@ -1177,10 +1210,10 @@ class SVCompRuleSet(GenericRuleSet):
                             _add_pair(cm.group(1), cm.group(2))
                     continue
 
-                msub = sub_re.match(l)
-                if msub:
-                    resv = _strip_suffix(msub.group(1))
-                    last_sub[resv] = (msub.group(2), msub.group(3))
+                marith = arith_re.match(l)
+                if marith:
+                    resv = _strip_suffix(marith.group(1))
+                    last_arith[resv] = (marith.group(2), marith.group(4))
                     continue
 
                 mzf = zf_re.match(l)
@@ -1191,8 +1224,8 @@ class SVCompRuleSet(GenericRuleSet):
                         left = _strip_suffix(meq.group(1))
                         right = _strip_suffix(meq.group(2))
                         resv = right if left in ('0', '0x0') else left if right in ('0', '0x0') else None
-                        if resv and resv in last_sub:
-                            op1, op2 = last_sub[resv]
+                        if resv and resv in last_arith:
+                            op1, op2 = last_arith[resv]
                             _add_pair(op1, op2)
                     continue
 

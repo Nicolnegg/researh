@@ -10,6 +10,9 @@ class Operator(enum.Enum):
     Equal = ('=', 1)
     Distinct = ('<>', 2)
     Lower = ('<s', 1)
+    Add = ('+', 1)
+    Sub = ('-', 1)
+    Mul = ('*', 2)
 
     Not = ('!', 1)
     And = ('&', 2)
@@ -27,6 +30,9 @@ OperatorTable = {
     Operator.Equal: Kind.EQUAL,
     Operator.Distinct: Kind.DISTINCT,
     Operator.Lower: Kind.BITVECTOR_SLT,
+    Operator.Add: Kind.BITVECTOR_ADD,
+    Operator.Sub: Kind.BITVECTOR_SUB,
+    Operator.Mul: Kind.BITVECTOR_MULT,
 
     Operator.Not: Kind.NOT,
     Operator.And: Kind.AND,
@@ -350,15 +356,29 @@ class Context:
         return self.solver.mkConst(self.bvsorts[size], varname)
 
     def create_binary_term(self, operator, id1, id2):
-        tkey = ('bt', operator, id1, id2)
+        tkey = ('bt', operator, self._term_cache_key(id1), self._term_cache_key(id2))
         if not tkey in self._tcache:
-            var1, var2 = self.vars[id1], self.vars[id2]
+            var1, var2 = self._resolve_term(id1), self._resolve_term(id2)
             if var1[0].bvsize() > var2[0].bvsize():
                 vart = var1
                 var1, var2 = var2, vart
             self._tcache[tkey] = BBinaryTerm(operator, var1[0], var2[0],
                                              self._build_smt_binary_term(operator, var1[1], var2[1], var2[0].bvsize() - var1[0].bvsize()))
         return self._tcache[tkey]
+
+    def _resolve_term(self, ref):
+        if isinstance(ref, str):
+            return self.vars[ref]
+        if isinstance(ref, BFormulaCore):
+            return ref, ref.smt_term
+        raise TypeError(f'unsupported term reference type: {type(ref)}')
+
+    def _term_cache_key(self, ref):
+        if isinstance(ref, str):
+            return ('id', ref)
+        if isinstance(ref, BFormulaCore):
+            return ('expr', str(ref), ref.bvsize())
+        raise TypeError(f'unsupported term reference type: {type(ref)}')
 
     def create_negation(self, terms, iterable=True):
         # TODO: Use term cache
