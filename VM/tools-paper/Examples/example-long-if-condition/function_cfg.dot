@@ -1,28 +1,27 @@
 digraph G {
   node [shape=plaintext, ];
-  275638648 [label=<<table border="0" cellspacing="0">
-<tr><td border="1" bgcolor="#16a085">0x8049928</td><td border="1" bgcolor="#bdc3c7" align="left">push ebx</td></tr>
-<tr><td border="1" bgcolor="#16a085">0x8049929</td><td border="1" bgcolor="#bdc3c7" align="left">sub esp, 0x8</td></tr>
-<tr><td border="1" bgcolor="#16a085">0x804992c</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, [0x80e3f60]</td></tr>
-<tr><td border="1" bgcolor="#16a085">0x8049931</td><td border="1" bgcolor="#bdc3c7" align="left">mov edx, [0x80e3f5c]</td></tr>
-<tr><td border="1" bgcolor="#16a085">0x8049937</td><td border="1" bgcolor="#bdc3c7" align="left">mov ecx, [0x80e3f58]</td></tr>
-<tr><td border="1" bgcolor="#16a085">0x804993d</td><td border="1" bgcolor="#bdc3c7" align="left">mov ebx, [0x80e3f54]</td></tr>
+  992188743 [label=<<table border="0" cellspacing="0">
+<tr><td border="1" bgcolor="#16a085">0x8049920</td><td border="1" bgcolor="#bdc3c7" align="left">ret</td></tr>
 </table>>,
              ];
-  1064861087 [label=<<table border="0" cellspacing="0">
-<tr><td border="1" bgcolor="#16a085">0x8049943</td><td border="1" bgcolor="#bdc3c7" align="left">push ebx</td></tr>
-<tr><td border="1" bgcolor="#16a085">0x8049944</td><td border="1" bgcolor="#bdc3c7" align="left">push ecx</td></tr>
-<tr><td border="1" bgcolor="#16a085">0x8049945</td><td border="1" bgcolor="#bdc3c7" align="left">push edx</td></tr>
-<tr><td border="1" bgcolor="#16a085">0x8049946</td><td border="1" bgcolor="#bdc3c7" align="left">push eax</td></tr>
-<tr><td border="1" bgcolor="#16a085">0x8049947</td><td border="1" bgcolor="#bdc3c7" align="left">call 0x80498f2</td></tr>
-<tr><td border="1" bgcolor="#16a085">0x804994c</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, 0x0</td></tr>
-<tr><td border="1" bgcolor="#16a085">0x8049951</td><td border="1" bgcolor="#bdc3c7" align="left">add esp, 0x18</td></tr>
-<tr><td border="1" bgcolor="#16a085">0x8049954</td><td border="1" bgcolor="#bdc3c7" align="left">pop ebx</td></tr>
-<tr><td border="1" bgcolor="#16a085">0x8049955</td><td border="1" bgcolor="#bdc3c7" align="left">ret</td></tr>
+  704187041 [label=<<table border="0" cellspacing="0">
+<tr><td border="1" bgcolor="#16a085">0x80498f2</td><td border="1" bgcolor="#bdc3c7" align="left">sub esp, 0xc</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498f5</td><td border="1" bgcolor="#bdc3c7" align="left">mov edx, [esp + 0x14]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498f9</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, [esp + 0x18]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498fd</td><td border="1" bgcolor="#bdc3c7" align="left">cmp edx, eax</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498ff</td><td border="1" bgcolor="#bdc3c7" align="left">setge cl</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049902</td><td border="1" bgcolor="#bdc3c7" align="left">cmp eax, [esp + 0x1c]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049906</td><td border="1" bgcolor="#bdc3c7" align="left">setge al</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049909</td><td border="1" bgcolor="#bdc3c7" align="left">test cl, al</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804990b</td><td border="1" bgcolor="#bdc3c7" align="left">jz 0x8049913</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804990d</td><td border="1" bgcolor="#bdc3c7" align="left">cmp [esp + 0x10], edx</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049911</td><td border="1" bgcolor="#bdc3c7" align="left">jge 0x8049921</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049913</td><td border="1" bgcolor="#bdc3c7" align="left">mov [0x80e3f50], 0x1</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804991d</td><td border="1" bgcolor="#bdc3c7" align="left">add esp, 0xc</td></tr>
 </table>>,
-              ];
+             ];
   
   
-  275638648 -> 1064861087 [minlen=1, ];
+  704187041 -> 992188743 [minlen=1, ];
   
   }

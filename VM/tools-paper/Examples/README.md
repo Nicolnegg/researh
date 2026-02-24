@@ -57,7 +57,7 @@ c2bc -i example.c
 
 cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-mul-a-b-gt-100
 c2bc -i example.c
-./example.dir/example.abduce-run.bash --with-inequalities --with-mul-terms --without-disequalities --no-variables-binop
+./example.dir/example.abduce-run.bash --with-inequalities --with-mul-terms 
 
 cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-long-if-condition
 c2bc -i example.c
@@ -67,7 +67,9 @@ cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-chain-if-error
 c2bc -i example.c
 ./example.dir/example.abduce-run.bash --with-inequalities
 
--> create an example with a-b>100
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-mul-a-b-gt-100
+c2bc -i example.c
+./example.dir/example.abduce-run.bash --with-inequalities --with-mul-terms 
 ```
 
 Look value a and b
