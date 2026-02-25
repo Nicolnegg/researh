@@ -197,7 +197,12 @@ class BinsecAutoCandidateGenerator:
         self.restart = False
         self._rvars = set()
         self._dyn_consts = {}
-        self._max_dyn_consts_per_var = max(1, int(getattr(self.args, 'dynamic_constants_per_var', 3)))
+        dyn_limit = int(getattr(self.args, 'dynamic_constants_per_var', 3))
+        # Bitwise-only searches become unstable if too many per-var dynamic
+        # constants are injected from counterexamples.
+        if getattr(self.args, 'with_bitwise_terms', False) and not getattr(self.args, 'with_arith_terms', False):
+            dyn_limit = min(dyn_limit, 1)
+        self._max_dyn_consts_per_var = max(1, dyn_limit)
         self._init_vars()
         self._init_varengine()
 
@@ -427,6 +432,15 @@ class BinsecAutoCandidateGenerator:
         def _is_const_ref(ref):
             return isinstance(ref, str) and self.checkers.context.is_const(ref)
 
+        def _const_int_value(ref):
+            if not _is_const_ref(ref):
+                return None
+            cstr = self.checkers.context.vars[ref][0].core
+            try:
+                return int(cstr, 0)
+            except ValueError:
+                return None
+
         def _normalize_pair(v1, v2):
             s1, s2 = _term_size(v1), _term_size(v2)
             if s1 == s2:
@@ -499,6 +513,71 @@ class BinsecAutoCandidateGenerator:
                             break
             return terms
 
+        def _generate_bitwise_terms(var_ids, const_ids, include_shifts=False):
+            limit = max(0, int(getattr(self.args, 'bitwise_term_limit', 32)))
+            if limit == 0:
+                return []
+            terms = []
+            seen = set()
+
+            def _append_term(term, tag):
+                key = (tag, str(term))
+                if key in seen:
+                    return False
+                seen.add(key)
+                terms.append(term)
+                return len(terms) >= limit
+
+            # Prefer small constants for masks/shifts.
+            ranked_consts = []
+            for cid in const_ids:
+                ival = _const_int_value(cid)
+                if ival is None:
+                    continue
+                ranked_consts.append((abs(ival), cid, ival))
+            ranked_consts.sort(key=lambda x: x[0])
+            const_order = [cid for _, cid, _ in ranked_consts]
+            shift_const_order = [cid for _, cid, ival in ranked_consts if 0 <= ival <= 31]
+            if not shift_const_order:
+                for fallback in ('0x00000001', '0x00000002', '0x00000004', '0x00000008'):
+                    fc = self.checkers.context.declare_const(fallback)
+                    self.vars.add(fc)
+                    shift_const_order.append(fc)
+
+            for var in var_ids:
+                tnot = self.checkers.context.create_unary_term(minibinsec.Operator.BvNot, var)
+                if _append_term(tnot, 'not'):
+                    return terms
+
+                for cst in const_order:
+                    tand = self.checkers.context.create_binary_term(minibinsec.Operator.BitAnd, var, cst)
+                    if _append_term(tand, 'andc'):
+                        return terms
+                    tor = self.checkers.context.create_binary_term(minibinsec.Operator.BitOr, var, cst)
+                    if _append_term(tor, 'orc'):
+                        return terms
+
+                if include_shifts:
+                    for scst in shift_const_order:
+                        tshl = self.checkers.context.create_binary_term(minibinsec.Operator.Shl, var, scst)
+                        if _append_term(tshl, 'shl'):
+                            return terms
+                        tshr = self.checkers.context.create_binary_term(minibinsec.Operator.LShr, var, scst)
+                        if _append_term(tshr, 'shr'):
+                            return terms
+
+            for var1, var2 in itertools.combinations(var_ids, 2):
+                if _term_size(var1) != _term_size(var2):
+                    continue
+                tand = self.checkers.context.create_binary_term(minibinsec.Operator.BitAnd, var1, var2)
+                if _append_term(tand, 'andv'):
+                    return terms
+                tor = self.checkers.context.create_binary_term(minibinsec.Operator.BitOr, var1, var2)
+                if _append_term(tor, 'orv'):
+                    return terms
+
+            return terms
+
         def _var_sort_key(varid):
             try:
                 sz = self.checkers.context.get_size(varid)
@@ -542,6 +621,25 @@ class BinsecAutoCandidateGenerator:
                                 _append_literal(op, t, v, lits)
                     else:
                         for t in arith_terms:
+                            for v in ordered_vars:
+                                _append_literal(op, t, v, lits)
+                                _append_literal(op, v, t, lits)
+
+        use_bitwise_terms = bool(getattr(self.args, 'with_bitwise_terms', False))
+        if use_bitwise_terms and self.args.core_literals:
+            base_vars = [v for v in ordered_vars if not _is_const_ref(v)]
+            const_ids = [v for v in ordered_vars if _is_const_ref(v)]
+            use_shifts = bool(getattr(self.args, 'with_shift_terms', False))
+            bitwise_terms = _generate_bitwise_terms(base_vars, const_ids, include_shifts=use_shifts)
+            if bitwise_terms:
+                self.log.debug('generated {} bitwise terms'.format(len(bitwise_terms)))
+                for op in self.operators:
+                    if op != minibinsec.Operator.Lower:
+                        for t in bitwise_terms:
+                            for v in ordered_vars:
+                                _append_literal(op, t, v, lits)
+                    else:
+                        for t in bitwise_terms:
                             for v in ordered_vars:
                                 _append_literal(op, t, v, lits)
                                 _append_literal(op, v, t, lits)

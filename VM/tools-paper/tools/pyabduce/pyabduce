@@ -138,6 +138,12 @@ if __name__ == '__main__':
                     help='also generate multiplication terms (x*y) in arithmetic literals')
     cg.add_argument('--arith-term-limit', action='store', metavar='<int>', type=int, default=32,
                     help='maximum number of generated arithmetic expression terms')
+    cg.add_argument('--with-bitwise-terms', action='store_true',
+                    help='generate bitwise expression terms (&, |, ~) and compare them in literals')
+    cg.add_argument('--with-shift-terms', action='store_true',
+                    help='also generate shift expression terms (<<, >>) when --with-bitwise-terms is enabled')
+    cg.add_argument('--bitwise-term-limit', action='store', metavar='<int>', type=int, default=32,
+                    help='maximum number of generated bitwise expression terms')
     cg.add_argument('--no-variables-binop', action='store_true', help='never apply binary operators to variable pairs')
     cg.add_argument('--input-variables-only', action='store_true', help='only use the user-given input variables')
     cg.add_argument('--no-literal-ordering', action='store_false', dest='lit_ordering', help='do not reorder literals via heuristic')

@@ -707,8 +707,11 @@ class AbductionSolver:
                     nstatus, nmodel, ncore = self.check_vulnerability(self.checkers.negate(core_candidate), [])
                     if not nstatus:
                         self.log.result('necessary constraint: {}'.format(stringify(core_candidate)))
-                        self.engine.add_necessary_lit(core_candidate)
-                        self.engine.restart_local_generation()
+                        added = self.engine.add_necessary_lit(core_candidate)
+                        if added:
+                            self.engine.restart_local_generation()
+                        else:
+                            self.log.debug('necessary constraint already known; skip restart')
                     elif self.args.force_on_model_resorting:
                         self.engine.add_example(nmodel)
                         # TODO: Restart is not required here, only resorting, but no primitive exist

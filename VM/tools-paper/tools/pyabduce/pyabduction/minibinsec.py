@@ -13,6 +13,11 @@ class Operator(enum.Enum):
     Add = ('+', 1)
     Sub = ('-', 1)
     Mul = ('*', 2)
+    BitAnd = ('&', 1)
+    BitOr = ('|', 1)
+    Shl = ('<<', 2)
+    LShr = ('>>', 2)
+    BvNot = ('~', 1)
 
     Not = ('!', 1)
     And = ('&', 2)
@@ -33,6 +38,11 @@ OperatorTable = {
     Operator.Add: Kind.BITVECTOR_ADD,
     Operator.Sub: Kind.BITVECTOR_SUB,
     Operator.Mul: Kind.BITVECTOR_MULT,
+    Operator.BitAnd: Kind.BITVECTOR_AND,
+    Operator.BitOr: Kind.BITVECTOR_OR,
+    Operator.Shl: Kind.BITVECTOR_SHL,
+    Operator.LShr: Kind.BITVECTOR_LSHR,
+    Operator.BvNot: Kind.BITVECTOR_NOT,
 
     Operator.Not: Kind.NOT,
     Operator.And: Kind.AND,
@@ -366,6 +376,13 @@ class Context:
                                              self._build_smt_binary_term(operator, var1[1], var2[1], var2[0].bvsize() - var1[0].bvsize()))
         return self._tcache[tkey]
 
+    def create_unary_term(self, operator, ref):
+        tkey = ('ut', operator, self._term_cache_key(ref))
+        if not tkey in self._tcache:
+            var = self._resolve_term(ref)
+            self._tcache[tkey] = BUnaryTerm(operator, var[0], self._build_smt_unary_term(operator, var[1]))
+        return self._tcache[tkey]
+
     def _resolve_term(self, ref):
         if isinstance(ref, str):
             return self.vars[ref]
@@ -397,6 +414,9 @@ class Context:
             extop = self.solver.mkOp(Kind.BITVECTOR_ZERO_EXTEND, dsize)
             var1 = self.solver.mkTerm(extop, var1)
         return self.solver.mkTerm(OperatorTable[operator], var1, var2)
+
+    def _build_smt_unary_term(self, operator, var):
+        return self.solver.mkTerm(OperatorTable[operator], var)
 
     def _build_smt_set_negation(self, terms):
         return self.solver.mkTerm(Kind.NOT, self._build_smt_multiterm(Operator.And, terms))

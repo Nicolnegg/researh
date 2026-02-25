@@ -59,21 +59,43 @@ cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-mul-a-b-gt-100
 c2bc -i example.c
 ./example.dir/example.abduce-run.bash --with-inequalities --with-mul-terms 
 
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-bitand-mask
+c2bc -i example.c
+./example.dir/example.abduce-run.bash --with-inequalities  --with-bitwise-terms 
+
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-bitor-mask
+c2bc -i example.c
+./example.dir/example.abduce-run.bash --with-bitwise-terms 
+
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-bitnot-mask
+c2bc -i example.c
+./example.dir/example.abduce-run.bash --with-bitwise-terms 
+
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-shr-a-lt
+c2bc -i example.c
+./example.dir/example.abduce-run.bash --with-inequalities --with-bitwise-terms --with-shift-terms
+
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-shl-a-ge
+c2bc -i example.c
+./example.dir/example.abduce-run.bash --with-inequalities --with-bitwise-terms --with-shift-terms
+
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-chain-mixed-arith-if
+c2bc -i example.c
+./example.dir/example.abduce-run.bash --with-inequalities --with-mul-terms
+
 cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-long-if-condition
 c2bc -i example.c
 ./example.dir/example.abduce-run.bash --with-inequalities
 
 cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-chain-if-error
 c2bc -i example.c
-./example.dir/example.abduce-run.bash --with-inequalities
-
-cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-mul-a-b-gt-100
-c2bc -i example.c
-./example.dir/example.abduce-run.bash --with-inequalities --with-mul-terms 
+./example.dir/example.abduce-run.bash --with-inequalities 
 ```
 
 Look value a and b
 
 ```bash
 objdump -t example.dir/example.bin | egrep '<addr>|<addr>|nondet_slot'
+
+objdump -t example.dir/example.bin | grep reach
 ```

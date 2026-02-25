@@ -1,0 +1,15 @@
+digraph G {
+  node [shape=plaintext, ];
+  921807172 [label=<<table border="0" cellspacing="0">
+<tr><td border="1" bgcolor="#16a085">0x80498e0</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, [0x80e3f54]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498e5</td><td border="1" bgcolor="#bdc3c7" align="left">or eax, 0xf</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498e8</td><td border="1" bgcolor="#bdc3c7" align="left">cmp eax, 0xff</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498ed</td><td border="1" bgcolor="#bdc3c7" align="left">jz 0x80498fa</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498ef</td><td border="1" bgcolor="#bdc3c7" align="left">mov [0x80e3f50], 0x1</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498f9</td><td border="1" bgcolor="#bdc3c7" align="left">ret</td></tr>
+</table>>,
+             ];
+  
+  
+  
+  }

@@ -14,16 +14,14 @@ Desensamblado de la sección .note.gnu.build-id:
  8048140:	47                   	inc    %edi
  8048141:	4e                   	dec    %esi
  8048142:	55                   	push   %ebp
- 8048143:	00 09                	add    %cl,(%ecx)
- 8048145:	27                   	daa
- 8048146:	3e c3                	ds ret
- 8048148:	83 39 67             	cmpl   $0x67,(%ecx)
- 804814b:	16                   	push   %ss
- 804814c:	92                   	xchg   %eax,%edx
- 804814d:	79 33                	jns    8048182 <__rel_iplt_start+0xa>
- 804814f:	69 79 9b 8b 9d 8c 0b 	imul   $0xb8c9d8b,-0x65(%ecx),%edi
- 8048156:	d7                   	xlat   %ds:(%ebx)
- 8048157:	03                   	.byte 0x3
+ 8048143:	00 a6 a5 67 5c d2    	add    %ah,-0x2da3985b(%esi)
+ 8048149:	27                   	daa
+ 804814a:	59                   	pop    %ecx
+ 804814b:	f4                   	hlt
+ 804814c:	3a 27                	cmp    (%edi),%ah
+ 804814e:	87 b5 1e 60 61 3a    	xchg   %esi,0x3a61601e(%ebp)
+ 8048154:	13 ef                	adc    %edi,%ebp
+ 8048156:	72 16                	jb     804816e <__abi_tag+0x16>
 
 Desensamblado de la sección .note.ABI-tag:
 
@@ -786,7 +784,7 @@ Desensamblado de la sección .text:
  804972c:	c3                   	ret
 
 0804972d <__wrap_main>:
- 804972d:	e9 7b 01 00 00       	jmp    80498ad <main>
+ 804972d:	e9 52 01 00 00       	jmp    8049884 <main>
  8049732:	66 90                	xchg   %ax,%ax
  8049734:	66 90                	xchg   %ax,%ax
  8049736:	66 90                	xchg   %ax,%ax
@@ -915,32 +913,32 @@ Desensamblado de la sección .text:
  804987c:	83 05 48 3f 0e 08 07 	addl   $0x7,0x80e3f48
  8049883:	c3                   	ret
 
-08049884 <c2bc_assert_fail>:
- 8049884:	83 05 44 3f 0e 08 03 	addl   $0x3,0x80e3f44
- 804988b:	83 05 40 3f 0e 08 07 	addl   $0x7,0x80e3f40
- 8049892:	c3                   	ret
+08049884 <main>:
+ 8049884:	55                   	push   %ebp
+ 8049885:	89 e5                	mov    %esp,%ebp
+ 8049887:	53                   	push   %ebx
+ 8049888:	83 e4 f0             	and    $0xfffffff0,%esp
+ 804988b:	e8 6a 00 00 00       	call   80498fa <c2bc_main>
+ 8049890:	89 c3                	mov    %eax,%ebx
+ 8049892:	e8 de ff ff ff       	call   8049875 <c2bc_abort>
+ 8049897:	83 05 44 3f 0e 08 07 	addl   $0x7,0x80e3f44
+ 804989e:	89 d8                	mov    %ebx,%eax
+ 80498a0:	8b 5d fc             	mov    -0x4(%ebp),%ebx
+ 80498a3:	c9                   	leave
+ 80498a4:	c3                   	ret
 
-08049893 <reach_error>:
- 8049893:	68 14 f0 0a 08       	push   $0x80af014
- 8049898:	6a 03                	push   $0x3
- 804989a:	68 20 f0 0a 08       	push   $0x80af020
- 804989f:	68 20 f0 0a 08       	push   $0x80af020
- 80498a4:	e8 db ff ff ff       	call   8049884 <c2bc_assert_fail>
- 80498a9:	83 c4 10             	add    $0x10,%esp
- 80498ac:	c3                   	ret
+080498a5 <c2bc_assert_fail>:
+ 80498a5:	83 05 40 3f 0e 08 03 	addl   $0x3,0x80e3f40
+ 80498ac:	83 05 3c 3f 0e 08 07 	addl   $0x7,0x80e3f3c
+ 80498b3:	c3                   	ret
 
-080498ad <main>:
- 80498ad:	55                   	push   %ebp
- 80498ae:	89 e5                	mov    %esp,%ebp
- 80498b0:	53                   	push   %ebx
- 80498b1:	83 e4 f0             	and    $0xfffffff0,%esp
- 80498b4:	e8 41 00 00 00       	call   80498fa <c2bc_main>
- 80498b9:	89 c3                	mov    %eax,%ebx
- 80498bb:	e8 b5 ff ff ff       	call   8049875 <c2bc_abort>
- 80498c0:	83 05 3c 3f 0e 08 07 	addl   $0x7,0x80e3f3c
- 80498c7:	89 d8                	mov    %ebx,%eax
- 80498c9:	8b 5d fc             	mov    -0x4(%ebp),%ebx
- 80498cc:	c9                   	leave
+080498b4 <reach_error>:
+ 80498b4:	68 14 f0 0a 08       	push   $0x80af014
+ 80498b9:	6a 03                	push   $0x3
+ 80498bb:	68 20 f0 0a 08       	push   $0x80af020
+ 80498c0:	68 20 f0 0a 08       	push   $0x80af020
+ 80498c5:	e8 db ff ff ff       	call   80498a5 <c2bc_assert_fail>
+ 80498ca:	83 c4 10             	add    $0x10,%esp
  80498cd:	c3                   	ret
 
 080498ce <__VERIFIER_error>:
@@ -956,7 +954,7 @@ Desensamblado de la sección .text:
  80498db:	83 ec 08             	sub    $0x8,%esp
  80498de:	8b 5c 24 10          	mov    0x10(%esp),%ebx
  80498e2:	89 1d 54 3f 0e 08    	mov    %ebx,0x80e3f54
- 80498e8:	e8 a6 ff ff ff       	call   8049893 <reach_error>
+ 80498e8:	e8 c7 ff ff ff       	call   80498b4 <reach_error>
  80498ed:	89 d8                	mov    %ebx,%eax
  80498ef:	83 c4 08             	add    $0x8,%esp
  80498f2:	5b                   	pop    %ebx
@@ -973,7 +971,7 @@ Desensamblado de la sección .text:
  8049903:	83 ec 0c             	sub    $0xc,%esp
  8049906:	c7 05 54 3f 0e 08 01 	movl   $0x1,0x80e3f54
  804990d:	00 00 00 
- 8049910:	e8 7e ff ff ff       	call   8049893 <reach_error>
+ 8049910:	e8 9f ff ff ff       	call   80498b4 <reach_error>
  8049915:	b8 00 00 00 00       	mov    $0x0,%eax
  804991a:	83 c4 0c             	add    $0xc,%esp
  804991d:	c3                   	ret
@@ -168135,51 +168133,49 @@ Desensamblado de la sección .eh_frame:
  80cad21:	00 00                	add    %al,(%eax)
  80cad23:	00 00                	add    %al,(%eax)
  80cad25:	00 00                	add    %al,(%eax)
- 80cad27:	00 10                	add    %dl,(%eax)
+ 80cad27:	00 20                	add    %ah,(%eax)
  80cad29:	00 00                	add    %al,(%eax)
  80cad2b:	00 44 00 00          	add    %al,0x0(%eax,%eax,1)
  80cad2f:	00 54 eb f7          	add    %dl,-0x9(%ebx,%ebp,8)
- 80cad33:	ff 0f                	decl   (%edi)
+ 80cad33:	ff 21                	jmp    *(%ecx)
  80cad35:	00 00                	add    %al,(%eax)
  80cad37:	00 00                	add    %al,(%eax)
- 80cad39:	00 00                	add    %al,(%eax)
- 80cad3b:	00 1c 00             	add    %bl,(%eax,%eax,1)
- 80cad3e:	00 00                	add    %al,(%eax)
- 80cad40:	58                   	pop    %eax
- 80cad41:	00 00                	add    %al,(%eax)
- 80cad43:	00 4f eb             	add    %cl,-0x15(%edi)
- 80cad46:	f7 ff                	idiv   %edi
- 80cad48:	1a 00                	sbb    (%eax),%al
+ 80cad39:	41                   	inc    %ecx
+ 80cad3a:	0e                   	push   %cs
+ 80cad3b:	08 85 02 42 0d 05    	or     %al,0x50d4202(%ebp)
+ 80cad41:	44                   	inc    %esp
+ 80cad42:	83 03 59             	addl   $0x59,(%ebx)
+ 80cad45:	c5 c3 0c             	(bad)
+ 80cad48:	04 04                	add    $0x4,%al
  80cad4a:	00 00                	add    %al,(%eax)
- 80cad4c:	00 45 0e             	add    %al,0xe(%ebp)
- 80cad4f:	08 42 0e             	or     %al,0xe(%edx)
- 80cad52:	0c 45                	or     $0x45,%al
- 80cad54:	0e                   	push   %cs
- 80cad55:	10 45 0e             	adc    %al,0xe(%ebp)
- 80cad58:	14 48                	adc    $0x48,%al
- 80cad5a:	0e                   	push   %cs
- 80cad5b:	04 20                	add    $0x20,%al
+ 80cad4c:	10 00                	adc    %al,(%eax)
+ 80cad4e:	00 00                	add    %al,(%eax)
+ 80cad50:	68 00 00 00 51       	push   $0x51000000
+ 80cad55:	eb f7                	jmp    80cad4e <__EH_FRAME_BEGIN__+0x3a>
+ 80cad57:	ff 0f                	decl   (%edi)
+ 80cad59:	00 00                	add    %al,(%eax)
+ 80cad5b:	00 00                	add    %al,(%eax)
  80cad5d:	00 00                	add    %al,(%eax)
- 80cad5f:	00 78 00             	add    %bh,0x0(%eax)
+ 80cad5f:	00 1c 00             	add    %bl,(%eax,%eax,1)
  80cad62:	00 00                	add    %al,(%eax)
- 80cad64:	49                   	dec    %ecx
- 80cad65:	eb f7                	jmp    80cad5e <__EH_FRAME_BEGIN__+0x4a>
- 80cad67:	ff 21                	jmp    *(%ecx)
- 80cad69:	00 00                	add    %al,(%eax)
- 80cad6b:	00 00                	add    %al,(%eax)
- 80cad6d:	41                   	inc    %ecx
- 80cad6e:	0e                   	push   %cs
- 80cad6f:	08 85 02 42 0d 05    	or     %al,0x50d4202(%ebp)
- 80cad75:	44                   	inc    %esp
- 80cad76:	83 03 59             	addl   $0x59,(%ebx)
- 80cad79:	c5 c3 0c             	(bad)
- 80cad7c:	04 04                	add    $0x4,%al
- 80cad7e:	00 00                	add    %al,(%eax)
- 80cad80:	10 00                	adc    %al,(%eax)
- 80cad82:	00 00                	add    %al,(%eax)
- 80cad84:	9c                   	pushf
- 80cad85:	00 00                	add    %al,(%eax)
- 80cad87:	00 46 eb             	add    %al,-0x15(%esi)
+ 80cad64:	7c 00                	jl     80cad66 <__EH_FRAME_BEGIN__+0x52>
+ 80cad66:	00 00                	add    %al,(%eax)
+ 80cad68:	4c                   	dec    %esp
+ 80cad69:	eb f7                	jmp    80cad62 <__EH_FRAME_BEGIN__+0x4e>
+ 80cad6b:	ff 1a                	lcall  *(%edx)
+ 80cad6d:	00 00                	add    %al,(%eax)
+ 80cad6f:	00 00                	add    %al,(%eax)
+ 80cad71:	45                   	inc    %ebp
+ 80cad72:	0e                   	push   %cs
+ 80cad73:	08 42 0e             	or     %al,0xe(%edx)
+ 80cad76:	0c 45                	or     $0x45,%al
+ 80cad78:	0e                   	push   %cs
+ 80cad79:	10 45 0e             	adc    %al,0xe(%ebp)
+ 80cad7c:	14 48                	adc    $0x48,%al
+ 80cad7e:	0e                   	push   %cs
+ 80cad7f:	04 10                	add    $0x10,%al
+ 80cad81:	00 00                	add    %al,(%eax)
+ 80cad83:	00 9c 00 00 00 46 eb 	add    %bl,-0x14ba0000(%eax,%eax,1)
  80cad8a:	f7 ff                	idiv   %edi
  80cad8c:	01 00                	add    %eax,(%eax)
  80cad8e:	00 00                	add    %al,(%eax)

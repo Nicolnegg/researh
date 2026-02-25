@@ -189,6 +189,89 @@ class SVCompBConfig:
         return res
 
     def detect_alocs(self, asm):
+        def _first_loc(fname):
+            if not asm.has_function(fname):
+                return None
+            for loc, _ in asm.instructions(fname):
+                return loc
+            return None
+
+        def _parse_cond_target(inst):
+            asm_part = inst.split('\t')[-1].strip()
+            if not asm_part:
+                return None
+            parts = asm_part.split()
+            if len(parts) < 2:
+                return None
+            op = parts[0].strip().lower()
+            # Conditional jumps start with j* but exclude plain jmp.
+            if not op.startswith('j') or op == 'jmp':
+                return None
+            m = re.search(r'\b([0-9a-fA-F]{6,16})\b', asm_part)
+            if m is None:
+                return None
+            try:
+                return int(m.group(1), 16)
+            except ValueError:
+                return None
+
+        def _branch_calls_error(ins_list, start_idx, err_locs, err_tags):
+            # Local bounded scan from branch entry block.
+            for k in range(start_idx, min(start_idx + 10, len(ins_list))):
+                _, inst = ins_list[k]
+                asm_part = inst.split('\t')[-1].strip()
+                if not asm_part:
+                    continue
+                low = asm_part.lower()
+                if any(tag in low for tag in err_tags):
+                    return True
+                for eloc in err_locs:
+                    hx = '0x{:x}'.format(eloc)
+                    if hx in low:
+                        return True
+                op = asm_part.split()[0].strip().lower()
+                if op in ('ret', 'jmp'):
+                    break
+                if op.startswith('j'):
+                    break
+            return False
+
+        # First try: classify the first conditional branch and select the
+        # branch that does NOT call reach_error.
+        err_locs = [loc for loc in (
+            _first_loc(self.reach_hook_func),
+            _first_loc('reach_error'),
+            _first_loc('__VERIFIER_error'),
+        ) if loc is not None]
+        err_tags = [s.lower() for s in (
+            '<{}>'.format(self.reach_hook_func),
+            '<reach_error>',
+            '<__verifier_error>',
+        )]
+        for fname in ('c2bc_main', 'fun', 'main'):
+            if not asm.has_function(fname):
+                continue
+            ins_list = list(asm.instructions(fname))
+            if not ins_list:
+                continue
+            l2i = {loc: i for i, (loc, _) in enumerate(ins_list)}
+            for i, (loc, inst) in enumerate(ins_list):
+                tgt = _parse_cond_target(inst)
+                if tgt is None:
+                    continue
+                # Taken branch location.
+                tgt_i = l2i.get(tgt, None)
+                # Fallthrough branch location.
+                ft_i = i + 1 if (i + 1) < len(ins_list) else None
+                if tgt_i is None or ft_i is None:
+                    continue
+                tgt_err = _branch_calls_error(ins_list, tgt_i, err_locs, err_tags)
+                ft_err = _branch_calls_error(ins_list, ft_i, err_locs, err_tags)
+                if tgt_err and not ft_err:
+                    return [ins_list[ft_i][0]]
+                if ft_err and not tgt_err:
+                    return [ins_list[tgt_i][0]]
+
         # Preferred positive goal: explicit success hook when available and
         # actually referenced from executable code.
         if asm.has_function('reach_success'):
@@ -212,24 +295,9 @@ class SVCompBConfig:
             if not asm.has_function(fname):
                 continue
             for _, inst in asm.instructions(fname):
-                asm_part = inst.split('\t')[-1].strip()
-                if not asm_part:
-                    continue
-                parts = asm_part.split()
-                if len(parts) < 2:
-                    continue
-                op = parts[0].strip().lower()
-                # Conditional jumps start with j* but exclude plain jmp.
-                if not op.startswith('j') or op == 'jmp':
-                    continue
-                # objdump format is usually "... <tab>jne    804991e <...>".
-                m = re.search(r'\b([0-9a-fA-F]{6,16})\b', asm_part)
-                if m is None:
-                    continue
-                try:
-                    return [int(m.group(1), 16)]
-                except ValueError:
-                    continue
+                tgt = _parse_cond_target(inst)
+                if tgt is not None:
+                    return [tgt]
         cpt = 0
         main_name = 'c2bc_main' if asm.has_function('c2bc_main') else 'main'
         for loc, _ in asm.instructions(main_name):
@@ -958,9 +1026,9 @@ class SVCompRuleSet(GenericRuleSet):
                         parts = text.split(None, 1)
                         mnem = parts[0] if parts else ''
                         operands = parts[1] if len(parts) > 1 else ''
-                    # Keep only comparison-like instructions to avoid
-                    # stack/frame immediates (e.g., 0x14, 0x1c) unrelated to policy.
-                    if not re.match(r'^(cmp|test|ucomi|comi)\b', mnem):
+                    # Keep only branch-relevant instructions.
+                    # Include bitwise ops so masks (e.g. 0x0f in x&0x0f) are captured.
+                    if not re.match(r'^(cmp|test|ucomi|comi|and|or|xor|shl|shr|sal|sar)\b', mnem):
                         continue
                     # Common compiler lowering for "x == 0" is "test x, x"
                     # (no immediate), so add 0 explicitly for this pattern.
@@ -983,6 +1051,10 @@ class SVCompRuleSet(GenericRuleSet):
                         except ValueError:
                             continue
                         if val < 0:
+                            continue
+                        # For bitwise/shift mnemonics, avoid huge frame-align
+                        # immediates unrelated to branch policy.
+                        if re.match(r'^(and|or|xor|shl|shr|sal|sar)\b', mnem) and val > 0x0000ffff:
                             continue
                         _add_const('0x{:x}'.format(val))
 
@@ -1203,9 +1275,10 @@ class SVCompRuleSet(GenericRuleSet):
             for line in dba:
                 l = line.strip()
                 if not l or l.startswith('#'):
-                    # Try to parse cmp comments: "# -- 0x... cmp op1, op2"
-                    if l.startswith('#') and ' cmp ' in l:
-                        cm = re.search(r'\bcmp\w*\s+([^,]+),\s*(.+)$', l)
+                    # Parse relevant instruction comments:
+                    # "# -- 0x... cmp/test/and/or/... op1, op2"
+                    if l.startswith('#'):
+                        cm = re.search(r'\b(?:cmp|test|and|or|xor|shl|shr|sal|sar)\w*\s+([^,]+),\s*(.+)$', l)
                         if cm:
                             _add_pair(cm.group(1), cm.group(2))
                     continue

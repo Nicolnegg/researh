@@ -109,7 +109,8 @@ class Stats:
             logger.result('      * {} calls:    {}'.format(oracle, ostats.calls))
             logger.result('      * {} timeouts: {}'.format(oracle, ostats.timeouts))
             logger.result('      * {} crashes:  {}'.format(oracle, ostats.crashes))
-            logger.result('      * {} times:    {}'.format(oracle, ostats.times))
+            if oracle != 'binsec':
+                logger.result('      * {} times:    {}'.format(oracle, ostats.times))
 
         logger.result('')
         logger.result('  candidates generation:')
