@@ -61,7 +61,7 @@ c2bc -i example.c
 
 cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-bitand-mask
 c2bc -i example.c
-./example.dir/example.abduce-run.bash --with-inequalities  --with-bitwise-terms 
+./example.dir/example.abduce-run.bash  --with-bitwise-terms 
 
 cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-bitor-mask
 c2bc -i example.c
@@ -73,11 +73,18 @@ c2bc -i example.c
 
 cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-shr-a-lt
 c2bc -i example.c
-./example.dir/example.abduce-run.bash --with-inequalities --with-bitwise-terms --with-shift-terms
+./example.dir/example.abduce-run.bash --with-inequalities --with-bitwise-terms 
+
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-shl-a-lt-5u
+c2bc -i example.c
+./example.dir/example.abduce-run.bash --with-inequalities --with-bitwise-terms --with-shift-terms --binsec-delete-configs
 
 cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-shl-a-ge
 c2bc -i example.c
-./example.dir/example.abduce-run.bash --with-inequalities --with-bitwise-terms --with-shift-terms
+./example.dir/example.abduce-run.bash --with-inequalities --with-bitwise-terms --with-shift-terms --bitwise-term-limit 8 --max-depth 2 --binsec-delete-configs
+
+# keep temp BINSEC scripts only for debugging
+# ./example.dir/example.abduce-run.bash ... --keep-binsec-configs
 
 cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-chain-mixed-arith-if
 c2bc -i example.c
@@ -90,6 +97,10 @@ c2bc -i example.c
 cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-chain-if-error
 c2bc -i example.c
 ./example.dir/example.abduce-run.bash --with-inequalities 
+
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples/example-chain-all-ops
+c2bc -i example.c
+./example.dir/example.abduce-run.bash --with-inequalities --with-bitwise-terms --with-shift-terms --bitwise-term-limit 8 --max-depth 2
 ```
 
 Look value a and b

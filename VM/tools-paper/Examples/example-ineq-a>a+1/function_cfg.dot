@@ -5,7 +5,7 @@ digraph G {
 <tr><td border="1" bgcolor="#16a085">0x80498e9</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, [esp + 0x14]</td></tr>
 <tr><td border="1" bgcolor="#16a085">0x80498ed</td><td border="1" bgcolor="#bdc3c7" align="left">cmp [esp + 0x10], eax</td></tr>
 <tr><td border="1" bgcolor="#16a085">0x80498f1</td><td border="1" bgcolor="#bdc3c7" align="left">jle 0x80498fc</td></tr>
-<tr><td border="1" bgcolor="#16a085">0x80498f3</td><td border="1" bgcolor="#bdc3c7" align="left">call 0x80498b4</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498f3</td><td border="1" bgcolor="#bdc3c7" align="left">call 0x8049893</td></tr>
 <tr><td border="1" bgcolor="#16a085">0x80498f8</td><td border="1" bgcolor="#bdc3c7" align="left">add esp, 0xc</td></tr>
 <tr><td border="1" bgcolor="#16a085">0x80498fb</td><td border="1" bgcolor="#bdc3c7" align="left">ret</td></tr>
 </table>>,

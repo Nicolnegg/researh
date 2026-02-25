@@ -38,6 +38,7 @@ class BinsecLogParser:
             'goal-unreachable': False,
             'checkct-program-status': None,
             'checkct-leaks': [],
+            'command-failed': False,
         }
 
         self._parse(data)
@@ -135,12 +136,14 @@ class BinsecLogParser:
         result = dict()
         for modell in model.split('\n'):
             if ':' in modell:
-                ldata = [s.strip() for s in modell.split(':')]
-                if len(ldata) > 2:
-                    self.logger.warning('multi-colon model var (unhandled): {}'.format(modell))
-                if ';' in ldata[1] and not '(;)' in ldata[1]:
+                lkey, _, lraw = modell.partition(':')
+                lkey = lkey.strip()
+                lraw = lraw.strip()
+                if not lkey or not lraw:
+                    continue
+                if ';' in lraw and not '(;)' in lraw:
                     # parse registers
-                    rname = ldata[0]
+                    rname = lkey
                     if rname.startswith('bs_unknown1_for_'):
                         rname = rname.replace('bs_unknown1_for_', '')
                         while rname.startswith('_'):
@@ -149,7 +152,7 @@ class BinsecLogParser:
                         rname = rname.replace('undef_AF_1___', '0x')
                     if '_' in rname:
                         rname = rname.split('_')[0]
-                    rcontent = ldata[1].replace('{', '').replace('}', '').split(';')
+                    rcontent = lraw.replace('{', '').replace('}', '').split(';')
                     rvalue, rsize = _normalize_value(rcontent[0]), rcontent[1].strip()
                     rname = _normalize_key(rname)
                     if not rname.startswith('dummy') and not rname.startswith('bs'):
@@ -157,10 +160,18 @@ class BinsecLogParser:
                     # TODO : store and use rsize?
                     #self.logger.debug('from ["{}"]: @[{}] <- {}'.format(modell, rname, rvalue))
                 else:
-                    # remove ASCII char resolving trailing data
-                    #self.logger.debug('from ["{}"]: @[{}] <- {}'.format(modell, ldata[0], ldata[1].split()[0].strip()))
-                    key = _normalize_key(ldata[0])
-                    result[key] = _normalize_value(ldata[1].split()[0].strip())
+                    # Ignore trailing ASCII annotation in values, e.g.:
+                    # "#x080e3f5b : 3a  (:)" where "(:)" contains a colon.
+                    key = _normalize_key(lkey)
+                    mm = re.match(r'^(0x[0-9a-fA-F]+|0b[01]+|[0-9a-fA-F]+|-?\d+)\b', lraw)
+                    if mm is not None:
+                        vtok = mm.group(1).strip()
+                    else:
+                        parts = lraw.split()
+                        if not parts:
+                            continue
+                        vtok = parts[0].strip()
+                    result[key] = _normalize_value(vtok)
         self.logger.debug('model recovered: {}'.format(result))
         for tvar in set(self.translation.keys()) & set(result.keys()):
             result[self.translation[tvar]] = result[tvar]
@@ -392,7 +403,17 @@ class BinsecAutoCandidateGenerator:
         if self.args.with_disequalities:
             self.operators.add(minibinsec.Operator.Distinct)
         if self.args.with_inequalities:
-            self.operators.add(minibinsec.Operator.Lower)
+            bitvector_mode = bool(
+                getattr(self.args, 'with_bitwise_terms', False)
+                or getattr(self.args, 'with_shift_terms', False)
+            )
+            if bitvector_mode:
+                # Bitwise/shift examples are typically lowered to unsigned
+                # comparisons (ja/jbe/jb/jae). Keep <u only to limit noise.
+                self.operators.add(minibinsec.Operator.LowerU)
+            else:
+                self.operators.add(minibinsec.Operator.Lower)
+                self.operators.add(minibinsec.Operator.LowerU)
 
     def _reduce_auto(self, varset):
         # In robust mode, allow controlled vars in literal generation; otherwise
@@ -537,12 +558,38 @@ class BinsecAutoCandidateGenerator:
                 ranked_consts.append((abs(ival), cid, ival))
             ranked_consts.sort(key=lambda x: x[0])
             const_order = [cid for _, cid, _ in ranked_consts]
-            shift_const_order = [cid for _, cid, ival in ranked_consts if 0 <= ival <= 31]
+            # Prefer meaningful shift amounts (>1) to avoid noisy masks like
+            # 0x7fffffff in candidates; keep shift-by-1 only as fallback.
+            shift_const_order = [cid for _, cid, ival in ranked_consts if 2 <= ival <= 31]
+            if not shift_const_order:
+                shift_const_order = [cid for _, cid, ival in ranked_consts if 1 <= ival <= 31]
             if not shift_const_order:
                 for fallback in ('0x00000001', '0x00000002', '0x00000004', '0x00000008'):
                     fc = self.checkers.context.declare_const(fallback)
                     self.vars.add(fc)
                     shift_const_order.append(fc)
+
+            if include_shifts:
+                # BINSEC assumption parsing is unstable with explicit << / >> in
+                # candidate literals. Use shift-inspired mask terms instead.
+                for var in var_ids:
+                    for scst in shift_const_order:
+                        sval = _const_int_value(scst)
+                        if sval is None or sval <= 0 or sval >= 32:
+                            continue
+                        low_mask = (0xffffffff >> sval) & 0xffffffff
+                        high_mask = (0xffffffff << sval) & 0xffffffff
+                        lcid = self.checkers.context.declare_const('0x{:08x}'.format(low_mask))
+                        hcid = self.checkers.context.declare_const('0x{:08x}'.format(high_mask))
+                        self.vars.add(lcid)
+                        self.vars.add(hcid)
+                        tkeep = self.checkers.context.create_binary_term(minibinsec.Operator.BitAnd, var, lcid)
+                        if _append_term(tkeep, 'shiftmask-low'):
+                            return terms
+                        tlost = self.checkers.context.create_binary_term(minibinsec.Operator.BitAnd, var, hcid)
+                        if _append_term(tlost, 'shiftmask-high'):
+                            return terms
+                return terms
 
             for var in var_ids:
                 tnot = self.checkers.context.create_unary_term(minibinsec.Operator.BvNot, var)
@@ -550,21 +597,17 @@ class BinsecAutoCandidateGenerator:
                     return terms
 
                 for cst in const_order:
+                    cval = _const_int_value(cst)
+                    # Skip neutral all-zero/all-one masks; they create many
+                    # tautological terms and slow down convergence.
+                    if cval in (0, 0xffffffff):
+                        continue
                     tand = self.checkers.context.create_binary_term(minibinsec.Operator.BitAnd, var, cst)
                     if _append_term(tand, 'andc'):
                         return terms
                     tor = self.checkers.context.create_binary_term(minibinsec.Operator.BitOr, var, cst)
                     if _append_term(tor, 'orc'):
                         return terms
-
-                if include_shifts:
-                    for scst in shift_const_order:
-                        tshl = self.checkers.context.create_binary_term(minibinsec.Operator.Shl, var, scst)
-                        if _append_term(tshl, 'shl'):
-                            return terms
-                        tshr = self.checkers.context.create_binary_term(minibinsec.Operator.LShr, var, scst)
-                        if _append_term(tshr, 'shr'):
-                            return terms
 
             for var1, var2 in itertools.combinations(var_ids, 2):
                 if _term_size(var1) != _term_size(var2):
@@ -591,9 +634,15 @@ class BinsecAutoCandidateGenerator:
             return (1, -sz, str(varid))
 
         lits = []
+        shift_mode = bool(getattr(self.args, 'with_shift_terms', False))
+        inequality_ops = {minibinsec.Operator.Lower, minibinsec.Operator.LowerU}
         ordered_vars = sorted(self._reduce_auto(self.vars), key=_var_sort_key)
         for op in self.operators:
-            if op != minibinsec.Operator.Lower:
+            if shift_mode:
+                # In shift mode, build literals only from generated shift
+                # terms (handled below), not from all raw var/const pairs.
+                continue
+            if op not in inequality_ops:
                 for var1, var2 in itertools.combinations(ordered_vars, 2):
                     if self.args.core_literals:
                         _append_literal(op, var1, var2, lits)
@@ -602,12 +651,23 @@ class BinsecAutoCandidateGenerator:
                     if self.args.separate_bits:
                         lits.extend(self._generate_bit_literals(op, var1, var2))
             else:
+                # In shift mode, avoid raw inequalities on base vars/consts;
+                # focus inequalities on generated shift terms instead.
+                if shift_mode:
+                    continue
                 for var1, var2 in itertools.permutations(ordered_vars, 2):
                     if self.args.core_literals:
                         _append_literal(op, var1, var2, lits)
                     # TODO: byte and bit separation for inequalities
 
-        use_arith_terms = bool(getattr(self.args, 'with_arith_terms', False) or self.args.with_inequalities)
+        use_arith_terms = bool(
+            getattr(self.args, 'with_arith_terms', False)
+            or (
+                self.args.with_inequalities
+                and not getattr(self.args, 'with_bitwise_terms', False)
+                and not getattr(self.args, 'with_shift_terms', False)
+            )
+        )
         if use_arith_terms and self.args.core_literals:
             base_vars = [v for v in ordered_vars if not _is_const_ref(v)]
             use_mul_terms = bool(getattr(self.args, 'with_mul_terms', False))
@@ -615,7 +675,7 @@ class BinsecAutoCandidateGenerator:
             if arith_terms:
                 self.log.debug('generated {} arithmetic terms'.format(len(arith_terms)))
                 for op in self.operators:
-                    if op != minibinsec.Operator.Lower:
+                    if op not in inequality_ops:
                         for t in arith_terms:
                             for v in ordered_vars:
                                 _append_literal(op, t, v, lits)
@@ -633,14 +693,15 @@ class BinsecAutoCandidateGenerator:
             bitwise_terms = _generate_bitwise_terms(base_vars, const_ids, include_shifts=use_shifts)
             if bitwise_terms:
                 self.log.debug('generated {} bitwise terms'.format(len(bitwise_terms)))
+                compare_targets = const_ids if use_shifts else ordered_vars
                 for op in self.operators:
-                    if op != minibinsec.Operator.Lower:
+                    if op not in inequality_ops:
                         for t in bitwise_terms:
-                            for v in ordered_vars:
+                            for v in compare_targets:
                                 _append_literal(op, t, v, lits)
                     else:
                         for t in bitwise_terms:
-                            for v in ordered_vars:
+                            for v in compare_targets:
                                 _append_literal(op, t, v, lits)
                                 _append_literal(op, v, t, lits)
         return lits
@@ -817,9 +878,9 @@ class BinsecCheckers(AbstractChecker):
         return regions
 
     def _load_symbol_input_regions(self):
-        regions = []
+        raw_regions = []
         if not self.binary or not os.path.isfile(self.binary):
-            return regions
+            return []
         try:
             proc = subprocess.run(
                 ['objdump', '-t', self.binary],
@@ -829,9 +890,9 @@ class BinsecCheckers(AbstractChecker):
                 check=False,
             )
         except Exception:
-            return regions
+            return []
         if proc.returncode != 0:
-            return regions
+            return []
         for line in proc.stdout.splitlines():
             parts = line.split()
             if len(parts) < 6:
@@ -851,7 +912,20 @@ class BinsecCheckers(AbstractChecker):
             base = int(addr_s, 16)
             size = int(size_s, 16)
             if size > 0:
-                regions.append((base, size))
+                raw_regions.append((base, size, name))
+
+        if not raw_regions:
+            return []
+
+        # When instrumented "public_*" mirrors exist, they are the program
+        # variables used by branch predicates. Dropping nondet slot mirrors
+        # avoids duplicate symbolic inputs and speeds up convergence.
+        has_public = any(name.startswith('public_') for _, _, name in raw_regions)
+        regions = []
+        for base, size, name in raw_regions:
+            if has_public and name.startswith('__VERIFIER_nondet_slot'):
+                continue
+            regions.append((base, size))
         return regions
 
     def _chunk_input_regions(self, regions):
@@ -970,10 +1044,15 @@ class BinsecCheckers(AbstractChecker):
             return self._check_ct_goals(candidate)
         '''True when forall neg -> unreachable but exists not neg -> reachable'''
         status, model, gcore = self._check_ngoal_unreachable(candidate)
+        if status is None:
+            # BINSEC command failure or unknown; do not classify candidate.
+            return False, False, None, None, None, None
         statusr, modelr, rcore = True, None, None
         if status:
             self.stats.get_oracle('binsec-unsat-consistent').calls += 1
             statusr, modelr, rcore = self._check_dgoal_reachable(candidate)
+            if statusr is None:
+                return False, False, None, None, None, None
         return status, statusr, model, modelr, gcore, rcore
 
     def check_necessity(self, solutions):
@@ -1000,6 +1079,9 @@ class BinsecCheckers(AbstractChecker):
         # enforced; otherwise parser.models may stay empty even when reachable.
         constraint = self._format_solution_set(solutions)
         reachable, _model, _core = self._check_dgoal_reachable_util(constraint, [])
+        if reachable is None:
+            self.log.warning('necessity check inconclusive due to BINSEC command failure')
+            return False
         return not reachable
 
     def check_vulnerability(self, candidate, reject, complete=False):
@@ -1012,7 +1094,11 @@ class BinsecCheckers(AbstractChecker):
                 self.log.warning('ct vulnerability check returned unknown')
             return False, None, None
         self.log.debug('vulnerability check')
-        return self._check_dgoal_reachable_util(candidate, reject, complete)
+        status, model, core = self._check_dgoal_reachable_util(candidate, reject, complete)
+        if status is None:
+            self.log.warning('vulnerability check inconclusive due to BINSEC command failure')
+            return False, None, None
+        return status, model, core
 
     def _sanitize_model(self, model):
         if not model:
@@ -1046,6 +1132,8 @@ class BinsecCheckers(AbstractChecker):
             if rdir:
                 directives.append(rdir)
         parser = self._run_binsec_command(candidate, directives)
+        if parser.status.get('command-failed'):
+            return None, None, None
         status = len(parser.models) > 0
         model = parser.models[0]['model'] if len(parser.models) > 0 else None
         model = self._sanitize_model(model)
@@ -1063,6 +1151,8 @@ class BinsecCheckers(AbstractChecker):
             for d in directives
         ]
         parser = self._run_binsec_command(candidate, directives)
+        if parser.status.get('command-failed'):
+            return None, None, None
         status = parser.status['goal-unreachable'] or len(parser.models) <= 0
         model = parser.models[0]['model'] if len(parser.models) > 0 else None
         model = self._sanitize_model(model)
@@ -1209,15 +1299,23 @@ class BinsecCheckers(AbstractChecker):
         btime = time.time()
         rc, to, out, err = execute_command(command, self.log, timeout=run_timeout)
         atime = time.time()
+        failed = False
         if to:
             self.log.warning('command timeouted')
             self.stats.get_oracle('binsec').timeouts += 1
+            failed = True
         elif rc != 0:
             self.log.warning('command failed')
             self.stats.get_oracle('binsec').crashes += 1
+            failed = True
+            if out:
+                outline = [line.strip() for line in out.splitlines() if line.strip()]
+                if outline:
+                    self.log.warning('binsec error output: {}'.format(' | '.join(outline[:3])))
         else:
             self.stats.get_oracle('binsec').times.append(atime - btime)
         parser = BinsecLogParser(out, self.log)
+        parser.status['command-failed'] = failed
         if self.args.binsec_delete_configs:
             os.remove(local_config_file)
         return parser
@@ -1344,12 +1442,18 @@ class RobustBinsecCheckers(BinsecCheckers):
     def check_goals(self, candidate):
         '''True when forall neg -> unreachable but exists not neg -> reachable'''
         status, model, gcore = self._check_ngoal_unreachable(candidate)
+        if status is None:
+            return False, False, None, None, None, None
         statusr, modelr, rcore = True, None, None
         if status:
             self.stats.get_oracle('binsec-unsat-consistent').calls += 1
             statusr, modelr, rcore = self._check_dgoal_reachable(candidate)
+            if statusr is None:
+                return False, False, None, None, None, None
             if statusr:
                 status, modelf, fcore = self._check_dgoal_robust(candidate)
+                if status is None:
+                    return False, False, None, None, None, None
         return status, statusr, model, modelr, gcore, rcore
 
     def _get_local_mename(self):
@@ -1399,15 +1503,23 @@ class RobustBinsecCheckers(BinsecCheckers):
         btime = time.time()
         rc, to, out, err = execute_command(command, self.log, timeout=self.args.binsec_timeout)
         atime = time.time()
+        failed = False
         if to:
             self.log.warning('command timeouted')
             self.stats.get_oracle('binsec').timeouts += 1
+            failed = True
         elif rc != 0:
             self.log.warning('command failed')
             self.stats.get_oracle('binsec').crashes += 1
+            failed = True
+            if out:
+                outline = [line.strip() for line in out.splitlines() if line.strip()]
+                if outline:
+                    self.log.warning('binsec error output: {}'.format(' | '.join(outline[:3])))
         else:
             self.stats.get_oracle('binsec').times.append(atime - btime)
         parser = BinsecLogParser(out, self.log, robust=True, translation=self.memory.translator)
+        parser.status['command-failed'] = failed
         if self.args.binsec_delete_configs:
             os.remove(local_config_file)
             os.remove(local_memory_file)
@@ -1423,6 +1535,8 @@ class RobustBinsecCheckers(BinsecCheckers):
         # Use controlled variables for robust exploration; uncontrolled vars should not
         # be treated as controllable inputs in the memory overlay.
         parser = self._run_binsec_robust_command(candidate, directives, self.var_engine.get_controlled())
+        if parser.status.get('command-failed'):
+            return None, None, None
         status = parser.status['goal-unreachable'] or len(parser.models) <= 0
         model = parser.models[0]['model'] if len(parser.models) > 0 else None
         model = self._sanitize_model(model)
@@ -1443,6 +1557,8 @@ class RobustBinsecCheckers(BinsecCheckers):
             for d in directives
         ]
         parser = self._run_binsec_robust_command(candidate, directives, self.var_engine.get_controlled())
+        if parser.status.get('command-failed'):
+            return None, None, None
         status = len(parser.models) > 0
         return status, None, None
 # --------------------

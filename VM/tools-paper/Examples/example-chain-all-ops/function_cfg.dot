@@ -1,0 +1,57 @@
+digraph G {
+  node [shape=plaintext, ];
+  1008806156 [label=<<table border="0" cellspacing="0">
+<tr><td border="1" bgcolor="#16a085">0x8049980</td><td border="1" bgcolor="#bdc3c7" align="left">pop esi</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049981</td><td border="1" bgcolor="#bdc3c7" align="left">pop edi</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049982</td><td border="1" bgcolor="#bdc3c7" align="left">pop ebp</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049983</td><td border="1" bgcolor="#bdc3c7" align="left">ret</td></tr>
+</table>>,
+              ];
+  1060380979 [label=<<table border="0" cellspacing="0">
+<tr><td border="1" bgcolor="#16a085">0x80498f2</td><td border="1" bgcolor="#bdc3c7" align="left">push ebp</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498f3</td><td border="1" bgcolor="#bdc3c7" align="left">push edi</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498f4</td><td border="1" bgcolor="#bdc3c7" align="left">push esi</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498f5</td><td border="1" bgcolor="#bdc3c7" align="left">push ebx</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498f6</td><td border="1" bgcolor="#bdc3c7" align="left">sub esp, 0x1c</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498f9</td><td border="1" bgcolor="#bdc3c7" align="left">mov edx, [0x80e3f60]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x80498ff</td><td border="1" bgcolor="#bdc3c7" align="left">mov ebp, [0x80e3f5c]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049905</td><td border="1" bgcolor="#bdc3c7" align="left">mov edi, [0x80e3f58]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804990b</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, [0x80e3f5c]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049910</td><td border="1" bgcolor="#bdc3c7" align="left">mov ecx, [0x80e3f54]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049916</td><td border="1" bgcolor="#bdc3c7" align="left">mov ebx, [0x80e3f58]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804991c</td><td border="1" bgcolor="#bdc3c7" align="left">mov [esp + 0x8], ebx</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049920</td><td border="1" bgcolor="#bdc3c7" align="left">mov esi, [0x80e3f60]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049926</td><td border="1" bgcolor="#bdc3c7" align="left">mov [esp + 0xc], esi</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804992a</td><td border="1" bgcolor="#bdc3c7" align="left">mov esi, [0x80e3f60]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049930</td><td border="1" bgcolor="#bdc3c7" align="left">mov ebx, [0x80e3f5c]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049936</td><td border="1" bgcolor="#bdc3c7" align="left">cmp esi, ebx</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049938</td><td border="1" bgcolor="#bdc3c7" align="left">jb 0x8049972</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804993a</td><td border="1" bgcolor="#bdc3c7" align="left">shl eax, 0x2</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804993d</td><td border="1" bgcolor="#bdc3c7" align="left">shr eax, 0x1</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804993f</td><td border="1" bgcolor="#bdc3c7" align="left">and ecx, 0xf</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049942</td><td border="1" bgcolor="#bdc3c7" align="left">add eax, ecx</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049944</td><td border="1" bgcolor="#bdc3c7" align="left">cmp eax, 0x1f</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049947</td><td border="1" bgcolor="#bdc3c7" align="left">seta al</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804994a</td><td border="1" bgcolor="#bdc3c7" align="left">add edx, ebp</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804994c</td><td border="1" bgcolor="#bdc3c7" align="left">sub edx, edi</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804994e</td><td border="1" bgcolor="#bdc3c7" align="left">cmp edx, 0xff</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049954</td><td border="1" bgcolor="#bdc3c7" align="left">setbe dl</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049957</td><td border="1" bgcolor="#bdc3c7" align="left">test al, dl</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049959</td><td border="1" bgcolor="#bdc3c7" align="left">jz 0x8049972</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804995b</td><td border="1" bgcolor="#bdc3c7" align="left">mov eax, [esp + 0x8]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804995f</td><td border="1" bgcolor="#bdc3c7" align="left">or eax, 0x30</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049962</td><td border="1" bgcolor="#bdc3c7" align="left">mov edx, [esp + 0xc]</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049966</td><td border="1" bgcolor="#bdc3c7" align="left">and edx, 0x7</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049969</td><td border="1" bgcolor="#bdc3c7" align="left">sub eax, edx</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804996b</td><td border="1" bgcolor="#bdc3c7" align="left">cmp eax, 0x11f</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049970</td><td border="1" bgcolor="#bdc3c7" align="left">jbe 0x8049984</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x8049972</td><td border="1" bgcolor="#bdc3c7" align="left">mov [0x80e3f50], 0x1</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804997c</td><td border="1" bgcolor="#bdc3c7" align="left">add esp, 0x1c</td></tr>
+<tr><td border="1" bgcolor="#16a085">0x804997f</td><td border="1" bgcolor="#bdc3c7" align="left">pop ebx</td></tr>
+</table>>,
+              ];
+  
+  
+  1060380979 -> 1008806156 [minlen=1, ];
+  
+  }

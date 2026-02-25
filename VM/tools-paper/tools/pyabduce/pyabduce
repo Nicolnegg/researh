@@ -20,6 +20,17 @@ def termination_handler(signum, sigframe):
 def main(args):
     logger = Logger(level=4 if args.debug else 3, color=args.log_color, log_progress=args.log_progress)
     try:
+        if args.with_shift_terms and not args.with_bitwise_terms:
+            logger.warning('--with-shift-terms requires --with-bitwise-terms; enabling bitwise terms')
+            args.with_bitwise_terms = True
+        if args.with_bitwise_terms and not args.with_shift_terms:
+            logger.warning('running with bitwise terms but without shift terms; shift predicates may not be synthesized directly')
+        if args.with_bitwise_terms and args.max_depth is None:
+            # Without an explicit depth cap, bitwise-term combinations can
+            # explode and look non-convergent on shift/bitwise benchmarks.
+            args.max_depth = 2
+            logger.warning('--with-bitwise-terms without --max-depth: forcing --max-depth 2 (set --max-depth to override)')
+
         if args.paper_mode:
             if args.collect_until_timeout:
                 logger.warning('--paper-mode: disabling --collect-until-timeout (no early cutoff)')
@@ -104,7 +115,10 @@ if __name__ == '__main__':
     bg.add_argument('--binsec-model-via-smt', action='store_true', help='use external smt solver to check model satisfaction')
     bg.add_argument('--binsec-config-logdir', action='store', metavar='<directory>', default='.binsec-config',
                     help='directory for logging binsec configurations')
-    bg.add_argument('--binsec-delete-configs', action='store_true', help='delete local binsec configs')
+    bg.add_argument('--binsec-delete-configs', action='store_true', dest='binsec_delete_configs',
+                    help='delete local binsec configs (default)')
+    bg.add_argument('--keep-binsec-configs', action='store_false', dest='binsec_delete_configs',
+                    help='keep local binsec configs for debugging')
     bg.add_argument('--binsec-timeout', action='store', metavar='<seconds>', type=int, default=30, help='timeout for binsec calls')
     bg.add_argument('--solver-timeout', action='store', metavar='<seconds>', type=int, default=None,
                     help='global timeout budget for abduction search (disabled by default)')
@@ -159,6 +173,7 @@ if __name__ == '__main__':
                     default='branch-first',
                     help='policy ranking mode: branch-first or size-complexity')
 
+    ap.set_defaults(binsec_delete_configs=True)
     args = ap.parse_args()
 
     try:

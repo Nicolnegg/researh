@@ -10,6 +10,7 @@ class Operator(enum.Enum):
     Equal = ('=', 1)
     Distinct = ('<>', 2)
     Lower = ('<s', 1)
+    LowerU = ('<u', 1)
     Add = ('+', 1)
     Sub = ('-', 1)
     Mul = ('*', 2)
@@ -35,6 +36,7 @@ OperatorTable = {
     Operator.Equal: Kind.EQUAL,
     Operator.Distinct: Kind.DISTINCT,
     Operator.Lower: Kind.BITVECTOR_SLT,
+    Operator.LowerU: Kind.BITVECTOR_ULT,
     Operator.Add: Kind.BITVECTOR_ADD,
     Operator.Sub: Kind.BITVECTOR_SUB,
     Operator.Mul: Kind.BITVECTOR_MULT,
