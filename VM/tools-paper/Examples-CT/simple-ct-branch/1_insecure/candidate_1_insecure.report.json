@@ -1,11 +1,15 @@
 {
-  "alternatives": [],
+  "alternatives": [
+    "{true}"
+  ],
+  "baseline_status": "INSECURE",
   "branch_guided_policies": [
     {
       "false_branch": {
         "ct": {
           "leaks": [],
-          "status": "secure"
+          "status": "secure",
+          "status_norm": "SECURE"
         },
         "formula": "{(@[0x080e3f4c,4] <s 0x00000007) | (@[0x080e3f4c,4] = 0x00000007)}",
         "meaning": "@[0x080e3f4c,4] <=s 0x00000007"
@@ -15,7 +19,8 @@
       "true_branch": {
         "ct": {
           "leaks": [],
-          "status": "secure"
+          "status": "secure",
+          "status_norm": "SECURE"
         },
         "formula": "{(0x00000007 <s @[0x080e3f4c,4])}",
         "meaning": "@[0x080e3f4c,4] >s 0x00000007"
@@ -23,119 +28,416 @@
       "variable": "@[0x080e3f4c,4]"
     }
   ],
-  "ct_validation": {
-    "baseline": {
-      "leaks": [
+  "ct_clause_reductions": {
+    "checks": 4,
+    "deduplicated": 0,
+    "removed_clauses": 2
+  },
+  "ct_counterexamples": [
+    {
+      "constant": "0x7",
+      "leak_site": {
+        "addr": "0x080498d9",
+        "kind": "control_flow"
+      },
+      "pivot": "(@[0x080e3f4c,4] <=s 0x7)",
+      "relation": "<=s",
+      "source": "derived",
+      "value_hi": 8,
+      "value_lo": 7,
+      "variable": "@[0x080e3f4c,4]"
+    },
+    {
+      "constant": "0x7",
+      "leak_site": {
+        "addr": "0x080498d9",
+        "kind": "control_flow"
+      },
+      "pivot": "(@[0x080e3f4c,4] <=s 0x7)",
+      "relation": "<=s",
+      "source": "derived",
+      "value_hi": 8,
+      "value_lo": 7,
+      "variable": "@[0x080e3f4c,4]"
+    },
+    {
+      "constant": "0x7",
+      "leak_site": {
+        "addr": "0x080498d9",
+        "kind": "control_flow"
+      },
+      "pivot": "(@[0x080e3f4c,4] <=s 0x7)",
+      "relation": "<=s",
+      "source": "derived",
+      "value_hi": 8,
+      "value_lo": 7,
+      "variable": "@[0x080e3f4c,4]"
+    },
+    {
+      "constant": "0x7",
+      "leak_site": {
+        "addr": "0x080498d9",
+        "kind": "control_flow"
+      },
+      "pivot": "(@[0x080e3f4c,4] <=s 0x7)",
+      "relation": "<=s",
+      "source": "derived",
+      "value_hi": 8,
+      "value_lo": 7,
+      "variable": "@[0x080e3f4c,4]"
+    },
+    {
+      "constant": "0x7",
+      "leak_site": {
+        "addr": "0x080498d9",
+        "kind": "control_flow"
+      },
+      "pivot": "(@[0x080e3f4c,4] <=s 0x7)",
+      "relation": "<=s",
+      "source": "derived",
+      "value_hi": 8,
+      "value_lo": 7,
+      "variable": "@[0x080e3f4c,4]"
+    },
+    {
+      "constant": "0x7",
+      "leak_site": {
+        "addr": "0x080498d9",
+        "kind": "control_flow"
+      },
+      "pivot": "(@[0x080e3f4c,4] <=s 0x7)",
+      "relation": "<=s",
+      "source": "derived",
+      "value_hi": 8,
+      "value_lo": 7,
+      "variable": "@[0x080e3f4c,4]"
+    }
+  ],
+  "ct_dnf_policy": "(((@[0x080e3f4c,4] = 0x00000007))) | (((@[0x080e3f4c,4] <s 0x00000007))) | (((0x00000007 <s @[0x080e3f4c,4]))) | ((@[0x080e3f48,4] = @[0x080e3f48,4]))",
+  "ct_dnf_validation": {
+    "leaks": [
+      {
+        "addr": "0x080498d9",
+        "instruction": "0x080498d9",
+        "kind": "control_flow"
+      }
+    ],
+    "status": "insecure",
+    "status_norm": "INSECURE"
+  },
+  "ct_insecure_evidence": [
+    {
+      "constant": "0x7",
+      "count": 6,
+      "leak_kind": "control_flow",
+      "relation": "<=s",
+      "source": "derived",
+      "value_hi": 8,
+      "value_lo": 7,
+      "variable": "@[0x080e3f4c,4]"
+    }
+  ],
+  "ct_pivot_cursor": 6,
+  "ct_saturation": {
+    "attempts": 4,
+    "last_target": "!((((0x00000007 <s @[0x080e3f4c,4]))) | ((@[0x080e3f48,4] = @[0x080e3f48,4])))",
+    "saturated": true
+  },
+  "ct_secure_clauses": [
+    {
+      "clause_literals": [
+        "(@[0x080e3f4c,4] = 0x00000007)"
+      ],
+      "count": 1,
+      "id": "C1",
+      "minimized": false,
+      "origin": "search",
+      "trace": [
         {
-          "instruction": "0x080498d9",
-          "kind": "control flow",
-          "raw": "Instruction 0x080498d9 has control flow leak (0.035s)"
+          "after_minimize": [
+            "(@[0x080e3f4c,4] = 0x00000007)"
+          ],
+          "after_widen": [
+            "(@[0x080e3f4c,4] = 0x00000007)"
+          ],
+          "before": [
+            "(@[0x080e3f4c,4] = 0x00000007)"
+          ]
         }
       ],
-      "status": "insecure"
+      "widened": false
     },
-    "selected": {
-      "leaks": [],
-      "status": "secure"
+    {
+      "clause_literals": [
+        "(@[0x080e3f4c,4] <s 0x00000007)"
+      ],
+      "count": 1,
+      "id": "C2",
+      "minimized": false,
+      "origin": "search",
+      "trace": [
+        {
+          "after_minimize": [
+            "(@[0x080e3f4c,4] <s 0x00000007)"
+          ],
+          "after_widen": [
+            "(@[0x080e3f4c,4] <s 0x00000007)"
+          ],
+          "before": [
+            "(@[0x080e3f4c,4] <s 0x00000007)"
+          ]
+        }
+      ],
+      "widened": false
+    },
+    {
+      "clause_literals": [
+        "(0x00000007 <s @[0x080e3f4c,4])"
+      ],
+      "count": 1,
+      "id": "C3",
+      "minimized": false,
+      "origin": "search",
+      "trace": [
+        {
+          "after_minimize": [
+            "(0x00000007 <s @[0x080e3f4c,4])"
+          ],
+          "after_widen": [
+            "(0x00000007 <s @[0x080e3f4c,4])"
+          ],
+          "before": [
+            "(0x00000007 <s @[0x080e3f4c,4])"
+          ]
+        }
+      ],
+      "widened": false
+    },
+    {
+      "clause_literals": [],
+      "count": 1,
+      "id": "C4",
+      "minimized": false,
+      "origin": "search",
+      "trace": [],
+      "widened": false
+    }
+  ],
+  "ct_stop_reason": "saturated",
+  "ct_unknown_checks": 0,
+  "ct_validation": {
+    "leaks": [
+      {
+        "addr": "0x080498d9",
+        "instruction": "0x080498d9",
+        "kind": "control_flow"
+      }
+    ],
+    "status": "insecure",
+    "status_norm": "INSECURE"
+  },
+  "evidence": {
+    "counterexamples": {
+      "by_source": {
+        "derived": 6,
+        "oracle": 0
+      },
+      "ct_total": 6,
+      "used": 6
+    },
+    "queries": {
+      "binsec_calls": 32,
+      "minibinsec_calls": 6065,
+      "total_oracle_calls": 6097
+    },
+    "timing": {
+      "timers": {
+        "counterex": {
+          "first": 0.47312426567077637,
+          "last": 1.450251579284668
+        },
+        "example": {
+          "first": 0.3766055107116699,
+          "last": 0.422823429107666
+        },
+        "necessaryc": {
+          "first": 0,
+          "last": 0
+        },
+        "solution": {
+          "first": 0.6787357330322266,
+          "last": 1.675955057144165
+        },
+        "unsolution": {
+          "first": 0,
+          "last": 0
+        }
+      }
     }
   },
-  "nas_conditions_all": [
-    "{(@[0x080e3f4c,4] <s 0x00000007)}"
+  "general_nas_condition": null,
+  "leak_sites": [
+    {
+      "addr": "0x080498d9",
+      "kind": "control_flow"
+    }
   ],
+  "nas_conditions_all": [
+    "{(0x00000007 <s @[0x080e3f4c,4])}",
+    "{true}"
+  ],
+  "policy_condition": "{(0x00000007 <s @[0x080e3f4c,4])} OR {true}",
+  "policy_condition_compact": null,
+  "policy_condition_unified": "{((0x00000007 <s @[0x080e3f4c,4])) | (true)}",
   "policy_semantics": {
     "branch_partitions": [
       {
         "can_merge_to_geq": false,
         "can_merge_to_leq": false,
         "equal": [],
-        "greater_than": [],
-        "less_than": [
+        "greater_than": [
           "P1"
         ],
+        "less_than": [],
         "pivot_constant": "0x00000007",
         "variable": "@[0x080e3f4c,4]"
       }
     ],
     "note": "Each policy is an alternative path constraint. Do not AND all policies together.",
     "operator_between_policies": "OR",
-    "or_expression": "P1",
-    "pairwise_compatibility": [],
+    "or_expression": "P1 OR P2",
+    "pairwise_compatibility": [
+      {
+        "compatible_with_and": true,
+        "left": "P1",
+        "relation": "can_coexist",
+        "right": "P2"
+      }
+    ],
     "policies": [
       {
         "complexity": 1,
-        "formula": "{(@[0x080e3f4c,4] <s 0x00000007)}",
+        "formula": "{(0x00000007 <s @[0x080e3f4c,4])}",
         "id": "P1",
         "literals": [
-          "(@[0x080e3f4c,4] <s 0x00000007)"
+          "(0x00000007 <s @[0x080e3f4c,4])"
         ],
         "literals_count": 1
+      },
+      {
+        "complexity": 0,
+        "formula": "{true}",
+        "id": "P2",
+        "literals": [],
+        "literals_count": 0
       }
     ],
     "policy_ids": [
-      "P1"
+      "P1",
+      "P2"
     ],
     "selected_policy_id": "P1"
   },
+  "q_explain": [
+    "(@[0x080e3f4c,4] <=s 0x7)"
+  ],
+  "q_explain_pivots": [
+    {
+      "constant": "0x7",
+      "predicate": "(@[0x080e3f4c,4] <=s 0x7)",
+      "relation": "<=s",
+      "variable": "@[0x080e3f4c,4]"
+    }
+  ],
+  "q_leak": "not((((0x00000007 <s @[0x080e3f4c,4]))) | ((@[0x080e3f48,4] = @[0x080e3f48,4])))",
+  "q_safe": "(((0x00000007 <s @[0x080e3f4c,4]))) | ((@[0x080e3f48,4] = @[0x080e3f48,4]))",
+  "recommendation": "Precondicion util encontrada para hacer el programa secure bajo esa restriccion.",
   "run_profile": {
     "binsec_env": "binsec",
     "collect_until_timeout": false,
     "host": "nicol-Katana-15-B13VFK",
     "paper_mode": false,
     "pythonhashseed": "0",
-    "selection_mode": "branch-first",
-    "solver_timeout": 15
+    "selection_mode": "ct-dnf",
+    "solver_timeout": null
   },
-  "selected_policy": "{(@[0x080e3f4c,4] <s 0x00000007)}",
-  "selection_mode": "size-complexity",
+  "selected_constraint": "(((0x00000007 <s @[0x080e3f4c,4]))) | ((@[0x080e3f48,4] = @[0x080e3f48,4]))",
+  "selected_constraint_representative": "(((0x00000007 <s @[0x080e3f4c,4]))) | ((@[0x080e3f48,4] = @[0x080e3f48,4]))",
+  "selected_policy": "(((0x00000007 <s @[0x080e3f4c,4]))) | ((@[0x080e3f48,4] = @[0x080e3f48,4]))",
+  "selected_policy_representative": "(((0x00000007 <s @[0x080e3f4c,4]))) | ((@[0x080e3f48,4] = @[0x080e3f48,4]))",
+  "selection_mode": "ct-dnf",
   "selection_reason": {
-    "branch_key": null,
-    "mode": "size-complexity",
-    "reason": "fallback ranking by literals count and complexity (branch pivot not robustly identified)"
+    "inner_ranking": {
+      "branch_key": null,
+      "mode": "size-complexity",
+      "reason": "fallback ranking by literals count and complexity (branch pivot not robustly identified)"
+    },
+    "mode": "ct-dnf",
+    "reason": "collected multiple secure clauses under target=NOT(Phi) with redundancy drop"
   },
   "stats": {
     "core": {
       "counterexamples": 6,
-      "examples": 3,
+      "examples": 2,
+      "final_constraints": 1,
       "necessary_literals": 0,
-      "solutions": 1,
+      "solution_clauses": 2,
+      "solutions": 4,
       "unsolutions": 0
     },
     "generation": {
-      "considered": 6,
-      "evaluated": 7,
-      "literals": 12,
-      "pruned": {},
-      "restarts": 1,
-      "variables": 3
+      "considered": 4866,
+      "evaluated": 10,
+      "literals": 98,
+      "pruned": {
+        "consistency": 1350,
+        "solution": 3505
+      },
+      "restarts": 7,
+      "variables": 10
     },
     "oracles": {
       "binsec": {
-        "calls": 18,
+        "calls": 32,
         "crashes": 0,
         "timeouts": 0,
         "times": [
-          0.0465853214263916,
-          0.0511171817779541,
-          0.04725956916809082,
-          0.05253028869628906,
-          0.05515861511230469,
-          0.051711320877075195,
-          0.04881691932678223,
-          0.05447268486022949,
-          0.05133533477783203,
-          0.05443406105041504,
-          0.05008363723754883,
-          0.04911637306213379,
-          0.05598711967468262,
-          0.04811978340148926,
-          0.05117297172546387,
-          0.048429250717163086,
-          0.04701566696166992,
-          0.047750234603881836
+          0.04734611511230469,
+          0.04656267166137695,
+          0.04593682289123535,
+          0.04867720603942871,
+          0.04890942573547363,
+          0.05495095252990723,
+          0.049352169036865234,
+          0.04748082160949707,
+          0.04670524597167969,
+          0.04717659950256348,
+          0.04915165901184082,
+          0.05129814147949219,
+          0.04638814926147461,
+          0.04894113540649414,
+          0.04972195625305176,
+          0.0480647087097168,
+          0.0462954044342041,
+          0.05292844772338867,
+          0.07445192337036133,
+          0.04966282844543457,
+          0.04938650131225586,
+          0.05078411102294922,
+          0.05030107498168945,
+          0.05281829833984375,
+          0.049306392669677734,
+          0.05782270431518555,
+          0.06155276298522949,
+          0.06411218643188477,
+          0.05807209014892578,
+          0.04836726188659668,
+          0.04949831962585449,
+          0.047774553298950195
         ]
       },
       "minibinsec": {
-        "calls": 51,
+        "calls": 6065,
         "crashes": 0,
         "timeouts": 0,
         "times": []
@@ -143,20 +445,20 @@
     },
     "timers": {
       "counterex": {
-        "first": 0.1461501121520996,
-        "last": 0.5198559761047363
+        "first": 0.47312426567077637,
+        "last": 1.450251579284668
       },
       "example": {
-        "first": 0.04718470573425293,
-        "last": 0.6201000213623047
+        "first": 0.3766055107116699,
+        "last": 0.422823429107666
       },
       "necessaryc": {
         "first": 0,
         "last": 0
       },
       "solution": {
-        "first": 0.6200954914093018,
-        "last": 0.6200954914093018
+        "first": 0.6787357330322266,
+        "last": 1.675955057144165
       },
       "unsolution": {
         "first": 0,

@@ -1,148 +1,108 @@
-# Examples-CT: Usage Guide (c2bc + pyabduce in Constant-Time mode)
+# Examples-CT
 
-This directory contains examples to infer constraints that turn a CHECKCT
-`insecure` program into `secure`.
+Guia unica para probar ejemplos CT con `c2bc + pyabduce`.
 
-## 1) Environment setup
+## 1) Preparar entorno
 
 ```bash
 cd ~/Documentos/M2-Cyber/RESEARCH
-eval $(opam env)
 
+eval $(opam env)
 cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper
 source venv/bin/activate
+
 export PATH=/home/nicol/Documentos/M2-Cyber/RESEARCH/binsec/_opam/bin:$PATH
 ```
 
-## 2) How to mark public and secret in c2bc
+## 2) Como correr un ejemplo (manual)
 
-`c2bc` provides explicit CT options:
-
-- `--ct`: enables the CHECKCT pipeline.
-- `--ct-secret <sym[,sym...]>`: declares secret variables.
-- `--ct-public <sym[,sym...]>`: declares public variables.
-
-Example:
+Tu flujo queda siempre asi (un ejemplo a la vez):
 
 ```bash
-c2bc -i candidate_1_insecure.c --ct --ct-secret secret_b --ct-public public_a
+cd <carpeta-del-ejemplo>
+
+c2bc -i <archivo.c> --ct --ct-secret <secret> --ct-public <public>
+
+./<archivo>.dir/<archivo>.abduce-run.bash \
+  --with-inequalities \
+  --policy-report <archivo>.report.json
 ```
 
-For multiple variables:
+Opcionales ya existentes:
+- `--with-bitwise-terms`
+- `--with-mul-terms`
+- `--solver-timeout <segundos>`
 
-```bash
-c2bc -i prog.c --ct --ct-secret secret_k,secret_m --ct-public public_x,public_y
-```
+## 3) Ejemplos disponibles
 
-Notes:
-
-- Names must match global symbols in the program.
-- `secret` defines what must not leak via control-flow or memory access.
-- `public` defines allowed observable inputs.
-
-## 3) What c2bc generates for CT abduction
-
-Inside `*.dir/` you will see files such as:
-
-- `*.abduce-run.bash`: runner script to launch `pyabduce`.
-- `*.abd.literals.txt`: candidate literal universe.
-- `*.abd.directives.txt`: reach/cut goals for BINSEC.
-- `*.binsec.sse` and temporary configs in `.binsec-config/`.
-
-## 4) How pyabduce works in CT mode
-
-High-level flow:
-
-1. Evaluates baseline with CHECKCT (`secure/insecure` + leaks).
-2. Generates and tests candidates (BINSEC + pre-pruning).
-3. Stores sufficient solutions.
-4. Checks necessity (NAS).
-5. Selects main policy according to ranking mode.
-6. Re-validates baseline vs selected and exports `report.json` (if requested).
-
-## 5) Base commands
-
-### Simple case
+### simple-ct-branch (insecure)
 
 ```bash
 cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples-CT/simple-ct-branch/1_insecure
-
 c2bc -i candidate_1_insecure.c --ct --ct-secret secret_b --ct-public public_a
-
-./candidate_1_insecure.dir/candidate_1_insecure.abduce-run.bash \
-  --with-inequalities 
+./candidate_1_insecure.dir/candidate_1_insecure.abduce-run.bash --with-inequalities --policy-report candidate_1_insecure.report.json
 ```
 
-### Harder case (multi-leak)
+### simple-ct-branch (secure)
 
 ```bash
-cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples-CT/ct-multi-leak/1_insecure
-
-c2bc -i candidate_2_insecure.c --ct --ct-secret secret_k --ct-public public_x
-
-./candidate_2_insecure.dir/candidate_2_insecure.abduce-run.bash \
-  --with-inequalities \
-  --collect-until-timeout \
-  --solver-timeout 15 \
-  --selection-mode branch-first \
-  --policy-report candidate_2_insecure.collect.report.json
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples-CT/simple-ct-branch/1_secure
+c2bc -i candidate_1_secure.c --ct --ct-secret secret_b --ct-public public_a
+./candidate_1_secure.dir/candidate_1_secure.abduce-run.bash --with-inequalities --policy-report candidate_1_secure.report.json
 ```
 
-## 6) Useful pyabduce options (CT)
+### ct-range-policy
 
-- `--ct-mode`: uses CHECKCT contract (`secure/insecure/unknown`).
-- `--with-inequalities`: enables `<s` literals (important for branch constraints).
-- `--without-disequalities`: removes `<>` operator to reduce search space.
-- `--collect-until-timeout`: keeps searching for more NAS until global timeout.
-- `--solver-timeout <s>`: total search budget.
-- `--selection-mode branch-first|size-complexity`:
-  - `branch-first`: prioritizes branch-pivot policies when robustly detected.
-  - `size-complexity`: prioritizes fewer literals + lower syntax complexity.
-- `--policy-report <file.json>`: writes structured JSON report.
-- `-d`: detailed debug logs.
+```bash
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples-CT/ct-range-policy/1_insecure
+c2bc -i candidate_3_insecure.c --ct --ct-secret secret_k --ct-public public_x
+./candidate_3_insecure.dir/candidate_3_insecure.abduce-run.bash --with-inequalities --policy-report candidate_3_insecure.report.json
+```
 
-## 7) How to read output
+### ct-asym-policy
 
-Key lines:
+```bash
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples-CT/ct-asym-policy/1_insecure
+c2bc -i candidate_4_insecure.c --ct --ct-secret secret_k --ct-public public_x
+./candidate_4_insecure.dir/candidate_4_insecure.abduce-run.bash --with-inequalities --policy-report candidate_4_insecure.report.json
+```
+
+### ct-easy-pass
+
+```bash
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples-CT/ct-easy-pass/1_insecure
+c2bc -i candidate_5_insecure.c --ct --ct-secret secret_b --ct-public public_x
+./candidate_5_insecure.dir/candidate_5_insecure.abduce-run.bash --with-inequalities --policy-report candidate_5_insecure.report.json
+```
+
+### ct-or-multi-branch
+
+```bash
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples-CT/ct-or-multi-branch/1_insecure
+c2bc -i candidate_6_insecure.c --ct --ct-secret secret_k --ct-public public_x
+./candidate_6_insecure.dir/candidate_6_insecure.abduce-run.bash --with-inequalities --policy-report candidate_6_insecure.report.json
+```
+
+### ct-shift-window
+
+```bash
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples-CT/ct-shift-window/1_insecure
+c2bc -i candidate_7_insecure.c --ct --ct-secret secret_k --ct-public public_x
+./candidate_7_insecure.dir/candidate_7_insecure.abduce-run.bash --with-inequalities --policy-report candidate_7_insecure.report.json
+```
+
+### ct-and-window
+
+```bash
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper/Examples-CT/ct-and-window/1_insecure
+c2bc -i candidate_8_insecure.c --ct --ct-secret secret_k --ct-public public_x
+./candidate_8_insecure.dir/candidate_8_insecure.abduce-run.bash --with-inequalities --with-bitwise-terms --max-depth 2 --solver-timeout 90 --policy-report candidate_8_insecure.report.json
+```
+
+## 4) Que revisar en salida
 
 - `checkct status: insecure|secure`
-- `checkct leak: Instruction ... has ... leak`
-- `satisfying solution: {...}` (sufficient)
-- `nas conditions (all): [...]` (detected necessary policies)
-- `selected policy: {...}` (main policy)
-- `alternative policies: [...]` (alternatives)
-- `policy report written: ...json`
-
-Semantics:
-
-- Policies `P1`, `P2`, ... are alternatives (OR across policies).
-- Inside one policy, literals are conjunctive (AND).
-
-## 8) Recommended reproducibility settings
-
-For stable research runs:
-
-- fix Python hash seed:
-
-```bash
-PYTHONHASHSEED=0 ./candidate_1_insecure.dir/candidate_1_insecure.abduce-run.bash \
-  --paper-mode --with-inequalities --policy-report run.paper.report.json
-```
-
-- same machine, same BINSEC/opam commit, same timeouts.
-
-## 9) Minimal expected report.json structure
-
+- `selected policy: ...`
 - `ct_validation.baseline.status`
 - `ct_validation.selected.status`
-- `selected_policy`
-- `alternatives`
-- `selection_mode`
-- `stats`
-- `run_profile`
-
-## 10) Available examples
-
-- `simple-ct-branch/1_insecure`
-- `simple-ct-branch/1_secure`
-- `ct-multi-leak/1_insecure`
+- `policy report written: ...json`

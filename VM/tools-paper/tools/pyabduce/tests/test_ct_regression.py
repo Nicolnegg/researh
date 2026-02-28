@@ -99,7 +99,7 @@ class FakeEngine:
         return ['{' + ', '.join(sorted(str(l) for l in sol)) + '}' for sol in self._solutions]
 
 
-def make_solver(selection_mode='branch-first'):
+def make_solver(selection_mode=None):
     args = SimpleNamespace(
         ct_mode=True,
         selection_mode=selection_mode,
@@ -139,16 +139,6 @@ class TestCTRegression(unittest.TestCase):
         _ordered, meta = solver._ordered_unique_solutions(solutions)
         self.assertEqual(meta['mode'], 'size-complexity')
         self.assertIn('fallback', meta['reason'])
-
-    def test_size_complexity_mode_is_selectable(self):
-        solver = make_solver(selection_mode='size-complexity')
-        solutions = [
-            {Lit('(0x00000007 <s @[0x080e3f4c,4])')},
-            {Lit('(@[0x080e3f4c,4] = 0x00000007)'), Lit('(@[0x080e3f48,4] = @[0x080e3f4c,4])')},
-        ]
-        ordered, meta = solver._ordered_unique_solutions(solutions)
-        self.assertEqual(meta['mode'], 'size-complexity')
-        self.assertEqual(len(ordered[0]), 1)
 
     def test_finalize_summary_contains_branch_guided_and_stable_keys(self):
         solutions = [

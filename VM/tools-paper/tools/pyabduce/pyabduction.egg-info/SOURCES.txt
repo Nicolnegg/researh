@@ -4,6 +4,8 @@ setup.py
 pyabduction/__init__.py
 pyabduction/binsec.py
 pyabduction/checkers.py
+pyabduction/ct_explain.py
+pyabduction/ct_types.py
 pyabduction/engine.py
 pyabduction/minibinsec.py
 pyabduction/model.py
@@ -16,3 +18,4 @@ pyabduction.egg-info/dependency_links.txt
 pyabduction.egg-info/not-zip-safe
 pyabduction.egg-info/requires.txt
 pyabduction.egg-info/top_level.txt
+tests/test_ct_regression.py

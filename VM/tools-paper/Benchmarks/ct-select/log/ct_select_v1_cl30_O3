@@ -1,0 +1,373 @@
+binsec -relse -relse-dedup 1 -relse-fp instr -fml-solver-timeout 0 -relse-timeout 3600 -sse-depth 10000 -relse-paths 50 -sse-memory memory.txt -sse-load-ro-sections -sse-load-sections .got.plt,.data,.plt -fml-solver boolector -relse-store-type sha -relse-memory-type row-map -sse-address-trace-file /tmp/SMTDIR/trace/ -sse-smt-dir /tmp/SMTDIR/ -sse-comment  -relse-print-model ct_select_v1_cl30_O3
+binsec: unknown option -relse
+Valid command-line switches are:
+* Kernel options
+    
+    --help         Display full option list
+    -X             Only for developmental purposes [false]
+    -config        Use this configuration file
+    -dba-config    Set dba configuration file name
+    -dba-file      Set DBA file
+    -debug-level   Set kernel debug level [0]
+    -decoder       External decoder command [unisim-armsec]
+    -describe      Display a description of the binary and exits [false]
+    -entrypoint    Set entry point
+    -file          Set binary file
+    -help          Display full option list
+    -isa {x86|amd64|arm32|aarch64|ppc64|riscv|riscv64|sparcv8|z80|unknown}
+            Set isa [set by loader] [unknown]
+    -kernel-help   Display options list for kernel
+    -loglevel {info|debug|warning|error|fatal|result}
+            Display kernel log messages only above or equal this level [info]
+    -quiet         Quiet all channels for kernel
+    -version       Print the version identifier and exit [false]
+    
+* Aarch64 options
+    
+    -aarch64-debug-level   Set aarch64 debug level [0]
+    -aarch64-help          Display options list for aarch64
+    -aarch64-loglevel {info|debug|warning|error|fatal|result}
+            Display aarch64 log messages only above or equal this level [info]
+    -aarch64-quiet         Quiet all channels for aarch64
+    
+* Amd64 options
+    
+    -amd64-debug-level   Set amd64 debug level [0]
+    -amd64-help          Display options list for amd64
+    -amd64-loglevel {info|debug|warning|error|fatal|result}
+            Display amd64 log messages only above or equal this level [info]
+    -amd64-quiet         Quiet all channels for amd64
+    
+* Arm options
+    
+    -arm-debug-level   Set arm debug level [0]
+    -arm-help          Display options list for arm
+    -arm-loglevel {info|debug|warning|error|fatal|result}
+            Display arm log messages only above or equal this level [info]
+    -arm-quiet         Quiet all channels for arm
+    -arm-supported-modes {both|thumb|arm}
+            Can be used to only decode thumb instructions, arm instructions or both (default: arm). [arm]
+    
+* Backward Bounded Static Symbolic Execution options
+    
+    -bbsse                     Enable bbsse
+    -bbsse-calls-to-proceed   
+            List of call site that will not be automatically skipped by the analysis
+    -bbsse-consolidate        
+            Use previous opaque predicate knowledge to cut paths early [false]
+    -bbsse-debug-level         Set bbsse debug level [0]
+    -bbsse-directives          Path to a script file
+    -bbsse-find-jumps         
+            Automatically find conditional jumps between these two addresses
+    -bbsse-help                Display options list for bbsse
+    -bbsse-loglevel {info|debug|warning|error|fatal|result}
+            Display bbsse log messages only above or equal this level [info]
+    -bbsse-max-basic-blocks   
+            Set the maximal number of basic blocks to process backward
+    -bbsse-process-all-jumps  
+            Automatically find all conditional jumps in the executable [false]
+    -bbsse-quiet               Quiet all channels for bbsse
+    
+* Binary Patcher options
+    
+    -bp               Enable bp
+    -bp-debug-level   Set bp debug level [0]
+    -bp-help          Display options list for bp
+    -bp-loglevel {info|debug|warning|error|fatal|result}
+            Display bp log messages only above or equal this level [info]
+    -bp-o-patched     Output file for the patched binary [binsec_patched.bin]
+    -bp-patch         Input file for the patched binary
+    -bp-quiet         Quiet all channels for bp
+    
+* Constant time checker options
+    
+    -checkct               Enable checkct
+    -checkct-debug-level   Set checkct debug level [0]
+    -checkct-features     
+            Set of CT check points : control-flow, memory-access, multiplication, dividend and divisor. Multiplication and division checks are experimental.
+    -checkct-help          Display options list for checkct
+    -checkct-leak-info {halt|instr}
+            Select the information that is reported about leakage.
+		- halt: halts at first leak
+		- instr: reports leaky instructions (instructions are reported only once)
+ [instr]
+    -checkct-loglevel {info|debug|warning|error|fatal|result}
+            Display checkct log messages only above or equal this level [info]
+    -checkct-no-cv        
+            Disable chosen value sampling (prove that instruction may leak) [false]
+    -checkct-no-relse     
+            Disable relational symbolic engine to answer security queries [false]
+    -checkct-no-taint     
+            Disable taint analysis (prove that instruction can not leak) [false]
+    -checkct-quiet         Quiet all channels for checkct
+    -checkct-stats-file    Set file for dumping staistics
+    
+* Disassembly options
+    
+    -disasm                          Enable disasm
+    -disasm-at                      
+            Use this address as base for opcode decoding [0]
+    -disasm-cache-decoder           
+            Cache accesses to decoder queries. This option is useful for externally provided decoders. Warning: this may be RAM-intensive and assumes code under disassembly is not dynamically created [false]
+    -disasm-cfgraph                  Print control-flow graph [false]
+    -disasm-debug-level              Set disasm debug level [0]
+    -disasm-decode                   Decode hexadecimal opcode
+    -disasm-dump                     Set opcodes output file [stdout]
+    -disasm-functions               
+            Disassemble given comma separated list of functions
+    -disasm-help                     Display options list for disasm
+    -disasm-loglevel {info|debug|warning|error|fatal|result}
+            Display disasm log messages only above or equal this level [info]
+    -disasm-mode {rec|linear|bytelinear|extlinear}
+            Set disassembly mode [linear]
+    -disasm-no-loader               
+            Do not use loader and start at 0x0 [false]
+    -disasm-o-dba                    Set DBA instructions output file
+    -disasm-quiet                    Quiet all channels for disasm
+    -disasm-sections                
+            Disassemble given comma separated list of sections
+    -disasm-show-instruction-count  
+            Show a summary of encountered instructions [false]
+    
+* Elf loader options
+    
+    -elf-alloc        
+            Arbitrary but consistently allocate memory for relocatable object file [false]
+    -elf-debug-level   Set elf debug level [0]
+    -elf-help          Display options list for elf
+    -elf-loglevel {info|debug|warning|error|fatal|result}
+            Display elf log messages only above or equal this level [info]
+    -elf-quiet         Quiet all channels for elf
+    -elf-reloc         Limited support for static relocation entry [false]
+    
+* Formulas options
+    
+    -fml                  Enable fml
+    -fml-debug-level      Set fml debug level [0]
+    -fml-help             Display options list for fml
+    -fml-loglevel {info|debug|warning|error|fatal|result}
+            Display fml log messages only above or equal this level [info]
+    -fml-no-optim-all    
+            Do not force all the optimizations (each optimization can still be set individually) [false]
+    -fml-no-stitching    
+            Do not try to stitch together continuous stores/select [false]
+    -fml-optim-cst        Enable constant propagation [false]
+    -fml-optim-itv        Enable intervals in read-over-write [false]
+    -fml-optim-lst       
+            Switch to list-like memory representation in read-over-write [0]
+    -fml-optim-prn        Enable pruning and inlining [false]
+    -fml-optim-rbs        Enable rebasing in read-over-write [false]
+    -fml-optim-row        Enable read-over-write [false]
+    -fml-optim-ssa        Enable static single assignment [false]
+    -fml-quiet            Quiet all channels for fml
+    -fml-solver {z3|cvc4|yices|boolector|bitwuzla}
+            Set solver to use [z3]
+    -fml-solver-options  
+            Use these options to launch the solver (ignore default options)
+    -fml-solver-timeout   Timeout for solver queries [5]
+    -fml-theory           Select the formula theory [QF_ABV]
+    
+* Debug options
+    
+    -g               Enable g
+    -g-debug-level   Set g debug level [0]
+    -g-help          Display options list for g
+    -g-loglevel {info|debug|warning|error|fatal|result}
+            Display g log messages only above or equal this level [info]
+    -g-quiet         Quiet all channels for g
+    
+* Ghidra CFG import options
+    
+    -ghidra                   Enable ghidra
+    -ghidra-analyzeHeadless   Path to the analyzeHeadless script
+    -ghidra-cache             Path to the file to load or save
+    -ghidra-debug-level       Set ghidra debug level [0]
+    -ghidra-help              Display options list for ghidra
+    -ghidra-loglevel {info|debug|warning|error|fatal|result}
+            Display ghidra log messages only above or equal this level [info]
+    -ghidra-quiet             Quiet all channels for ghidra
+    
+* Plugin example (HTML export) options
+    
+    -htx                  Enable htx
+    -htx-debug-level      Set htx debug level [0]
+    -htx-export-level {callgraph|function|mnemonic}
+            Set level of details for HTML export [callgraph]
+    -htx-help             Display options list for htx
+    -htx-html-directory  
+            Set HTML directory for HTML export [binsec_cfg_html]
+    -htx-loglevel {info|debug|warning|error|fatal|result}
+            Display htx log messages only above or equal this level [info]
+    -htx-quiet            Quiet all channels for htx
+    
+* IDA Pro interface options
+    
+    -ida               Enable ida
+    -ida-cfg-dot       Generate CFGs in dot format [false]
+    -ida-debug-level   Set ida debug level [0]
+    -ida-help          Display options list for ida
+    -ida-loglevel {info|debug|warning|error|fatal|result}
+            Display ida log messages only above or equal this level [info]
+    -ida-no-simple    
+            Consider CFG at instruction level (instead of basic block level) [false]
+    -ida-o-ida         Set IDA output file [out.ida]
+    -ida-quiet         Quiet all channels for ida
+    
+* Plugin example (Mnemonic count) options
+    
+    -mcount               Enable mcount
+    -mcount-debug-level   Set mcount debug level [0]
+    -mcount-help          Display options list for mcount
+    -mcount-limit         Only print the <n> most frequent mnemonics [5]
+    -mcount-loglevel {info|debug|warning|error|fatal|result}
+            Display mcount log messages only above or equal this level [info]
+    -mcount-quiet         Quiet all channels for mcount
+    
+* Ppc64 options
+    
+    -ppc64-debug-level   Set ppc64 debug level [0]
+    -ppc64-help          Display options list for ppc64
+    -ppc64-loglevel {info|debug|warning|error|fatal|result}
+            Display ppc64 log messages only above or equal this level [info]
+    -ppc64-quiet         Quiet all channels for ppc64
+    
+* Risc-V options
+    
+    -rv-debug-level   Set rv debug level [0]
+    -rv-help          Display options list for rv
+    -rv-loglevel {info|debug|warning|error|fatal|result}
+            Display rv log messages only above or equal this level [info]
+    -rv-odfile        Test with this obdjump file
+    -rv-quiet         Quiet all channels for rv
+    
+* Shadow stack protection options
+    
+    -shadow-stack               Enable shadow-stack
+    -shadow-stack-debug-level   Set shadow-stack debug level [0]
+    -shadow-stack-help          Display options list for shadow-stack
+    -shadow-stack-loglevel {info|debug|warning|error|fatal|result}
+            Display shadow-stack log messages only above or equal this level [info]
+    -shadow-stack-mode {inline|builtin}
+            Use standard DBA assertions [Inline] or new push and pop builtins [Builtin] [inline]
+    -shadow-stack-quiet         Quiet all channels for shadow-stack
+    
+* Simulation options
+    
+    -sim2               Enable sim2
+    -sim2-debug-level   Set sim2 debug level [0]
+    -sim2-goals         Set simulation goals
+    -sim2-help          Display options list for sim2
+    -sim2-init         
+            Set dba file containing arbitrary initialisation instructions
+    -sim2-loglevel {info|debug|warning|error|fatal|result}
+            Display sim2 log messages only above or equal this level [info]
+    -sim2-memory       
+            Set file containing the initial (concrete) memory state
+    -sim2-quiet         Quiet all channels for sim2
+    
+* Static Symbolic Execution options
+    
+    -smt-debug-level   Set smt debug level [0]
+    -smt-dir           Set directory to cache smt scripts
+    -smt-dump-dir     
+            Set directory where unsolved SMT scripts are dumped [binsec_smtdump]
+    -smt-help          Display options list for smt
+    -smt-keep-going   
+            Ignore errors returned by the SMT solver. Default is to abort. [false]
+    -smt-loglevel {info|debug|warning|error|fatal|result}
+            Display smt log messages only above or equal this level [info]
+    -smt-quiet         Quiet all channels for smt
+    -smt-solver {auto|bitwuzla|bitwuzla:native|bitwuzla:legacy|bitwuzla:builtin|bitwuzla:smtlib|boolector|boolector:smtlib|z3|z3:builtin|z3:smtlib|cvc4|cvc4:smtlib|yices|yices:smtlib}
+            Manually set the SMT solver to use. [auto]
+    
+* Smtlib options
+    
+    -smtlib-debug-level       Set smtlib debug level [0]
+    -smtlib-help              Display options list for smtlib
+    -smtlib-loglevel {info|debug|warning|error|fatal|result}
+            Display smtlib log messages only above or equal this level [info]
+    -smtlib-model-from-file   Parse model from given file.
+    -smtlib-quiet             Quiet all channels for smtlib
+    
+* SPARCv8 options
+    
+    -sparcv8-debug-level   Set sparcv8 debug level [0]
+    -sparcv8-help          Display options list for sparcv8
+    -sparcv8-loglevel {info|debug|warning|error|fatal|result}
+            Display sparcv8 log messages only above or equal this level [info]
+    -sparcv8-quiet         Quiet all channels for sparcv8
+    
+* Static Symbolic Execution options
+    
+    -sse                           Enable sse
+    -sse-alternative-engine        Enable the experimental engine [false]
+    -sse-cse                      
+            Enable Common Subexpression Elimination optimization [false]
+    -sse-debug-level               Set sse debug level [0]
+    -sse-depth                     Set exploration maximal depth [1000]
+    -sse-engine                    Use the following symbolic engine
+    -sse-help                      Display options list for sse
+    -sse-heuristics {dfs|bfs|nurs}
+            Use the following search heuristics [dfs]
+    -sse-jump-enum                
+            Set maximum number of jump targets to retrieve for dynamic jumps [3]
+    -sse-legacy-engine            
+            Use the legacy engine. Some features are not or hardly supported (e.g. core dump, custom arrays, etc.). [false]
+    -sse-loglevel {info|debug|warning|error|fatal|result}
+            Display sse log messages only above or equal this level [info]
+    -sse-missing-symbol {error|warn|quiet}
+            Select how to handle function replacement when the symbol is not resolved from the binary [error]
+    -sse-no-kill-flags-at-return  
+            Conservatively always consider flags alive at function return [false]
+    -sse-no-screen                
+            Disable the monitor screen (curses) [false]
+    -sse-qmerge                   
+            Set maximum look ahead depth for quick merging [0]
+    -sse-quiet                     Quiet all channels for sse
+    -sse-randomize                 Randomize path selection [false]
+    -sse-script                   
+            Set file containing initializations, directives and stubs
+    -sse-seed                     
+            Give a specific seed for random number generators
+    -sse-self-written-enum        
+            Set maximum number of forks for symbolic instruction opcodes [0]
+    -sse-timeout                  
+            Sets a timeout in second for symbolic execution
+    
+* X86 options
+    
+    -x86-debug-level      Set x86 debug level [0]
+    -x86-handle-seg       Activate set of segments
+    -x86-help             Display options list for x86
+    -x86-loglevel {info|debug|warning|error|fatal|result}
+            Display x86 log messages only above or equal this level [info]
+    -x86-protected-mode  
+            Activate protected mode memory addressing (using segment selectors) [false]
+    -x86-quiet            Quiet all channels for x86
+    
+* Follows a trace generated using pin options
+    
+    -xtrasec                   Enable xtrasec
+    -xtrasec-concretize-mem {no|exact|<number>}
+            How to add assertions regarding the memory addresses. Use <no> for no assertion; <exact> to provide the exact address; or a number to state that the address is in some interval. [exact]
+    -xtrasec-concretize-regs  
+            List of registers to concretize; use <stack> for stack and frame pointers; and <all> for all
+    -xtrasec-debug-level       Set xtrasec debug level [0]
+    -xtrasec-help              Display options list for xtrasec
+    -xtrasec-loglevel {info|debug|warning|error|fatal|result}
+            Display xtrasec log messages only above or equal this level [info]
+    -xtrasec-output-smt        If set, output a SMT formula to this file
+    -xtrasec-quiet             Quiet all channels for xtrasec
+    -xtrasec-trace             Input trace as output by the xtrasec tool
+    
+* Z80 options
+    
+    -z80-debug-level   Set z80 debug level [0]
+    -z80-help          Display options list for z80
+    -z80-loglevel {info|debug|warning|error|fatal|result}
+            Display z80 log messages only above or equal this level [info]
+    -z80-quiet         Quiet all channels for z80
+    
+
+
+

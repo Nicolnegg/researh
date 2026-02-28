@@ -12,6 +12,7 @@ import configparser
 # --------------------
 from . import minibinsec
 from .checkers import CheckerResult, AbstractChecker
+from .ct_types import LeakSite, OracleResult
 from pulseutils.files import create_directory
 # --------------------
 class BinsecLogChunk:
@@ -208,6 +209,10 @@ class BinsecAutoCandidateGenerator:
         self.restart = False
         self._rvars = set()
         self._dyn_consts = {}
+        self._ct_secret_vars = set()
+        self._ct_pivot_var_hints = set()
+        self._ct_pivot_addrs = set()
+        self._ct_pivot_consts = set()
         dyn_limit = int(getattr(self.args, 'dynamic_constants_per_var', 3))
         # Bitwise-only searches become unstable if too many per-var dynamic
         # constants are injected from counterexamples.
@@ -219,6 +224,136 @@ class BinsecAutoCandidateGenerator:
 
     def _init_varengine(self):
         self.checkers.var_engine = self
+
+    def _parse_var_addr_size(self, varid):
+        if not isinstance(varid, str):
+            return None, None
+        m = re.match(r'^(0x[0-9a-fA-F]+)(?::([0-9]+))?$', varid)
+        if m is None:
+            return None, None
+        try:
+            addr = int(m.group(1), 16)
+        except ValueError:
+            return None, None
+        size = int(m.group(2)) if m.group(2) is not None else 1
+        if size <= 0:
+            size = 1
+        return addr, size
+
+    def _to_int_token(self, token):
+        if token is None:
+            return None
+        sval = str(token).strip()
+        if sval == '':
+            return None
+        try:
+            return int(sval, 0)
+        except ValueError:
+            return None
+
+    def _ct_secret_ranges(self):
+        ranges = []
+        symbols = getattr(self.checkers, 'symbol_regions', {}) or {}
+        for name, data in symbols.items():
+            if not isinstance(name, str) or not isinstance(data, tuple) or len(data) != 2:
+                continue
+            if name.startswith('secret_') or name.startswith('__VERIFIER_nondet_slot'):
+                ranges.append(data)
+        for raw in getattr(self.args, 'ct_secret', []) or []:
+            for token in str(raw).split(','):
+                t = token.strip()
+                if not t:
+                    continue
+                if t in symbols:
+                    ranges.append(symbols[t])
+                    continue
+                m = re.match(r'^(0x[0-9a-fA-F]+)(?::([0-9]+))?$', t)
+                if m is not None:
+                    try:
+                        base = int(m.group(1), 16)
+                        size = int(m.group(2)) if m.group(2) is not None else 1
+                    except ValueError:
+                        continue
+                    if size > 0:
+                        ranges.append((base, size))
+        # stable unique
+        seen = set()
+        out = []
+        for base, size in ranges:
+            key = (int(base), int(size))
+            if key not in seen:
+                seen.add(key)
+                out.append(key)
+        return out
+
+    def _refresh_ct_semantic_hints(self):
+        self._ct_secret_vars = set()
+        self._ct_pivot_var_hints = set()
+        self._ct_pivot_addrs = set()
+        self._ct_pivot_consts = set()
+        if not getattr(self.args, 'ct_mode', False):
+            return
+
+        pivots = getattr(self.checkers, 'ct_explain_pivots', []) or []
+        for pivot in pivots:
+            if not isinstance(pivot, dict):
+                continue
+            v = pivot.get('variable')
+            if v is not None:
+                vtxt = str(v).strip()
+                if vtxt:
+                    self._ct_pivot_var_hints.add(vtxt)
+                    for mm in re.finditer(r'0x[0-9a-fA-F]+', vtxt):
+                        try:
+                            self._ct_pivot_addrs.add(int(mm.group(0), 16))
+                        except ValueError:
+                            continue
+            cint = self._to_int_token(pivot.get('constant'))
+            if cint is not None:
+                self._ct_pivot_consts.add(cint & 0xffffffff if cint >= 0 else cint)
+                if cint >= 0:
+                    # Keep compatibility with current literal source and only
+                    # add missing pivot constants as optional candidates.
+                    cid = self.checkers.context.declare_const('0x{:x}'.format(cint))
+                    self.vars.add(cid)
+
+        sranges = self._ct_secret_ranges()
+        if not sranges:
+            return
+        for vid in self.vars:
+            base, size = self._parse_var_addr_size(vid)
+            if base is None:
+                continue
+            for sbase, ssize in sranges:
+                if base < sbase + ssize and sbase < base + size:
+                    self._ct_secret_vars.add(vid)
+                    break
+
+    def _matches_pivot_var(self, varid):
+        if not self._ct_pivot_var_hints and not self._ct_pivot_addrs:
+            return False
+        sval = str(varid)
+        if sval in self._ct_pivot_var_hints:
+            return True
+        for hint in self._ct_pivot_var_hints:
+            if hint in sval or sval in hint:
+                return True
+        base, _ = self._parse_var_addr_size(varid)
+        if base is not None and base in self._ct_pivot_addrs:
+            return True
+        return False
+
+    def _is_pivot_const(self, varid):
+        if not self._ct_pivot_consts:
+            return False
+        if not isinstance(varid, str) or not self.checkers.context.is_const(varid):
+            return False
+        cstr = self.checkers.context.vars[varid][0].core
+        cint = self._to_int_token(cstr)
+        if cint is None:
+            return False
+        norm = (cint & 0xffffffff) if cint >= 0 else cint
+        return norm in self._ct_pivot_consts
 
     def get_controlled(self):
         return { v for v in self.controlled }
@@ -371,6 +506,7 @@ class BinsecAutoCandidateGenerator:
 
         if self.args.input_variables_only:
             self.vars = self._rvars
+            self._refresh_ct_semantic_hints()
             return
         for modelset in (self.exset, self.cexset):
             for model in modelset:
@@ -396,6 +532,7 @@ class BinsecAutoCandidateGenerator:
                             self.vars.add(key)
                     if key in self.checkers.context.vars:
                         self._add_dynamic_const_from_model(key, val)
+        self._refresh_ct_semantic_hints()
 
     def _update_operators(self):
         # TODO : Use a config file instead
@@ -409,11 +546,134 @@ class BinsecAutoCandidateGenerator:
             )
             if bitvector_mode:
                 # Bitwise/shift examples are typically lowered to unsigned
-                # comparisons (ja/jbe/jb/jae). Keep <u only to limit noise.
+                # comparisons (ja/jbe/jb/jae). Keep <u by default.
                 self.operators.add(minibinsec.Operator.LowerU)
+                if getattr(self.args, 'ct_mode', False):
+                    # In CT mode, branch pivots often come from signed tests
+                    # (e.g., jle/jg from "if (x > c)"), and keeping only <u
+                    # can force over-restrictive policies such as x <u 1.
+                    self.operators.add(minibinsec.Operator.Lower)
             else:
                 self.operators.add(minibinsec.Operator.Lower)
                 self.operators.add(minibinsec.Operator.LowerU)
+
+    def _var_sort_key(self, varid):
+        try:
+            sz = self.checkers.context.get_size(varid)
+        except Exception:
+            sz = 0
+        is_const = self.checkers.context.is_const(varid)
+        if getattr(self.args, 'ct_mode', False):
+            if is_const:
+                sem = 1 if self._is_pivot_const(varid) else 3
+            else:
+                if varid in self._ct_secret_vars:
+                    sem = 0
+                elif self._matches_pivot_var(varid):
+                    sem = 1
+                else:
+                    sem = 2
+        else:
+            sem = 1
+        if is_const:
+            return (sem, 2, -sz, str(varid))
+        # Prefer wider (word-level) variables first.
+        if sz >= 32:
+            return (sem, 0, -sz, str(varid))
+        return (sem, 1, -sz, str(varid))
+
+    def _normalize_pair_refs(self, v1, v2):
+        def _term_size(ref):
+            if isinstance(ref, str):
+                return self.checkers.context.get_size(ref)
+            return ref.bvsize()
+        def _is_const_ref(ref):
+            return isinstance(ref, str) and self.checkers.context.is_const(ref)
+        def _resized_const(const_id, target_size):
+            if target_size <= 0:
+                return None
+            cstr = self.checkers.context.vars[const_id][0].core
+            try:
+                ival = int(cstr, 0)
+            except ValueError:
+                return None
+            mask = (1 << target_size) - 1 if target_size < 1024 else None
+            if mask is not None:
+                ival &= mask
+            if target_size % 4 == 0:
+                width = max(1, target_size // 4)
+                nstr = '0x{:0{}x}'.format(ival, width)
+            else:
+                nstr = '0b{:b}'.format(ival)
+            nid = self.checkers.context.declare_const(nstr)
+            self.vars.add(nid)
+            return nid
+
+        s1, s2 = _term_size(v1), _term_size(v2)
+        if s1 == s2:
+            return v1, v2
+        c1, c2 = _is_const_ref(v1), _is_const_ref(v2)
+        if c1 and not c2:
+            nv1 = _resized_const(v1, s2)
+            return (nv1, v2) if nv1 is not None else (None, None)
+        if c2 and not c1:
+            nv2 = _resized_const(v2, s1)
+            return (v1, nv2) if nv2 is not None else (None, None)
+        return None, None
+
+    def _safe_binary_literal(self, op, lhs, rhs):
+        def _term_size(ref):
+            if isinstance(ref, str):
+                return self.checkers.context.get_size(ref)
+            return ref.bvsize()
+        def _is_const_ref(ref):
+            return isinstance(ref, str) and self.checkers.context.is_const(ref)
+
+        lhs, rhs = self._normalize_pair_refs(lhs, rhs)
+        if lhs is None or rhs is None:
+            return None
+        if _is_const_ref(lhs) and _is_const_ref(rhs):
+            return None
+        if _term_size(lhs) != _term_size(rhs):
+            return None
+        if self.args.no_variables_binop and (not _is_const_ref(lhs)) and (not _is_const_ref(rhs)):
+            return None
+        literal = self.checkers.context.create_binary_term(op, lhs, rhs)
+        if self.ncoreset is not None and literal in self.ncoreset:
+            return None
+        return literal
+
+    def _generate_human_literals(self, ordered_vars):
+        lits = []
+        seen = set()
+        vars_nonconst = [v for v in ordered_vars if not self.checkers.context.is_const(v)]
+        const_ids = [v for v in ordered_vars if self.checkers.context.is_const(v)]
+        inequality_ops = [op for op in (minibinsec.Operator.Lower, minibinsec.Operator.LowerU) if op in self.operators]
+
+        def _push(term):
+            if term is None:
+                return
+            key = str(term)
+            if key in seen:
+                return
+            seen.add(key)
+            lits.append(term)
+
+        for varid in vars_nonconst:
+            for cst in const_ids:
+                eq = self._safe_binary_literal(minibinsec.Operator.Equal, varid, cst)
+                _push(eq)  # f = c
+
+                for op in inequality_ops:
+                    lt = self._safe_binary_literal(op, varid, cst)  # f < c
+                    gt = self._safe_binary_literal(op, cst, varid)  # c < f
+                    _push(lt)
+                    _push(gt)
+                    if eq is not None and lt is not None:
+                        leq = self.checkers.context.create_multiterm(minibinsec.Operator.Or, [lt, eq])  # f <= c
+                        if self.ncoreset is None or leq not in self.ncoreset:
+                            _push(leq)
+        return lits
 
     def _reduce_auto(self, varset):
         # In robust mode, allow controlled vars in literal generation; otherwise
@@ -572,17 +832,21 @@ class BinsecAutoCandidateGenerator:
             if include_shifts:
                 # BINSEC assumption parsing is unstable with explicit << / >> in
                 # candidate literals. Use shift-inspired mask terms instead.
-                for var in var_ids:
-                    for scst in shift_const_order:
-                        sval = _const_int_value(scst)
-                        if sval is None or sval <= 0 or sval >= 32:
-                            continue
-                        low_mask = (0xffffffff >> sval) & 0xffffffff
-                        high_mask = (0xffffffff << sval) & 0xffffffff
-                        lcid = self.checkers.context.declare_const('0x{:08x}'.format(low_mask))
-                        hcid = self.checkers.context.declare_const('0x{:08x}'.format(high_mask))
-                        self.vars.add(lcid)
-                        self.vars.add(hcid)
+                #
+                # Interleave vars first to avoid consuming the whole term budget
+                # on the first symbol only (which harms convergence on
+                # multi-variable benchmarks).
+                for scst in shift_const_order:
+                    sval = _const_int_value(scst)
+                    if sval is None or sval <= 0 or sval >= 32:
+                        continue
+                    low_mask = (0xffffffff >> sval) & 0xffffffff
+                    high_mask = (0xffffffff << sval) & 0xffffffff
+                    lcid = self.checkers.context.declare_const('0x{:08x}'.format(low_mask))
+                    hcid = self.checkers.context.declare_const('0x{:08x}'.format(high_mask))
+                    self.vars.add(lcid)
+                    self.vars.add(hcid)
+                    for var in var_ids:
                         tkeep = self.checkers.context.create_binary_term(minibinsec.Operator.BitAnd, var, lcid)
                         if _append_term(tkeep, 'shiftmask-low'):
                             return terms
@@ -591,17 +855,19 @@ class BinsecAutoCandidateGenerator:
                             return terms
                 return terms
 
+            # Spread unary and mask-based terms across vars before deepening.
             for var in var_ids:
                 tnot = self.checkers.context.create_unary_term(minibinsec.Operator.BvNot, var)
                 if _append_term(tnot, 'not'):
                     return terms
 
-                for cst in const_order:
-                    cval = _const_int_value(cst)
-                    # Skip neutral all-zero/all-one masks; they create many
-                    # tautological terms and slow down convergence.
-                    if cval in (0, 0xffffffff):
-                        continue
+            for cst in const_order:
+                cval = _const_int_value(cst)
+                # Skip neutral all-zero/all-one masks; they create many
+                # tautological terms and slow down convergence.
+                if cval in (0, 0xffffffff):
+                    continue
+                for var in var_ids:
                     tand = self.checkers.context.create_binary_term(minibinsec.Operator.BitAnd, var, cst)
                     if _append_term(tand, 'andc'):
                         return terms
@@ -621,22 +887,10 @@ class BinsecAutoCandidateGenerator:
 
             return terms
 
-        def _var_sort_key(varid):
-            try:
-                sz = self.checkers.context.get_size(varid)
-            except Exception:
-                sz = 0
-            if self.checkers.context.is_const(varid):
-                return (2, -sz, str(varid))
-            # Prefer wider (word-level) variables first.
-            if sz >= 32:
-                return (0, -sz, str(varid))
-            return (1, -sz, str(varid))
-
         lits = []
         shift_mode = bool(getattr(self.args, 'with_shift_terms', False))
         inequality_ops = {minibinsec.Operator.Lower, minibinsec.Operator.LowerU}
-        ordered_vars = sorted(self._reduce_auto(self.vars), key=_var_sort_key)
+        ordered_vars = sorted(self._reduce_auto(self.vars), key=self._var_sort_key)
         for op in self.operators:
             if shift_mode:
                 # In shift mode, build literals only from generated shift
@@ -746,6 +1000,22 @@ class BinsecAutoCandidateGenerator:
         self.restart = True
 
     def generate(self):
+        def _maybe_order_literals(lits):
+            if not self.args.lit_ordering:
+                return lits
+            mtable = { lit : (-sum(self.checkers.check_satisfied({lit}, model)[0] for model in self.exset), lit.complexity()) for lit in lits }
+            self.log.debug('literals ordering table: {}'.format(mtable))
+            return sorted(lits, key=lambda lit: mtable[lit])
+
+        def _emit_combinations(lits, depth_from, depth_to):
+            if depth_to < depth_from:
+                return
+            for depth in range(depth_from, depth_to + 1):
+                for candidate in itertools.combinations(lits, depth):
+                    yield set(c for c in candidate)
+                    if self.restart:
+                        return
+
         old_length = 0
         self.restart = False
         self._update_vars()
@@ -765,26 +1035,37 @@ class BinsecAutoCandidateGenerator:
             self.log.info('restart vars->literal generation')
             old_length = new_length
             self._update_operators()
-            lits = self._generate_literals()
-            self.stats.generation.literals = len(lits)
-            if self.args.lit_ordering:
-                mtable = { lit : (-sum(self.checkers.check_satisfied({lit}, model)[0] for model in self.exset), lit.complexity()) for lit in lits }
-                self.log.debug('literals ordering table: {}'.format(mtable))
-                lits.sort(key=lambda lit: mtable[lit])
-            self.log.debug('literals list: {}'.format(lits))
-            for depth in range(2):
-                # Initial max2 to redetect variables on necessary checks
-                # TODO: This exploration algorithm must be reworked
-                for candidate in itertools.combinations(lits, depth):
-                    yield set(c for c in candidate)
-                    if self.restart:
-                        break
-                if self.restart:
-                    break
-        rangeout = self.args.max_depth + 1 if self.args.max_depth is not None else len(lits) + 1
-        for depth in range(2, rangeout):
-            for candidate in itertools.combinations(lits, depth):
-                yield set(c for c in candidate)
+
+            # Layer 0/1: human-readable atoms first, then short conjunctions.
+            ordered_vars = sorted(self._reduce_auto(self.vars), key=self._var_sort_key)
+            lits_human = _maybe_order_literals(self._generate_human_literals(ordered_vars))
+            self.stats.generation.literals = len(lits_human)
+            self.log.debug('layer0 human literals: {}'.format(lits_human))
+
+            short_depth = 2
+            if self.args.max_depth is not None:
+                short_depth = max(0, min(2, int(self.args.max_depth)))
+            for cand in _emit_combinations(lits_human, 1, short_depth):
+                yield cand
+            if self.restart:
+                continue
+
+            # Layer 2: full literal space (arith/bitwise/shift included by
+            # existing flags) only when layer 0/1 did not reach any solution.
+            if self.stats.solutions > 0:
+                self.log.debug('skipping layer2 full terms: layer0/1 already found solutions')
+                continue
+
+            lits_full = _maybe_order_literals(self._generate_literals())
+            self.stats.generation.literals = len(lits_full)
+            self.log.debug('layer2 full literals: {}'.format(lits_full))
+
+            max_depth = self.args.max_depth if self.args.max_depth is not None else len(lits_full)
+            max_depth = max(0, int(max_depth))
+            for cand in _emit_combinations(lits_full, 1, max_depth):
+                yield cand
+            if self.restart:
+                continue
 # --------------------
 class BinsecCheckers(AbstractChecker):
 
@@ -802,6 +1083,9 @@ class BinsecCheckers(AbstractChecker):
         self.var_engine = None
         self.ct_history = []
         self.ct_last = None
+        self.ct_explain = []
+        self.ct_explain_pivots = []
+        self.symbol_regions = self._load_symbol_regions_map()
         self.input_regions = self._load_input_regions()
         if self.input_regions:
             self.log.debug('canonical input regions: {}'.format(self.input_regions))
@@ -879,29 +1163,7 @@ class BinsecCheckers(AbstractChecker):
 
     def _load_symbol_input_regions(self):
         raw_regions = []
-        if not self.binary or not os.path.isfile(self.binary):
-            return []
-        try:
-            proc = subprocess.run(
-                ['objdump', '-t', self.binary],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.DEVNULL,
-                text=True,
-                check=False,
-            )
-        except Exception:
-            return []
-        if proc.returncode != 0:
-            return []
-        for line in proc.stdout.splitlines():
-            parts = line.split()
-            if len(parts) < 6:
-                continue
-            addr_s, size_s, name = parts[0], parts[4], parts[5]
-            if not re.fullmatch(r'[0-9a-fA-F]{8}', addr_s):
-                continue
-            if not re.fullmatch(r'[0-9a-fA-F]{8}', size_s):
-                continue
+        for name, (base, size) in (self.symbol_regions or {}).items():
             if not (
                 name.startswith('__VERIFIER_nondet_slot')
                 or name.startswith('public_')
@@ -909,10 +1171,7 @@ class BinsecCheckers(AbstractChecker):
                 or re.match(r'^_stub_.*_index$', name)
             ):
                 continue
-            base = int(addr_s, 16)
-            size = int(size_s, 16)
-            if size > 0:
-                raw_regions.append((base, size, name))
+            raw_regions.append((base, size, name))
 
         if not raw_regions:
             return []
@@ -926,6 +1185,46 @@ class BinsecCheckers(AbstractChecker):
             if has_public and name.startswith('__VERIFIER_nondet_slot'):
                 continue
             regions.append((base, size))
+        return regions
+
+    def _load_symbol_regions_map(self):
+        regions = {}
+        if not self.binary or not os.path.isfile(self.binary):
+            return regions
+        try:
+            proc = subprocess.run(
+                ['objdump', '-t', self.binary],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.DEVNULL,
+                text=True,
+                check=False,
+            )
+        except Exception:
+            return regions
+        if proc.returncode != 0:
+            return regions
+        for line in proc.stdout.splitlines():
+            parts = line.split()
+            if len(parts) < 6:
+                continue
+            addr_s, size_s, name = parts[0], parts[4], parts[5]
+            if not re.fullmatch(r'[0-9a-fA-F]{8}', addr_s):
+                continue
+            if not re.fullmatch(r'[0-9a-fA-F]{8}', size_s):
+                continue
+            if not (
+                name.startswith('__VERIFIER_nondet_slot')
+                or name.startswith('public_')
+                or name.startswith('secret_')
+                or name == '_stub_int_array'
+                or re.match(r'^_stub_.*_index$', name)
+            ):
+                continue
+            base = int(addr_s, 16)
+            size = int(size_s, 16)
+            if size <= 0:
+                continue
+            regions[name] = (base, size)
         return regions
 
     def _chunk_input_regions(self, regions):
@@ -1062,12 +1361,12 @@ class BinsecCheckers(AbstractChecker):
                 # "true" policy already covers all inputs.
                 return True
             constraint = self._format_solution_set(solutions)
-            status, leaks, _ = self._check_ct_candidate(constraint, [], formatted=False)
-            if status == 'unknown':
+            result = self.oracle_ct(constraint, [], formatted=False)
+            if result.status == 'UNKNOWN':
                 self.log.warning('ct necessity check is unknown; treating as non-necessary')
                 return False
             # Necessary when the complement of current solutions is insecure.
-            return status == 'insecure'
+            return result.status == 'INSECURE'
         self.log.debug('necessary condition check')
         if any(len(sol) == 0 for sol in solutions):
             # In classic mode too: once "true" is in the solution set, the
@@ -1087,10 +1386,10 @@ class BinsecCheckers(AbstractChecker):
     def check_vulnerability(self, candidate, reject, complete=False):
         if getattr(self.args, 'ct_mode', False):
             self.log.debug('vulnerability check (ct mode)')
-            status, leaks, _ = self._check_ct_candidate(candidate, reject, complete=complete)
-            if status == 'insecure':
+            result = self.oracle_ct(candidate, reject, complete=complete)
+            if result.status == 'INSECURE':
                 return True, {}, None
-            if status == 'unknown':
+            if result.status == 'UNKNOWN':
                 self.log.warning('ct vulnerability check returned unknown')
             return False, None, None
         self.log.debug('vulnerability check')
@@ -1206,6 +1505,67 @@ class BinsecCheckers(AbstractChecker):
         self.ct_last = data
         self.ct_history.append(data)
 
+    def _normalize_ct_status(self, status):
+        sval = str(status or '').strip().lower()
+        if sval == 'secure':
+            return 'SECURE'
+        if sval == 'insecure':
+            return 'INSECURE'
+        return 'UNKNOWN'
+
+    def _normalize_leak_kind(self, kind):
+        kval = str(kind or '').strip().lower().replace('-', ' ').replace('_', ' ')
+        if 'control' in kval and 'flow' in kval:
+            return 'control_flow'
+        if 'memory' in kval and 'access' in kval:
+            return 'memory_access'
+        return 'other'
+
+    def _parse_leak_addr(self, leak):
+        if not isinstance(leak, dict):
+            return 0
+        for key in ('instruction', 'addr'):
+            raw = leak.get(key)
+            if raw is None:
+                continue
+            try:
+                return int(str(raw), 0)
+            except ValueError:
+                continue
+        return 0
+
+    def _map_leaksites(self, leaks):
+        mapped = []
+        for leak in leaks or []:
+            kind = leak.get('kind') if isinstance(leak, dict) else None
+            mapped.append(LeakSite(addr=self._parse_leak_addr(leak), kind=self._normalize_leak_kind(kind)))
+        return mapped
+
+    def oracle_ct(self, candidate, reject=None, complete=False, formatted=False):
+        if reject is None:
+            reject = []
+        # Accept a logical "true" baseline shorthand.
+        if candidate is True:
+            candidate = set()
+            formatted = False
+        status, leaks, parser = self._check_ct_candidate(candidate, reject, complete=complete, formatted=formatted)
+        model = None
+        if parser is not None and len(parser.models) > 0:
+            model = parser.models[0].get('model')
+            model = self._sanitize_model(model)
+        raw_log = ''
+        if parser is not None:
+            chunks = []
+            for chunk in parser.logdata:
+                chunks.append('[{}:{}] {}'.format(chunk.bswitch, chunk.level, chunk.data))
+            raw_log = '\n'.join(chunks)
+        return OracleResult(
+            status=self._normalize_ct_status(status),
+            leaks=self._map_leaksites(leaks),
+            raw_log=raw_log,
+            model=model if model is not None else {},
+        )
+
     def _check_ct_candidate(self, candidate, reject, complete=False, formatted=False):
         directives = self._ct_directives()
         for example in reject:
@@ -1239,20 +1599,31 @@ class BinsecCheckers(AbstractChecker):
         return status, leaks, parser
 
     def _check_ct_goals(self, candidate):
-        status, leaks, _ = self._check_ct_candidate(candidate, [])
-        if status == 'secure':
+        result = self.oracle_ct(candidate, [])
+        if result.status == 'SECURE':
             return True, True, {}, {}, None, None
-        if status == 'insecure':
+        if result.status == 'INSECURE':
             return False, False, {}, None, None, None
         # unknown: non-conclusive
         return False, False, None, None, None, None
 
     def evaluate_ct_policy(self, candidate):
         # Public helper for final validation/reporting.
-        status, leaks, _ = self._check_ct_candidate(candidate, [])
+        result = self.oracle_ct(candidate, [])
+        leaks = [
+            {
+                'addr': '0x{:08x}'.format(leak.addr),
+                'instruction': '0x{:08x}'.format(leak.addr),
+                'kind': leak.kind,
+            }
+            for leak in result.leaks
+        ]
         return {
-            'status': status,
-            'leaks': list(leaks),
+            # Keep lowercase "status" for compatibility with current solver
+            # output checks while exposing the normalized state too.
+            'status': result.status.lower(),
+            'status_norm': result.status,
+            'leaks': leaks,
         }
 
     def _run_binsec_command(self, candidate, directives, formatted=False, checkct=False, timeout_override=None):

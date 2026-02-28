@@ -58,7 +58,7 @@ def main(args):
             'paper_mode': bool(args.paper_mode),
             'collect_until_timeout': bool(args.collect_until_timeout),
             'solver_timeout': args.solver_timeout,
-            'selection_mode': args.selection_mode,
+            'selection_mode': summary.get('selection_mode'),
             'pythonhashseed': os.environ.get('PYTHONHASHSEED'),
             'binsec_env': os.environ.get('BINSEC', 'binsec'),
             'host': os.uname().nodename,
@@ -164,14 +164,12 @@ if __name__ == '__main__':
     cg.add_argument('--no-prune-counterex', action='store_false', dest='prune_counterex', help='do not prune with counter-examples')
     cg.add_argument('--no-prune-necessary', action='store_false', dest='prune_necessary', help='do not prune with necessary constraints')
     cg.add_argument('--force-on-model-resorting', action='store_true', help='resort literals after each new found example model')
+    cg.add_argument('--best-effort-policy', action='store_true',
+                    help='if NAS is not found, keep the best ranked sufficient policy when available')
     cg.add_argument('--collect-until-timeout', action='store_true',
                     help='continue searching after first NAS (if --solver-timeout is set, stop at timeout)')
     cg.add_argument('--paper-mode', action='store_true',
                     help='repro profile: no early cutoff (disables --collect-until-timeout)')
-    cg.add_argument('--selection-mode', action='store',
-                    choices=('branch-first', 'size-complexity'),
-                    default='branch-first',
-                    help='policy ranking mode: branch-first or size-complexity')
 
     ap.set_defaults(binsec_delete_configs=True)
     args = ap.parse_args()
