@@ -89,3 +89,20 @@ Ejemplo:
 
 - Para CT + pyabduce usa wrappers `bench_ct_*.c` (no los `.c` legacy).
 - `make all` en `Benchmarks` solo compila binarios legacy; no es el flujo recomendado para CT-abducer.
+
+## 7) Agregar resultados (CSV + gráficas)
+
+Una vez tengas reportes `*.report.json`, agrega resultados así:
+
+```bash
+cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper
+python3 tools/pyabduce/scripts/ct_report_aggregate.py \
+  --root . \
+  --out ct-results
+```
+
+Salida:
+
+- `ct-results/summary.csv`
+- `ct-results/summary.md`
+- (si hay `matplotlib`) `ct-results/*.png`
