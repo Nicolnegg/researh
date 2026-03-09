@@ -14,14 +14,15 @@ Desensamblado de la sección .note.gnu.build-id:
  8048140:	47                   	inc    %edi
  8048141:	4e                   	dec    %esi
  8048142:	55                   	push   %ebp
- 8048143:	00 a6 a5 67 5c d2    	add    %ah,-0x2da3985b(%esi)
- 8048149:	27                   	daa
- 804814a:	59                   	pop    %ecx
- 804814b:	f4                   	hlt
- 804814c:	3a 27                	cmp    (%edi),%ah
- 804814e:	87 b5 1e 60 61 3a    	xchg   %esi,0x3a61601e(%ebp)
- 8048154:	13 ef                	adc    %edi,%ebp
- 8048156:	72 16                	jb     804816e <__abi_tag+0x16>
+ 8048143:	00 1d e7 0d 0e 58    	add    %bl,0x580e0de7
+ 8048149:	2a 45 78             	sub    0x78(%ebp),%al
+ 804814c:	b3 6a                	mov    $0x6a,%bl
+ 804814e:	3a fe                	cmp    %dh,%bh
+ 8048150:	16                   	push   %ss
+ 8048151:	8a ed                	mov    %ch,%ch
+ 8048153:	d5 36                	aad    $0x36
+ 8048155:	27                   	daa
+ 8048156:	d0 ce                	ror    $1,%dh
 
 Desensamblado de la sección .note.ABI-tag:
 
@@ -909,8 +910,8 @@ Desensamblado de la sección .text:
  8049870:	e9 2b ff ff ff       	jmp    80497a0 <register_tm_clones>
 
 08049875 <c2bc_abort>:
- 8049875:	83 05 4c 3f 0e 08 03 	addl   $0x3,0x80e3f4c
- 804987c:	83 05 48 3f 0e 08 07 	addl   $0x7,0x80e3f48
+ 8049875:	83 05 48 3f 0e 08 03 	addl   $0x3,0x80e3f48
+ 804987c:	83 05 44 3f 0e 08 07 	addl   $0x7,0x80e3f44
  8049883:	c3                   	ret
 
 08049884 <main>:
@@ -921,7 +922,7 @@ Desensamblado de la sección .text:
  804988b:	e8 6a 00 00 00       	call   80498fa <c2bc_main>
  8049890:	89 c3                	mov    %eax,%ebx
  8049892:	e8 de ff ff ff       	call   8049875 <c2bc_abort>
- 8049897:	83 05 44 3f 0e 08 07 	addl   $0x7,0x80e3f44
+ 8049897:	83 05 4c 3f 0e 08 07 	addl   $0x7,0x80e3f4c
  804989e:	89 d8                	mov    %ebx,%eax
  80498a0:	8b 5d fc             	mov    -0x4(%ebp),%ebx
  80498a3:	c9                   	leave

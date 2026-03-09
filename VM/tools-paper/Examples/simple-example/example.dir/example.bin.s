@@ -14,16 +14,15 @@ Desensamblado de la sección .note.gnu.build-id:
  8048140:	47                   	inc    %edi
  8048141:	4e                   	dec    %esi
  8048142:	55                   	push   %ebp
- 8048143:	00 31                	add    %dh,(%ecx)
- 8048145:	42                   	inc    %edx
- 8048146:	a0 09 2d 25 11       	mov    0x11252d09,%al
- 804814b:	a8 4f                	test   $0x4f,%al
- 804814d:	13 95 81 d1 e8 08    	adc    0x8e8d181(%ebp),%edx
- 8048153:	c7                   	.byte 0xc7
- 8048154:	40                   	inc    %eax
- 8048155:	23                   	.byte 0x23
- 8048156:	9c                   	pushf
- 8048157:	ed                   	in     (%dx),%eax
+ 8048143:	00 12                	add    %dl,(%edx)
+ 8048145:	84 de                	test   %bl,%dh
+ 8048147:	ec                   	in     (%dx),%al
+ 8048148:	0e                   	push   %cs
+ 8048149:	ad                   	lods   %ds:(%esi),%eax
+ 804814a:	64 c5 ae f6 5a eb a5 	lds    %fs:-0x5a14a50a(%esi),%ebp
+ 8048151:	c6                   	(bad)
+ 8048152:	5f                   	pop    %edi
+ 8048153:	3d 72 a2 29 37       	cmp    $0x3729a272,%eax
 
 Desensamblado de la sección .note.ABI-tag:
 
@@ -911,13 +910,13 @@ Desensamblado de la sección .text:
  8049870:	e9 2b ff ff ff       	jmp    80497a0 <register_tm_clones>
 
 08049875 <c2bc_assert_fail>:
- 8049875:	83 05 48 3f 0e 08 03 	addl   $0x3,0x80e3f48
- 804987c:	83 05 44 3f 0e 08 07 	addl   $0x7,0x80e3f44
+ 8049875:	83 05 4c 3f 0e 08 03 	addl   $0x3,0x80e3f4c
+ 804987c:	83 05 48 3f 0e 08 07 	addl   $0x7,0x80e3f48
  8049883:	c3                   	ret
 
 08049884 <c2bc_abort>:
- 8049884:	83 05 40 3f 0e 08 03 	addl   $0x3,0x80e3f40
- 804988b:	83 05 3c 3f 0e 08 07 	addl   $0x7,0x80e3f3c
+ 8049884:	83 05 44 3f 0e 08 03 	addl   $0x3,0x80e3f44
+ 804988b:	83 05 40 3f 0e 08 07 	addl   $0x7,0x80e3f40
  8049892:	c3                   	ret
 
 08049893 <main>:
@@ -928,7 +927,7 @@ Desensamblado de la sección .text:
  804989a:	e8 6d 00 00 00       	call   804990c <c2bc_main>
  804989f:	89 c3                	mov    %eax,%ebx
  80498a1:	e8 de ff ff ff       	call   8049884 <c2bc_abort>
- 80498a6:	83 05 4c 3f 0e 08 07 	addl   $0x7,0x80e3f4c
+ 80498a6:	83 05 3c 3f 0e 08 07 	addl   $0x7,0x80e3f3c
  80498ad:	89 d8                	mov    %ebx,%eax
  80498af:	8b 5d fc             	mov    -0x4(%ebp),%ebx
  80498b2:	c9                   	leave

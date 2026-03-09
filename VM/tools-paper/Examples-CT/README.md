@@ -16,7 +16,6 @@ export PATH=/home/nicol/Documentos/M2-Cyber/RESEARCH/binsec/_opam/bin:$PATH
 
 ## 2) Como correr un ejemplo (manual)
 
-Tu flujo queda siempre asi (un ejemplo a la vez):
 
 ```bash
 cd <carpeta-del-ejemplo>

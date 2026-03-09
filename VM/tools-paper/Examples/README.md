@@ -9,7 +9,7 @@ This guide runs all examples in `VM/tools-paper/Examples` using the same workflo
 cd ~/Documentos/M2-Cyber/RESEARCH
 eval $(opam env)
 
-cd ~/Documentos/M2-Cyber/RESEARCH/VM/tools-paper
+c2bc -i example.c
 source venv/bin/activate
 export PATH=/home/nicol/Documentos/M2-Cyber/RESEARCH/binsec/_opam/bin:$PATH
 ```

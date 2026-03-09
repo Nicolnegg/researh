@@ -1,0 +1,17 @@
+case,status,rc,log
+bench_ct_select_naive,OK,0,VM/tools-paper/ct-results/rerun-logs/bench_ct_select_naive.log
+bench_ct_select_v1,OK,0,VM/tools-paper/ct-results/rerun-logs/bench_ct_select_v1.log
+bench_ct_select_v2,OK,0,VM/tools-paper/ct-results/rerun-logs/bench_ct_select_v2.log
+bench_ct_select_v3,OK,0,VM/tools-paper/ct-results/rerun-logs/bench_ct_select_v3.log
+bench_ct_select_v4,OK,0,VM/tools-paper/ct-results/rerun-logs/bench_ct_select_v4.log
+bench_ct_sort,OK,0,VM/tools-paper/ct-results/rerun-logs/bench_ct_sort.log
+bench_ct_sort_multiplex,OK,0,VM/tools-paper/ct-results/rerun-logs/bench_ct_sort_multiplex.log
+bench_ct_sort_negative,OK,0,VM/tools-paper/ct-results/rerun-logs/bench_ct_sort_negative.log
+candidate_8_insecure,OK,0,VM/tools-paper/ct-results/rerun-logs/candidate_8_insecure.log
+candidate_4_insecure,OK,0,VM/tools-paper/ct-results/rerun-logs/candidate_4_insecure.log
+candidate_5_insecure,OK,0,VM/tools-paper/ct-results/rerun-logs/candidate_5_insecure.log
+candidate_6_insecure,OK,0,VM/tools-paper/ct-results/rerun-logs/candidate_6_insecure.log
+candidate_3_insecure,OK,0,VM/tools-paper/ct-results/rerun-logs/candidate_3_insecure.log
+candidate_7_insecure,OK,0,VM/tools-paper/ct-results/rerun-logs/candidate_7_insecure.log
+candidate_1_insecure,OK,0,VM/tools-paper/ct-results/rerun-logs/candidate_1_insecure.log
+candidate_1_secure,OK,0,VM/tools-paper/ct-results/rerun-logs/candidate_1_secure.log

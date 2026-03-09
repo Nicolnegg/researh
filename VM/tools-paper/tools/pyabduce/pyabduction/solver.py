@@ -1,6 +1,8 @@
 # -------------------$
 # --------------------
 # --------------------
+import os
+import subprocess
 import time
 import re
 import itertools
@@ -25,6 +27,8 @@ class AbductionSolver:
             'ct_validation': None,
             'baseline_status': None,
             'leak_sites': [],
+            'leak_kind_counts': {},
+            'leak_site_snippets': [],
             'q_safe': None,
             'q_explain': [],
             'q_explain_pivots': [],
@@ -53,6 +57,9 @@ class AbductionSolver:
             'q_leak': None,
             'evidence': {},
             'recommendation': None,
+            'selected_policy_raw': None,
+            'selected_policy_fallback_reason': None,
+            'selected_status_norm': None,
         }
 
     def next_candidate(self):
@@ -202,6 +209,77 @@ class AbductionSolver:
             'status': status_norm.lower(),
             'leaks': leaks,
         }
+
+    def _normalize_ct_status(self, raw_status):
+        sval = str(raw_status or '').strip().upper()
+        if sval in {'SECURE', 'INSECURE', 'UNKNOWN'}:
+            return sval
+        if sval == 'TRUE':
+            return 'SECURE'
+        if sval == 'FALSE':
+            return 'INSECURE'
+        return 'UNKNOWN' if sval == '' else sval
+
+    def _current_ct_selected_status(self):
+        if not getattr(self.args, 'ct_mode', False):
+            return None
+        ctv = self.result_summary.get('ct_validation')
+        if isinstance(ctv, dict):
+            selected = ctv.get('selected')
+            if isinstance(selected, dict):
+                st = selected.get('status_norm', selected.get('status'))
+                if st is not None:
+                    return self._normalize_ct_status(st)
+            st = ctv.get('status_norm', ctv.get('status'))
+            if st is not None:
+                return self._normalize_ct_status(st)
+        dnf = self.result_summary.get('ct_dnf_validation')
+        if isinstance(dnf, dict):
+            st = dnf.get('status_norm', dnf.get('status'))
+            if st is not None:
+                return self._normalize_ct_status(st)
+        return 'UNKNOWN'
+
+    def _is_unsat_policy_expr(self, expr):
+        if expr is None:
+            return False
+        text = str(expr).strip().lower().replace(' ', '')
+        return text in {'(0x0=0x1)', '{(0x0=0x1)}', 'false', '{false}'}
+
+    def _sanitize_ct_selected_policy(self):
+        """Avoid reporting non-secure garbage policies as selected q_safe.
+
+        If selected policy does not validate as SECURE:
+        - keep raw policy for traceability in selected_policy_raw
+        - expose q_explain head as selected policy when available
+        - otherwise set selected policy to None
+        """
+        if not getattr(self.args, 'ct_mode', False):
+            return
+
+        status = self._current_ct_selected_status()
+        self.result_summary['selected_status_norm'] = status
+        if status == 'SECURE':
+            return
+
+        selected = self.result_summary.get('selected_policy')
+        if selected is not None:
+            self.result_summary['selected_policy_raw'] = selected
+
+        fallback = None
+        reason = 'none'
+        qexp = self.result_summary.get('q_explain') or []
+        if not self._is_unsat_policy_expr(selected) and len(qexp) > 0:
+            fallback = str(qexp[0])
+            reason = 'q_explain_head'
+        elif self._is_unsat_policy_expr(selected):
+            reason = 'none_unsat_marker'
+
+        self.result_summary['selected_policy'] = fallback
+        self.result_summary['selected_policy_representative'] = fallback
+        self.result_summary['selected_constraint'] = fallback
+        self.result_summary['selected_constraint_representative'] = fallback
+        self.result_summary['selected_policy_fallback_reason'] = reason
 
     def _register_ct_secure_clause(self, clause, origin='search', minimized=False, widened=False, trace=None):
         if not isinstance(clause, (set, list, tuple)):
@@ -1906,6 +1984,8 @@ class AbductionSolver:
         if qsafe is not None:
             return qsafe
         if getattr(self.args, 'ct_mode', False):
+            if self._current_ct_selected_status() != 'SECURE':
+                return None
             selected = self.result_summary.get('selected_policy')
             if selected:
                 return selected
@@ -1943,11 +2023,18 @@ class AbductionSolver:
                 by_source[src] = 0
             by_source[src] += 1
 
+        leak_kind_counts = self.result_summary.get('leak_kind_counts') or self._build_leak_kind_counts()
+        leak_sites = self.result_summary.get('leak_sites') or []
+
         return {
             'queries': {
                 'total_oracle_calls': total_oracle_calls,
                 'binsec_calls': int(oracles.get('binsec', {}).get('calls', 0)),
                 'minibinsec_calls': int(oracles.get('minibinsec', {}).get('calls', 0)),
+            },
+            'leaks': {
+                'sites': len(leak_sites) if isinstance(leak_sites, list) else 0,
+                'kind_counts': leak_kind_counts,
             },
             'counterexamples': {
                 'used': int(core.get('counterexamples', 0)),
@@ -1979,10 +2066,111 @@ class AbductionSolver:
             return 'Precondicion encontrada pero estrecha/trivial. Considerar rewrite CT para seguridad mas robusta.'
         return 'Precondicion encontrada; validar utilidad practica del dominio permitido.'
 
+    def _parse_addr_field(self, raw):
+        if raw is None:
+            return None
+        try:
+            return int(str(raw), 0)
+        except ValueError:
+            return None
+
+    def _build_leak_kind_counts(self):
+        counts = {'control_flow': 0, 'memory_access': 0, 'other': 0}
+        for leak in self.result_summary.get('leak_sites', []) or []:
+            if not isinstance(leak, dict):
+                continue
+            kind = str(leak.get('kind', 'other')).strip().lower()
+            if kind not in counts:
+                kind = 'other'
+            counts[kind] += 1
+        return counts
+
+    def _load_disassembly_lines(self):
+        binary = getattr(self.checkers, 'binary', None)
+        if binary is None:
+            return []
+        lines = []
+        # Prefer c2bc pre-generated disassembly.
+        disasm_file = '{}.s'.format(binary)
+        if os.path.isfile(disasm_file):
+            try:
+                with open(disasm_file, 'r', encoding='utf-8', errors='replace') as stream:
+                    lines = stream.readlines()
+            except OSError:
+                lines = []
+        if len(lines) > 0:
+            return lines
+        # Fallback: call objdump directly.
+        try:
+            proc = subprocess.run(
+                ['objdump', '-d', binary],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                check=False,
+            )
+            if proc.returncode == 0 and proc.stdout:
+                return proc.stdout.splitlines()
+        except Exception:
+            return []
+        return []
+
+    def _build_leak_site_snippets(self, max_sites=3, radius=2):
+        leak_sites = self.result_summary.get('leak_sites') or []
+        if not isinstance(leak_sites, list) or len(leak_sites) <= 0:
+            return []
+        lines = self._load_disassembly_lines()
+        if len(lines) <= 0:
+            return []
+
+        insns = []
+        for idx, line in enumerate(lines):
+            m = re.match(r'^\s*([0-9a-fA-F]+):\s', line)
+            if m is None:
+                continue
+            try:
+                addr = int(m.group(1), 16)
+            except ValueError:
+                continue
+            insns.append((addr, idx, line.rstrip('\n')))
+        if len(insns) <= 0:
+            return []
+
+        out = []
+        for leak in leak_sites[:max_sites]:
+            if not isinstance(leak, dict):
+                continue
+            target = self._parse_addr_field(leak.get('addr'))
+            if target is None:
+                continue
+            # Prefer exact address, fallback to nearest instruction.
+            best = None
+            for addr, idx, text in insns:
+                if addr == target:
+                    best = (addr, idx, text)
+                    break
+            if best is None:
+                best = min(insns, key=lambda t: abs(t[0] - target))
+            addr, idx, _ = best
+            start = max(0, idx - radius)
+            end = min(len(lines), idx + radius + 1)
+            snippet = []
+            for i in range(start, end):
+                marker = '>> ' if i == idx else '   '
+                snippet.append('{}{}'.format(marker, lines[i].rstrip('\n')))
+            out.append({
+                'addr': '0x{:08x}'.format(addr),
+                'kind': leak.get('kind', 'other'),
+                'snippet': snippet,
+            })
+        return out
+
     def _finalize_result_summary(self):
         # Ensure thesis-oriented fields are always available in report output.
         self.result_summary['baseline_status'] = self.result_summary.get('baseline_status')
         self.result_summary['leak_sites'] = self.result_summary.get('leak_sites', [])
+        self.result_summary['leak_kind_counts'] = self._build_leak_kind_counts()
+        self.result_summary['leak_site_snippets'] = self._build_leak_site_snippets()
         self.result_summary['q_explain'] = self.result_summary.get('q_explain', [])
         self.result_summary['ct_secure_clauses'] = self.result_summary.get('ct_secure_clauses', [])
         self.result_summary['ct_insecure_evidence'] = self.result_summary.get('ct_insecure_evidence', [])
@@ -2003,6 +2191,7 @@ class AbductionSolver:
 
         if getattr(self.args, 'ct_mode', False):
             self._sync_ct_dnf_summary()
+            self._sanitize_ct_selected_policy()
             # Keep explicit CT-DNF stop reasons (timeout|saturated|max_clauses).
             # Do not override with generic labels.
 

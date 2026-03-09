@@ -123,6 +123,12 @@ def _collect_rows(root: Path, include_collect: bool) -> List[Dict[str, Any]]:
         binsec = oracles.get("binsec", {}) if isinstance(oracles.get("binsec"), dict) else {}
         minibinsec = oracles.get("minibinsec", {}) if isinstance(oracles.get("minibinsec"), dict) else {}
         pruned = gen.get("pruned", {}) if isinstance(gen.get("pruned"), dict) else {}
+        leak_kind_counts = report.get("leak_kind_counts", {}) if isinstance(report.get("leak_kind_counts"), dict) else {}
+        leak_cf = int(leak_kind_counts.get("control_flow", 0) or 0)
+        leak_ma = int(leak_kind_counts.get("memory_access", 0) or 0)
+        leak_other = int(leak_kind_counts.get("other", 0) or 0)
+        selected_policy_raw = report.get("selected_policy_raw")
+        fallback_reason = report.get("selected_policy_fallback_reason")
 
         row = {
             "report_path": relpath,
@@ -131,10 +137,15 @@ def _collect_rows(root: Path, include_collect: bool) -> List[Dict[str, Any]]:
             "baseline_status": _baseline_status(report),
             "selected_status": _selected_status(report),
             "selected_policy": policy if policy is not None else "",
+            "selected_policy_raw": selected_policy_raw if selected_policy_raw is not None else "",
+            "selected_policy_fallback_reason": fallback_reason if fallback_reason is not None else "",
             "policy_kind": _policy_kind(policy),
             "ct_stop_reason": str(report.get("ct_stop_reason", "")),
             "q_explain_count": len(report.get("q_explain", [])) if isinstance(report.get("q_explain"), list) else 0,
             "q_explain_head": _first_q_explain(report),
+            "leak_cf": leak_cf,
+            "leak_ma": leak_ma,
+            "leak_other": leak_other,
             "secure_clauses_count": len(report.get("ct_secure_clauses", [])) if isinstance(report.get("ct_secure_clauses"), list) else 0,
             "insecure_evidence_count": len(report.get("ct_insecure_evidence", [])) if isinstance(report.get("ct_insecure_evidence"), list) else 0,
             "counterexamples_count": len(report.get("ct_counterexamples", [])) if isinstance(report.get("ct_counterexamples"), list) else 0,
@@ -167,8 +178,12 @@ def _write_csv(rows: List[Dict[str, Any]], out_csv: Path) -> None:
         "baseline_status",
         "selected_status",
         "policy_kind",
+        "selected_policy_fallback_reason",
         "ct_stop_reason",
         "q_explain_count",
+        "leak_cf",
+        "leak_ma",
+        "leak_other",
         "secure_clauses_count",
         "insecure_evidence_count",
         "counterexamples_count",
@@ -186,6 +201,7 @@ def _write_csv(rows: List[Dict[str, Any]], out_csv: Path) -> None:
         "estimated_runtime_s",
         "q_explain_head",
         "selected_policy",
+        "selected_policy_raw",
     ]
     with out_csv.open("w", newline="", encoding="utf-8") as fobj:
         writer = csv.DictWriter(fobj, fieldnames=columns)
@@ -332,4 +348,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
